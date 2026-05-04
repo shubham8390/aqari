@@ -224,6 +224,124 @@ body::before {
 }
 
 /* ─────────────────────────────────────────────
+   RESPONSIVE — MOBILE DRAWERS  (< 768px)
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Sidebar host: takes no flex space — the aside floats as a fixed drawer */
+  app-sidebar {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    position: relative;
+  }
+
+  /* Sidebar aside: fixed drawer from the left */
+  app-sidebar > aside {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100dvh !important;
+    width: var(--sidebar-w) !important;
+    min-width: var(--sidebar-w) !important;
+    transform: translateX(-110%) !important;
+    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 50;
+    box-shadow: 6px 0 32px rgba(0,0,0,0.5);
+  }
+
+  /* Open state (class added by Angular host binding) */
+  app-sidebar.sidebar-mobile-open > aside {
+    transform: translateX(0) !important;
+  }
+
+  /* Right-panel host: takes no flex space */
+  app-right-panel {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    position: relative;
+  }
+
+  /* Right-panel aside: fixed drawer from the right */
+  app-right-panel > aside {
+    position: fixed !important;
+    right: 0 !important;
+    top: 0 !important;
+    height: 100dvh !important;
+    width: var(--right-panel-w) !important;
+    min-width: var(--right-panel-w) !important;
+    transform: translateX(110%) !important;
+    transition: transform 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 50;
+    box-shadow: -6px 0 32px rgba(0,0,0,0.5);
+  }
+
+  app-right-panel.panel-mobile-open > aside {
+    transform: translateX(0) !important;
+  }
+
+  /* Hide the desktop collapse-tab on mobile */
+  .right-panel-toggle {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — TABLET AUTO-COLLAPSE  (768px – 1023px)
+───────────────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Sidebar: override Angular inline width to icon-rail on initial paint.
+     User can still expand via the toggle button. */
+  app-sidebar > aside {
+    width: 60px !important;
+    min-width: 60px !important;
+  }
+
+  /* Right panel: collapsed by default on tablet */
+  app-right-panel > aside {
+    width: 0px !important;
+    min-width: 0px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   PANEL COLLAPSE TOGGLE BUTTONS
+───────────────────────────────────────────── */
+.sidebar-toggle-btn {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.sidebar-toggle-btn:hover {
+  background: var(--gold-faint);
+  border-color: var(--gold-border);
+  color: var(--gold);
+}
+
+.right-panel-toggle {
+  width: 28px;
+  height: 52px;
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  color: var(--text-muted);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+}
+.right-panel-toggle:hover {
+  background: var(--gold-faint);
+  color: var(--gold);
+}
+
+/* ─────────────────────────────────────────────
    INPUT PLACEHOLDER
 ───────────────────────────────────────────── */
 input::placeholder {

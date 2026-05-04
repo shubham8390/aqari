@@ -7,6 +7,7 @@ import { SidebarComponent }    from './layout/sidebar/sidebar.component';
 import { TopbarComponent }     from './layout/topbar/topbar.component';
 import { RightPanelComponent } from './layout/right-panel/right-panel.component';
 import { NavigationService, ViewKey } from './core/services/navigation.service';
+import { LayoutService } from './core/services/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { NavigationService, ViewKey } from './core/services/navigation.service';
 export class AppComponent implements OnInit {
   nav    = inject(NavigationService);
   router = inject(Router);
+  layout = inject(LayoutService);
 
   ngOnInit(): void {
     // Keep NavigationService in sync with the router URL

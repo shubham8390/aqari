@@ -1,15 +1,15 @@
-<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
-  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">Market Insights</h1>
-  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">Live Dubai rental &amp; sales data · Updated daily</p>
+<div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">Market Insights</h1>
+  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">Live Dubai rental &amp; sales data · Updated daily</p>
 
   <!-- Key Indicators -->
   <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
     Key Market Indicators
   </div>
-  <div class="grid grid-cols-4 gap-3 mb-1">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-1">
     @for (stat of stats; track stat.label) {
       <div class="rounded-2xl p-4" style="background:var(--bg-card);border:1px solid var(--border);">
-        <div class="font-display font-medium" style="font-size:26px;color:var(--gold-light);">{{ stat.value }}</div>
+        <div class="font-display font-medium" style="font-size:clamp(20px,3vw,26px);color:var(--gold-light);">{{ stat.value }}</div>
         <div class="mt-1" style="font-size:11px;color:var(--text-muted);">{{ stat.label }}</div>
         <div class="mt-1.5 text-xs"
              [style.color]="stat.changeType === 'up' ? 'var(--accent-teal)' : stat.changeType === 'down' ? 'var(--accent-red)' : 'var(--text-muted)'">
@@ -23,9 +23,9 @@
   <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
     Rental by District — 2BHK Furnished
   </div>
-  <div class="grid grid-cols-3 gap-3 mb-1">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-1">
     @for (d of districts; track d.name) {
-      <div class="rounded-2xl p-4.5 cursor-pointer transition-all duration-200"
+      <div class="rounded-2xl cursor-pointer transition-all duration-200"
            style="background:var(--bg-card);border:1px solid var(--border);padding:18px;"
            onmouseenter="this.style.borderColor='var(--gold-border)'"
            onmouseleave="this.style.borderColor='var(--border)'">
@@ -43,9 +43,9 @@
   <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
     Full Comparison Table
   </div>
-  <div class="rounded-2xl overflow-hidden mb-1" style="background:var(--bg-card);border:1px solid var(--border);">
+  <div class="rounded-2xl overflow-x-auto mb-1" style="background:var(--bg-card);border:1px solid var(--border);">
     <!-- Header -->
-    <div class="flex items-center px-4 py-3 text-xs uppercase tracking-wider" style="background:rgba(0,0,0,0.2);color:var(--text-muted);letter-spacing:0.07em;">
+    <div class="flex items-center px-4 py-3 text-xs uppercase tracking-wider" style="background:rgba(0,0,0,0.2);color:var(--text-muted);letter-spacing:0.07em;min-width:480px;">
       <div class="flex-[1.5]">District</div>
       <div class="flex-1">Avg Rent</div>
       <div class="flex-1">YoY Change</div>
@@ -53,7 +53,7 @@
       <div class="flex-1">Yield</div>
     </div>
     @for (row of trendRows; track row.district) {
-      <div class="flex items-center px-4 py-3 text-sm" style="border-top:1px solid var(--border);">
+      <div class="flex items-center px-4 py-3 text-sm" style="border-top:1px solid var(--border);min-width:480px;">
         <div class="flex-[1.5]" style="color:var(--text-primary);">{{ row.district }}</div>
         <div class="flex-1 font-display" style="font-size:15px;color:var(--gold-light);">{{ row.avgRent }}</div>
         <div class="flex-1" [style.color]="row.yoyType === 'up' ? 'var(--accent-teal)' : 'var(--accent-red)'">{{ row.yoyChange }}</div>

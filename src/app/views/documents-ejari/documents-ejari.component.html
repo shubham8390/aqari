@@ -1,24 +1,24 @@
-<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
-  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">Documents &amp; Ejari</h1>
-  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">Complete checklist for renting in Dubai — RERA compliant</p>
+<div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">Documents &amp; Ejari</h1>
+  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">Complete checklist for renting in Dubai — RERA compliant</p>
 
   <!-- Documents Grid -->
   <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
     Required Documents
   </div>
-  <div class="grid grid-cols-2 gap-4 mb-1">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-1">
     <!-- Personal Docs -->
     <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
       <div class="uppercase tracking-wider mb-4" style="font-size:11px;letter-spacing:0.08em;color:var(--text-muted);">
         Your Personal Documents
       </div>
       @for (doc of personalDocs; track doc.name) {
-        <div class="flex items-center gap-3 py-2.5" style="border-bottom:1px solid var(--border);"
+        <div class="flex items-center gap-3 py-2.5"
              [style.borderBottom]="doc === personalDocs[personalDocs.length-1] ? 'none' : '1px solid var(--border)'">
           <div class="flex items-center justify-center rounded-lg flex-shrink-0 text-lg"
                style="width:34px;height:34px;background:var(--bg-raised);">{{ doc.icon }}</div>
-          <div class="flex-1">
-            <div class="text-sm font-medium" style="color:var(--text-primary);">{{ doc.name }}</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ doc.name }}</div>
             <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ doc.description }}</div>
           </div>
           <span class="text-xs px-2 py-1 rounded-lg flex-shrink-0"
@@ -41,8 +41,8 @@
              [style.borderBottom]="doc === propertyDocs[propertyDocs.length-1] ? 'none' : '1px solid var(--border)'">
           <div class="flex items-center justify-center rounded-lg flex-shrink-0 text-lg"
                style="width:34px;height:34px;background:var(--bg-raised);">{{ doc.icon }}</div>
-          <div class="flex-1">
-            <div class="text-sm font-medium" style="color:var(--text-primary);">{{ doc.name }}</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ doc.name }}</div>
             <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ doc.description }}</div>
           </div>
           <span class="text-xs px-2 py-1 rounded-lg flex-shrink-0"

@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-1 overflow-hidden view-fade">
 
   <!-- Chat Scroll -->
-  <div #chatScroll class="flex-1 overflow-y-auto px-8 py-8 flex flex-col gap-5 custom-scroll">
+  <div #chatScroll class="flex-1 overflow-y-auto px-4 py-5 md:px-8 md:py-8 flex flex-col gap-5 custom-scroll">
     @for (msg of chat.messages(); track msg.id) {
       <app-chat-message [message]="msg" />
     }
@@ -24,7 +24,7 @@
   </div>
 
   <!-- Quick Pills -->
-  <div class="px-8 pb-3 flex gap-2 flex-wrap">
+  <div class="px-4 md:px-8 pb-3 flex gap-2 flex-wrap">
     @for (pill of quickPills; track pill.text) {
       <button
         (click)="sendQuick(pill.text)"
@@ -38,7 +38,7 @@
   </div>
 
   <!-- Input Area -->
-  <div class="px-8 pb-6 pt-4 flex-shrink-0" style="border-top:1px solid var(--border);background:var(--bg-card);">
+  <div class="px-4 md:px-8 pb-5 pt-4 flex-shrink-0" style="border-top:1px solid var(--border);background:var(--bg-card);">
     <div class="flex items-center gap-2.5 rounded-2xl px-4 py-1.5 transition-all duration-200"
          style="background:var(--bg-raised);border:1px solid var(--border-mid);"
          onfocusin="this.style.borderColor='var(--gold-border)';this.style.boxShadow='0 0 0 3px rgba(201,168,76,0.06)'"

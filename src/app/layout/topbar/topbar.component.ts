@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../../core/services/navigation.service';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-topbar',
@@ -10,5 +11,6 @@ import { NavigationService } from '../../core/services/navigation.service';
   host: { style: 'display:block;flex-shrink:0;' },
 })
 export class TopbarComponent {
-  nav = inject(NavigationService);
+  nav    = inject(NavigationService);
+  layout = inject(LayoutService);
 }
