@@ -1,0 +1,80 @@
+<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">Negotiation Guide</h1>
+  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">AI strategies backed by RERA transaction data</p>
+
+  <!-- Guide Cards -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Proven Strategies
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-1">
+    @for (card of guideCards; track card.title) {
+      <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
+        <div class="uppercase tracking-wider mb-3.5" style="font-size:11px;letter-spacing:0.08em;color:var(--gold);">
+          {{ card.icon }} {{ card.title }}
+        </div>
+        @for (tip of card.tips; track tip.num) {
+          <div class="flex gap-2.5 mb-3 items-start last:mb-0">
+            <div class="flex items-center justify-center rounded-full flex-shrink-0"
+                 style="width:22px;height:22px;background:var(--gold-faint);border:1px solid var(--gold-border);color:var(--gold);font-size:11px;">
+              {{ tip.num }}
+            </div>
+            <div class="text-xs leading-snug" style="color:var(--text-secondary);">
+              <strong style="color:var(--text-primary);font-weight:500;">{{ tip.bold }}</strong>{{ tip.rest }}
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Cheque Strategy -->
+  <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Cheque Strategy — Savings on AED 115,000 unit
+  </div>
+  <div class="rounded-2xl p-5 mb-6" style="background:var(--bg-card);border:1px solid var(--border);">
+    <div class="uppercase tracking-wider mb-3.5" style="font-size:11px;letter-spacing:0.08em;color:var(--gold);">
+      💰 Number of Cheques vs. Discount
+    </div>
+    <div class="flex gap-2.5">
+      @for (pill of chequePills; track pill.num) {
+        <div class="flex-1 rounded-xl p-3 text-center border"
+             [style.opacity]="pill.type === 'bad' ? '0.6' : '1'"
+             [style.background]="pill.type === 'best' ? 'rgba(46,191,160,0.08)' : pill.type === 'good' ? 'var(--gold-faint)' : 'var(--bg-raised)'"
+             [style.borderColor]="pill.type === 'best' ? 'rgba(46,191,160,0.3)' : pill.type === 'good' ? 'var(--gold-border)' : 'var(--border)'">
+          <div class="font-display font-medium" style="font-size:24px;"
+               [style.color]="pill.type === 'best' ? 'var(--accent-teal)' : pill.type === 'good' ? 'var(--gold-light)' : 'var(--text-secondary)'">
+            {{ pill.num }}
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">{{ pill.label }}</div>
+          <div class="text-xs mt-1"
+               [style.color]="pill.type === 'best' ? 'var(--accent-teal)' : pill.type === 'good' ? 'var(--gold)' : pill.type === 'bad' ? 'var(--accent-red)' : 'var(--text-muted)'">
+            {{ pill.save }}
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Template -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Ready-to-Send Template
+  </div>
+  <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
+    <div class="uppercase tracking-wider mb-3.5" style="font-size:11px;letter-spacing:0.08em;color:var(--gold);">
+      ✉️ Sample Negotiation Message
+    </div>
+    <div class="text-sm italic leading-relaxed p-4 rounded-xl mb-3"
+         style="background:var(--bg-raised);border:1px solid var(--border);color:var(--text-secondary);line-height:1.7;">
+      "Dear [Broker Name],<br><br>
+      We are very interested in the Marina Gate II unit on Floor 18. After reviewing recent comparable rentals registered with RERA in the area, we would like to propose
+      <strong style="color:var(--gold-light);font-style:normal;">AED 110,000/year paid in 2 cheques</strong>.<br><br>
+      We are prepared to sign the tenancy contract and complete Ejari registration within 2 weeks of your acceptance."
+    </div>
+    <div class="flex gap-2 flex-wrap">
+      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Firm offer</span>
+      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Fewer cheques</span>
+      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Fast timeline</span>
+      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);color:var(--accent-amber);">Personalise before sending</span>
+    </div>
+  </div>
+</div>

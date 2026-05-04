@@ -1,0 +1,66 @@
+<div class="flex flex-col flex-1 overflow-hidden view-fade">
+
+  <!-- Chat Scroll -->
+  <div #chatScroll class="flex-1 overflow-y-auto px-8 py-8 flex flex-col gap-5 custom-scroll">
+    @for (msg of chat.messages(); track msg.id) {
+      <app-chat-message [message]="msg" />
+    }
+
+    <!-- Typing indicator -->
+    @if (chat.isTyping()) {
+      <div class="flex gap-3 view-fade">
+        <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
+             style="width:36px;height:36px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:#0B0B0E;box-shadow:0 0 0 4px rgba(201,168,76,0.1);">
+          Z
+        </div>
+        <div class="flex items-center gap-1.5 px-4 py-3.5 rounded-2xl"
+             style="background:var(--bg-raised);border:1px solid var(--border);border-top-left-radius:4px;">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Quick Pills -->
+  <div class="px-8 pb-3 flex gap-2 flex-wrap">
+    @for (pill of quickPills; track pill.text) {
+      <button
+        (click)="sendQuick(pill.text)"
+        class="text-xs px-3.5 py-1.5 rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap"
+        style="background:var(--bg-raised);border:1px solid var(--border);color:var(--text-secondary);"
+        onmouseenter="this.style.borderColor='var(--gold-border)';this.style.color='var(--gold-light)';this.style.background='var(--gold-faint)'"
+        onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)';this.style.background='var(--bg-raised)'">
+        {{ pill.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Input Area -->
+  <div class="px-8 pb-6 pt-4 flex-shrink-0" style="border-top:1px solid var(--border);background:var(--bg-card);">
+    <div class="flex items-center gap-2.5 rounded-2xl px-4 py-1.5 transition-all duration-200"
+         style="background:var(--bg-raised);border:1px solid var(--border-mid);"
+         onfocusin="this.style.borderColor='var(--gold-border)';this.style.boxShadow='0 0 0 3px rgba(201,168,76,0.06)'"
+         onfocusout="this.style.borderColor='var(--border-mid)';this.style.boxShadow='none'">
+      <input
+        [(ngModel)]="inputText"
+        (keydown)="onKeydown($event)"
+        type="text"
+        placeholder="Ask Agent Zayed anything about Dubai real estate…"
+        class="flex-1 bg-transparent border-none outline-none py-2 text-sm"
+        style="font-family:'DM Sans',sans-serif;color:var(--text-primary);" />
+      <button
+        (click)="send()"
+        class="flex items-center justify-center rounded-xl font-bold text-lg flex-shrink-0 transition-all duration-200 cursor-pointer"
+        style="width:38px;height:38px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border:none;color:#0B0B0E;"
+        onmouseenter="this.style.transform='scale(1.05)';this.style.boxShadow='0 4px 12px rgba(201,168,76,0.3)'"
+        onmouseleave="this.style.transform='scale(1)';this.style.boxShadow='none'">
+        ↑
+      </button>
+    </div>
+    <div class="text-center mt-2" style="font-size:11px;color:var(--text-muted);">
+      Agent Zayed · Live RERA data · 2,400+ listings · Dubai market analytics
+    </div>
+  </div>
+</div>

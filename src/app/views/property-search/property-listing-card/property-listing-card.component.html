@@ -1,0 +1,55 @@
+<div class="rounded-2xl overflow-hidden mt-1" style="background:var(--bg-card);border:1px solid var(--border);">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--border);">
+    <span class="uppercase tracking-wider" style="font-size:11px;color:var(--text-muted);letter-spacing:0.07em;">
+      Matched listings · Marina · 2BHK Furnished
+    </span>
+    <span class="text-xs px-2 py-0.5 rounded-full" style="color:var(--gold);background:var(--gold-faint);border:1px solid var(--gold-border);">
+      3 of 847
+    </span>
+  </div>
+
+  <!-- Property rows -->
+  @for (prop of properties; track prop.id) {
+    <div class="flex items-center gap-3.5 px-4 py-3.5 cursor-pointer transition-colors duration-150"
+         style="border-bottom:1px solid var(--border);"
+         [style.borderBottom]="prop === properties[properties.length-1] ? 'none' : '1px solid var(--border)'"
+         onmouseenter="this.style.background='var(--bg-hover)'"
+         onmouseleave="this.style.background='transparent'">
+
+      <!-- Thumb -->
+      <div class="flex items-center justify-center rounded-lg flex-shrink-0"
+           style="width:56px;height:44px;background:linear-gradient(135deg,var(--bg-raised),var(--bg-hover));border:1px solid var(--border);font-size:20px;">
+        {{ prop.emoji }}
+      </div>
+
+      <!-- Details -->
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ prop.name }}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+          {{ prop.size }} sqft · {{ prop.beds }} bed · {{ prop.baths }} bath · Built {{ prop.builtYear }}
+        </div>
+        <div class="flex gap-1.5 mt-1.5 flex-wrap">
+          @for (tag of prop.tags; track tag.label) {
+            <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                  [style.background]="tag.type === 'teal' ? 'rgba(46,191,160,0.08)' : tag.type === 'gold' ? 'var(--gold-faint)' : tag.type === 'amber' ? 'rgba(232,168,56,0.08)' : 'transparent'"
+                  [style.border]="tag.type === 'teal' ? '1px solid rgba(46,191,160,0.25)' : tag.type === 'gold' ? '1px solid var(--gold-border)' : tag.type === 'amber' ? '1px solid rgba(232,168,56,0.25)' : '1px solid var(--border)'"
+                  [style.color]="tag.type === 'teal' ? 'var(--accent-teal)' : tag.type === 'gold' ? 'var(--gold)' : tag.type === 'amber' ? 'var(--accent-amber)' : 'var(--text-muted)'">
+              {{ tag.label }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="text-right flex-shrink-0">
+        <div class="font-display font-medium" style="font-size:17px;color:var(--gold-light);">{{ prop.priceLabel }}</div>
+        <div style="font-size:10px;color:var(--text-muted);">{{ prop.period }}</div>
+        <div class="text-xs mt-1"
+             [style.color]="prop.matchScore >= 90 ? 'var(--accent-teal)' : 'var(--accent-amber)'">
+          ⬆ {{ prop.matchScore }}% match
+        </div>
+      </div>
+    </div>
+  }
+</div>

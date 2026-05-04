@@ -1,0 +1,29 @@
+<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">RERA Compliance</h1>
+  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">Know your rights as a tenant in Dubai</p>
+
+  <!-- RERA Cards -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Key Tenant Protections
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-7">
+    @for (card of cards; track card.title) {
+      <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
+        <div style="font-size:24px;margin-bottom:10px;">{{ card.icon }}</div>
+        <div class="text-sm font-medium mb-2" style="color:var(--text-primary);">{{ card.title }}</div>
+        <div class="text-xs leading-relaxed" style="color:var(--text-secondary);line-height:1.6;">{{ card.text }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- RERA Rules -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Critical RERA Rules
+  </div>
+  @for (rule of rules; track rule.title) {
+    <div class="mb-2 py-2.5 px-3.5 rounded-r-lg" style="background:var(--bg-raised);border-left:2px solid var(--gold);">
+      <div class="text-xs font-medium mb-1" style="color:var(--gold-light);">{{ rule.title }}</div>
+      <div style="font-size:11px;color:var(--text-muted);">{{ rule.description }}</div>
+    </div>
+  }
+</div>

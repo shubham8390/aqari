@@ -1,0 +1,49 @@
+<div class="flex gap-3 view-fade" [class.flex-row-reverse]="message.role === 'user'">
+  <!-- Avatar -->
+  <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
+       style="width:36px;height:36px;"
+       [style.background]="message.role === 'agent' ? 'linear-gradient(135deg,var(--gold-dim),var(--gold))' : 'var(--bg-raised)'"
+       [style.color]="message.role === 'agent' ? '#0B0B0E' : 'var(--text-primary)'"
+       [style.border]="message.role === 'user' ? '1px solid var(--border-mid)' : 'none'"
+       [style.boxShadow]="message.role === 'agent' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none'">
+    {{ message.role === 'agent' ? 'Z' : 'AK' }}
+  </div>
+
+  <!-- Body -->
+  <div class="flex flex-col gap-1.5" [class.items-end]="message.role === 'user'"
+       [style.maxWidth]="message.contentType ? '90%' : '72%'">
+    <div class="text-xs uppercase tracking-wide px-1" style="color:var(--text-muted);letter-spacing:0.06em;">
+      {{ message.role === 'agent' ? 'Agent Zayed · AI' : 'Ahmed Khalid' }}
+    </div>
+
+    <!-- Text bubble -->
+    <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed"
+         [style.background]="message.role === 'agent' ? 'var(--bg-raised)' : 'linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.08))'"
+         [style.border]="message.role === 'agent' ? '1px solid var(--border)' : '1px solid var(--gold-border)'"
+         [style.borderTopLeftRadius]="message.role === 'agent' ? '4px' : '16px'"
+         [style.borderTopRightRadius]="message.role === 'user' ? '4px' : '16px'"
+         [style.color]="'var(--text-primary)'"
+         [innerHTML]="message.text">
+    </div>
+
+    <!-- Property listing card -->
+    @if (message.contentType === 'property-list' && message.properties) {
+      <app-property-listing-card [properties]="message.properties" class="w-full" />
+      <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed mt-1.5"
+           style="background:var(--bg-raised);border:1px solid var(--border);border-top-left-radius:4px;color:var(--text-primary);">
+        I recommend <strong style="color:var(--gold-light);">Marina Gate II</strong> — listed 47 days, priced 5% below market avg. Strong negotiation leverage. Want me to run the price analysis?
+      </div>
+    }
+
+    <!-- Negotiation card -->
+    @if (message.contentType === 'negotiation-card' && message.negotiation) {
+      <app-negotiation-card [negotiation]="message.negotiation" class="w-full" />
+      <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed mt-1.5"
+           style="background:var(--bg-raised);border:1px solid var(--border);border-top-left-radius:4px;color:var(--text-primary);">
+        <strong style="color:var(--gold-light);">Strategy:</strong> Offer AED 110,000 with 2 post-dated cheques. Landlords often reduce AED 5K–8K for fewer cheques. Shall I <strong style="color:var(--gold-light);">draft the negotiation message</strong>?
+      </div>
+    }
+
+    <div class="text-xs px-1" style="color:var(--text-muted);">{{ message.time }}</div>
+  </div>
+</div>

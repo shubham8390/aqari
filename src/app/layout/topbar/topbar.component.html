@@ -1,0 +1,21 @@
+<header class="flex items-center gap-4 px-8 flex-shrink-0"
+        style="height:64px;border-bottom:1px solid var(--border);background:var(--bg-card);">
+  <div>
+    <div class="font-display font-medium" style="font-size:20px;color:var(--text-primary);">
+      {{ nav.meta().title }}
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+      {{ nav.meta().subtitle }}
+    </div>
+  </div>
+  <div class="ml-auto flex items-center gap-2.5">
+    <button class="text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all duration-200"
+            style="border:1px solid var(--border);color:var(--text-secondary);background:transparent;">
+      🌐 EN / AR
+    </button>
+    <button class="text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all duration-200"
+            style="background:var(--gold-faint);border:1px solid var(--gold-border);color:var(--gold-light);">
+      ⚡ Agent Active
+    </button>
+  </div>
+</header>

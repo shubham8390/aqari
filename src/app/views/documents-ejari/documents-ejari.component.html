@@ -1,0 +1,88 @@
+<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">Documents &amp; Ejari</h1>
+  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">Complete checklist for renting in Dubai — RERA compliant</p>
+
+  <!-- Documents Grid -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Required Documents
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-1">
+    <!-- Personal Docs -->
+    <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
+      <div class="uppercase tracking-wider mb-4" style="font-size:11px;letter-spacing:0.08em;color:var(--text-muted);">
+        Your Personal Documents
+      </div>
+      @for (doc of personalDocs; track doc.name) {
+        <div class="flex items-center gap-3 py-2.5" style="border-bottom:1px solid var(--border);"
+             [style.borderBottom]="doc === personalDocs[personalDocs.length-1] ? 'none' : '1px solid var(--border)'">
+          <div class="flex items-center justify-center rounded-lg flex-shrink-0 text-lg"
+               style="width:34px;height:34px;background:var(--bg-raised);">{{ doc.icon }}</div>
+          <div class="flex-1">
+            <div class="text-sm font-medium" style="color:var(--text-primary);">{{ doc.name }}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ doc.description }}</div>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-lg flex-shrink-0"
+                [style.background]="doc.status === 'done' ? 'rgba(46,191,160,0.12)' : doc.status === 'pending' ? 'rgba(232,168,56,0.08)' : 'var(--bg-raised)'"
+                [style.color]="doc.status === 'done' ? 'var(--accent-teal)' : doc.status === 'pending' ? 'var(--accent-amber)' : 'var(--text-muted)'"
+                [style.border]="doc.status === 'done' ? '1px solid rgba(46,191,160,0.3)' : doc.status === 'pending' ? '1px solid rgba(232,168,56,0.25)' : '1px solid var(--border)'">
+            {{ doc.status === 'done' ? '✓ Ready' : doc.status === 'pending' ? 'Pending' : 'From landlord' }}
+          </span>
+        </div>
+      }
+    </div>
+
+    <!-- Property Docs -->
+    <div class="rounded-2xl p-5" style="background:var(--bg-card);border:1px solid var(--border);">
+      <div class="uppercase tracking-wider mb-4" style="font-size:11px;letter-spacing:0.08em;color:var(--text-muted);">
+        Property &amp; Contract Documents
+      </div>
+      @for (doc of propertyDocs; track doc.name) {
+        <div class="flex items-center gap-3 py-2.5"
+             [style.borderBottom]="doc === propertyDocs[propertyDocs.length-1] ? 'none' : '1px solid var(--border)'">
+          <div class="flex items-center justify-center rounded-lg flex-shrink-0 text-lg"
+               style="width:34px;height:34px;background:var(--bg-raised);">{{ doc.icon }}</div>
+          <div class="flex-1">
+            <div class="text-sm font-medium" style="color:var(--text-primary);">{{ doc.name }}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ doc.description }}</div>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-lg flex-shrink-0"
+                [style.background]="doc.status === 'done' ? 'rgba(46,191,160,0.12)' : doc.status === 'pending' ? 'rgba(232,168,56,0.08)' : 'var(--bg-raised)'"
+                [style.color]="doc.status === 'done' ? 'var(--accent-teal)' : doc.status === 'pending' ? 'var(--accent-amber)' : 'var(--text-muted)'"
+                [style.border]="doc.status === 'done' ? '1px solid rgba(46,191,160,0.3)' : doc.status === 'pending' ? '1px solid rgba(232,168,56,0.25)' : '1px solid var(--border)'">
+            {{ doc.status === 'done' ? '✓ Ready' : doc.status === 'pending' ? 'Pending' : 'From landlord' }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Ejari Steps -->
+  <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Ejari Registration — Step by Step
+  </div>
+  <div class="flex flex-col">
+    @for (step of ejariSteps; track step.title; let last = $last) {
+      <div class="flex gap-4">
+        <!-- Line + dot -->
+        <div class="flex flex-col items-center">
+          <div class="flex items-center justify-center rounded-full font-medium flex-shrink-0"
+               style="width:32px;height:32px;font-size:12px;margin:2px 0;"
+               [style.background]="step.state === 'done' ? 'rgba(46,191,160,0.2)' : step.state === 'active' ? 'var(--gold-faint)' : 'var(--bg-raised)'"
+               [style.color]="step.state === 'done' ? 'var(--accent-teal)' : step.state === 'active' ? 'var(--gold)' : 'var(--text-muted)'"
+               [style.border]="step.state === 'done' ? '1px solid rgba(46,191,160,0.4)' : step.state === 'active' ? '1px solid var(--gold-border)' : '1px solid var(--border)'"
+               [style.animation]="step.state === 'active' ? 'breathe 2s ease-in-out infinite' : 'none'">
+            {{ step.stepNum }}
+          </div>
+          @if (!last) {
+            <div class="ejari-connector"></div>
+          }
+        </div>
+        <!-- Content -->
+        <div class="pb-5 pt-1">
+          <div class="text-sm font-medium mb-1" style="color:var(--text-primary);">{{ step.title }}</div>
+          <div class="text-xs leading-relaxed" style="color:var(--text-muted);">{{ step.description }}</div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

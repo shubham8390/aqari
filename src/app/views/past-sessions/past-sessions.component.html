@@ -1,0 +1,62 @@
+<div class="flex-1 overflow-y-auto p-8 custom-scroll view-fade">
+  <h1 class="font-display font-normal mb-1" style="font-size:32px;color:var(--text-primary);">Past Sessions</h1>
+  <p class="mb-7" style="font-size:13px;color:var(--text-muted);">Your previous conversations with Agent Zayed</p>
+
+  <!-- Recent Sessions -->
+  <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Recent Sessions
+  </div>
+
+  @for (session of sessions; track session.id) {
+    <div class="flex items-center gap-3.5 rounded-2xl p-4.5 mb-3 cursor-pointer transition-all duration-200"
+         style="background:var(--bg-card);border:1px solid var(--border);padding:18px;"
+         (click)="openSession()"
+         onmouseenter="this.style.borderColor='var(--gold-border)'"
+         onmouseleave="this.style.borderColor='var(--border)'">
+      <div class="flex items-center justify-center rounded-xl flex-shrink-0 text-lg"
+           style="width:42px;height:42px;background:var(--bg-raised);">
+        {{ session.icon }}
+      </div>
+      <div class="flex-1">
+        <div class="text-sm font-medium" style="color:var(--text-primary);">{{ session.title }}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">{{ session.meta }}</div>
+        <div class="flex gap-1.5 mt-1.5 flex-wrap">
+          @for (chip of session.chips; track chip.label) {
+            <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                  [style.background]="chip.type === 'gold' ? 'var(--gold-faint)' : 'var(--bg-raised)'"
+                  [style.border]="chip.type === 'gold' ? '1px solid var(--gold-border)' : '1px solid var(--border)'"
+                  [style.color]="chip.type === 'gold' ? 'var(--gold)' : 'var(--text-muted)'">
+              {{ chip.label }}
+            </span>
+          }
+        </div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div style="font-size:11px;color:var(--text-muted);">{{ session.date }}</div>
+        <div class="text-xs mt-1"
+             [style.color]="session.status === 'ongoing' ? 'var(--accent-amber)' : 'var(--accent-teal)'">
+          {{ session.statusLabel }}
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Activity Summary -->
+  <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
+    Activity Summary
+  </div>
+  <div class="grid grid-cols-3 gap-3">
+    @for (stat of activityStats; track stat.label) {
+      <div class="rounded-2xl p-4" style="background:var(--bg-card);border:1px solid var(--border);">
+        <div class="font-display font-medium" style="font-size:26px;color:var(--gold-light);">{{ stat.value }}</div>
+        <div class="mt-1" style="font-size:11px;color:var(--text-muted);">{{ stat.label }}</div>
+        @if (stat.change) {
+          <div class="mt-1.5 text-xs"
+               [style.color]="stat.changeType === 'up' ? 'var(--accent-teal)' : 'var(--text-muted)'">
+            {{ stat.change }}
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
