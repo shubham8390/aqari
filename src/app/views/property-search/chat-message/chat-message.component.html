@@ -11,7 +11,7 @@
 
   <!-- Body -->
   <div class="flex flex-col gap-1.5" [class.items-end]="message.role === 'user'"
-       [style.maxWidth]="message.contentType ? '90%' : '72%'">
+       [style.maxWidth]="message.sources?.length ? '90%' : '72%'">
     <div class="text-xs uppercase tracking-wide px-1" style="color:var(--text-muted);letter-spacing:0.06em;">
       {{ message.role === 'agent' ? 'Agent Zayed · AI' : 'Ahmed Khalid' }}
     </div>
@@ -26,21 +26,65 @@
          [innerHTML]="message.text">
     </div>
 
-    <!-- Property listing card -->
-    @if (message.contentType === 'property-list' && message.properties) {
-      <app-property-listing-card [properties]="message.properties" class="w-full" />
-      <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed mt-1.5"
-           style="background:var(--bg-raised);border:1px solid var(--border);border-top-left-radius:4px;color:var(--text-primary);">
-        I recommend <strong style="color:var(--gold-light);">Marina Gate II</strong> — listed 47 days, priced 5% below market avg. Strong negotiation leverage. Want me to run the price analysis?
-      </div>
-    }
+    <!-- Source cards -->
+    @if (message.sources?.length) {
+      <div class="rounded-2xl overflow-hidden mt-1 w-full" style="background:var(--bg-card);border:1px solid var(--border);">
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--border);">
+          <span class="uppercase tracking-wider" style="font-size:11px;color:var(--text-muted);letter-spacing:0.07em;">
+            Matched properties
+          </span>
+          <span class="text-xs px-2 py-0.5 rounded-full" style="color:var(--gold);background:var(--gold-faint);border:1px solid var(--gold-border);">
+            {{ message.sources!.length }} source{{ message.sources!.length === 1 ? '' : 's' }}
+          </span>
+        </div>
 
-    <!-- Negotiation card -->
-    @if (message.contentType === 'negotiation-card' && message.negotiation) {
-      <app-negotiation-card [negotiation]="message.negotiation" class="w-full" />
-      <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed mt-1.5"
-           style="background:var(--bg-raised);border:1px solid var(--border);border-top-left-radius:4px;color:var(--text-primary);">
-        <strong style="color:var(--gold-light);">Strategy:</strong> Offer AED 110,000 with 2 post-dated cheques. Landlords often reduce AED 5K–8K for fewer cheques. Shall I <strong style="color:var(--gold-light);">draft the negotiation message</strong>?
+        @for (source of message.sources; track source.chunk_id) {
+          <div class="flex items-start gap-3.5 px-4 py-3.5"
+               [style.borderBottom]="$last ? 'none' : '1px solid var(--border)'">
+            <div class="flex items-center justify-center rounded-lg flex-shrink-0"
+                 style="width:56px;height:44px;background:linear-gradient(135deg,var(--bg-raised),var(--bg-hover));border:1px solid var(--border);font-size:20px;">
+              🏢
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ source.property_name }}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+                {{ source.location }} · {{ source.bhk }} BHK
+              </div>
+              <div class="flex gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                      style="background:var(--gold-faint);border:1px solid var(--gold-border);color:var(--gold);">
+                  {{ source.price }}
+                </span>
+                @if (source.builder_name) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="border:1px solid var(--border);color:var(--text-muted);">
+                    {{ source.builder_name }}
+                  </span>
+                }
+                @if (source.rera_number) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">
+                    RERA {{ source.rera_number }}
+                  </span>
+                }
+                @if (source.status) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="border:1px solid var(--border);color:var(--text-muted);">
+                    {{ source.status }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="text-right flex-shrink-0">
+              <div class="text-xs"
+                   [style.color]="source.score >= 0.7 ? 'var(--accent-teal)' : 'var(--accent-amber)'">
+                {{ (source.score * 100) | number:'1.0-0' }}% match
+              </div>
+            </div>
+          </div>
+        }
       </div>
     }
 

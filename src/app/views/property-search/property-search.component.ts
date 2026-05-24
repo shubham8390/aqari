@@ -21,10 +21,10 @@ export class PropertySearchComponent implements AfterViewChecked {
   inputText = '';
 
   quickPills = [
-    { label: '✍️ Draft negotiation message', text: 'Draft the negotiation message for me' },
-    { label: '📋 Documents checklist',       text: 'What documents do I need to rent in Dubai?' },
-    { label: '📈 Marina market trends',      text: 'Show Marina market trends' },
-    { label: '🏛️ Ejari process',             text: 'How does Ejari registration work?' },
+    { label: '🏢 Project details',       text: 'Give me details about Galaxy Orizzonte' },
+    { label: '📋 RERA & builder info',   text: 'What is the RERA number and builder for Galaxy Orizzonte?' },
+    { label: '💰 Pricing & configs',     text: 'What are the 2 BHK and 3 BHK prices for Galaxy Orizzonte?' },
+    { label: '📅 Possession timeline',   text: 'When is Galaxy Orizzonte expected to be completed?' },
   ];
 
   ngAfterViewChecked(): void {

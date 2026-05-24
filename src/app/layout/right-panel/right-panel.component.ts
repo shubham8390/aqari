@@ -40,7 +40,7 @@ export class RightPanelComponent {
     this.nav.navigate('search');
     this.router.navigate(['/search']);
     setTimeout(() => {
-      this.chat.sendMessage('Schedule a property viewing for Marina Gate II');
+      this.chat.sendMessage('Schedule a site visit for Galaxy Orizzonte');
     }, 80);
   }
 }

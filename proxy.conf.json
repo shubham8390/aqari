@@ -1,0 +1,13 @@
+{
+  "/api/chat": {
+    "target": "https://barnacle-noble-nominally.ngrok-free.app",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/chat": "/chat"
+    },
+    "headers": {
+      "ngrok-skip-browser-warning": "true"
+    }
+  }
+}
