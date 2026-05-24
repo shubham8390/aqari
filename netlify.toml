@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist/aqari/browser"
+
+# Proxy chat API through Netlify (same pattern as proxy.conf.json in local dev).
+# Browser calls same-origin /api/chat → Netlify forwards to the ngrok backend.
+[[redirects]]
+  from = "/api/chat"
+  to = "https://barnacle-noble-nominally.ngrok-free.app/chat"
+  status = 200
+  force = true

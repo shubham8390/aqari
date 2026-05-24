@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatMessage } from '../models/message.model';
 import { ChatRequest, ChatResponse } from '../models/chat-api.model';
 import { CHAT_API_URL, CHAT_TOP_K, CHAT_USER_ID } from '../config/chat.config';
@@ -36,10 +36,6 @@ export class ChatService {
       payload.session_id = this.sessionId;
     }
 
-    // #region agent log
-    fetch('http://127.0.0.1:7457/ingest/673e24fd-9b86-4aaf-9656-40a6db5a653d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'64f4a2'},body:JSON.stringify({sessionId:'64f4a2',runId:'pre-fix',hypothesisId:'H4',location:'chat.service.ts:sendMessage',message:'chat request prepared',data:{url:CHAT_API_URL,payload,hasSessionId:!!this.sessionId},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-
     this.http
       .post<ChatResponse>(CHAT_API_URL, payload, {
         headers: new HttpHeaders({
@@ -48,10 +44,6 @@ export class ChatService {
       })
       .subscribe({
         next: (response) => {
-          // #region agent log
-          fetch('http://127.0.0.1:7457/ingest/673e24fd-9b86-4aaf-9656-40a6db5a653d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'64f4a2'},body:JSON.stringify({sessionId:'64f4a2',runId:'pre-fix',hypothesisId:'H4',location:'chat.service.ts:next',message:'chat request succeeded',data:{sessionId:response.session_id,answerLength:response.answer?.length,sourcesCount:response.sources?.length},timestamp:Date.now()})}).catch(()=>{});
-          // #endregion
-
           this.sessionId = response.session_id;
           this.isTyping.set(false);
 
@@ -64,17 +56,7 @@ export class ChatService {
           };
           this.messages.update(msgs => [...msgs, agentMsg]);
         },
-        error: (err: unknown) => {
-          const httpErr = err instanceof HttpErrorResponse ? err : null;
-          const isCorsLike = !httpErr || httpErr.status === 0;
-          const errorBody = typeof httpErr?.error === 'string'
-            ? httpErr.error.slice(0, 200)
-            : httpErr?.error;
-
-          // #region agent log
-          fetch('http://127.0.0.1:7457/ingest/673e24fd-9b86-4aaf-9656-40a6db5a653d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'64f4a2'},body:JSON.stringify({sessionId:'64f4a2',runId:'pre-fix',hypothesisId:'H1,H2,H3,H4,H5',location:'chat.service.ts:error',message:'chat request failed',data:{isCorsLike,status:httpErr?.status ?? null,statusText:httpErr?.statusText ?? null,url:httpErr?.url ?? CHAT_API_URL,errorName:httpErr?.name ?? (err as Error)?.name ?? 'unknown',errorMessage:httpErr?.message ?? (err as Error)?.message ?? String(err),errorBody},timestamp:Date.now()})}).catch(()=>{});
-          // #endregion
-
+        error: () => {
           this.isTyping.set(false);
 
           const errorMsg: ChatMessage = {
