@@ -16,8 +16,8 @@
       <div>
         <div class="flex items-center gap-2.5 mb-1">
           <div class="gold-gradient flex items-center justify-center rounded-lg flex-shrink-0 font-display font-semibold"
-               style="width:34px;height:34px;font-size:18px;color:#0B0B0E;">ع</div>
-          <span class="font-display font-medium tracking-wide" style="font-size:22px;color:var(--text-primary);">Aqari</span>
+               style="width:34px;height:34px;font-size:18px;">ع</div>
+          <span class="font-semibold tracking-wide" style="font-size:22px;color:var(--text-primary);">Aqari</span>
         </div>
         <p class="uppercase tracking-widest" style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;">
           Dubai Real Estate · AI Agent
@@ -38,7 +38,7 @@
     } @else {
       <div class="flex flex-col items-center gap-2">
         <div class="gold-gradient flex items-center justify-center rounded-lg font-display font-semibold"
-             style="width:34px;height:34px;font-size:18px;color:#0B0B0E;">ع</div>
+             style="width:34px;height:34px;font-size:18px;">ع</div>
         <button (click)="toggleCollapsed()"
                 class="sidebar-toggle-btn flex items-center justify-center rounded-lg"
                 style="width:26px;height:26px;"
@@ -55,7 +55,7 @@
       <div class="mx-4 mt-4 mb-2 flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 flex-shrink-0"
            style="background:var(--gold-faint);border:1px solid var(--gold-border);">
         <div class="pulse-ring relative flex items-center justify-center rounded-full flex-shrink-0"
-             style="width:28px;height:28px;background:rgba(201,168,76,0.15);">
+             style="width:28px;height:28px;background:var(--accent-soft);">
           <div class="rounded-full" style="width:8px;height:8px;background:var(--gold);"></div>
         </div>
         <div>
@@ -66,7 +66,7 @@
     } @else {
       <div class="flex justify-center mt-4 mb-2 flex-shrink-0">
         <div class="pulse-ring relative flex items-center justify-center rounded-full"
-             style="width:32px;height:32px;background:rgba(201,168,76,0.15);"
+             style="width:32px;height:32px;background:var(--accent-soft);"
              title="Agent Zayed · Active">
           <div class="rounded-full" style="width:8px;height:8px;background:var(--gold);"></div>
         </div>
@@ -228,8 +228,8 @@
        [class.justify-start]="!collapsed() || layout.isMobile()"
        [class.justify-center]="collapsed() && !layout.isMobile()"
        style="border-top:1px solid var(--border);background:var(--bg-card);">
-    <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
-         style="width:36px;height:36px;background:linear-gradient(135deg,#2A2A36,#3A3A48);border:1px solid var(--gold-border);color:var(--gold-light);"
+    <div class="user-avatar flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
+         style="width:36px;height:36px;"
          [title]="(collapsed() && !layout.isMobile()) ? 'Ahmed Khalid · Buyer · Dubai, UAE' : ''">
       AK
     </div>

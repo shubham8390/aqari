@@ -2,12 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Google Fonts are loaded in index.html ── */
+/* ─────────────────────────────────────────────
+   ZILLOW TYPOGRAPHY (Open Sans + Ivar Headline)
+───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Ivar Headline';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://www.zillowstatic.com/s3/constellation-website/public/shared/fonts/ivar-headline/latest/ivar-headline-semibold-core.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Ivar Headline';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://www.zillowstatic.com/s3/constellation-website/public/shared/fonts/ivar-headline/latest/ivar-headline-semibold-extended.woff2') format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 /* ─────────────────────────────────────────────
    DARK THEME (default)
 ───────────────────────────────────────────── */
 :root {
+  --font-body:    'Open Sans', Arial, Helvetica, sans-serif;
+  --font-display: 'Ivar Headline', Georgia, 'Times New Roman', serif;
   --gold:         #C9A84C;
   --gold-light:   #E8C97A;
   --gold-dim:     #8A6E2E;
@@ -30,35 +51,86 @@
   --accent-amber: #E8A838;
   --accent-red:   #E05252;
 
+  --on-accent:        #0B0B0E;
+  --accent-ring:      rgba(201, 168, 76, 0.10);
+  --accent-soft:      rgba(201, 168, 76, 0.15);
+  --user-bubble-bg:   linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.08));
+  --avatar-bg:        linear-gradient(135deg, #2A2A36, #3A3A48);
+  --avatar-color:     var(--gold-light);
+  --ambient-primary:  rgba(201, 168, 76, 0.04);
+  --ambient-secondary: rgba(46, 191, 160, 0.04);
+  --focus-ring:       0 0 0 3px rgba(201, 168, 76, 0.06);
+  --btn-hover-shadow: 0 4px 12px rgba(201, 168, 76, 0.30);
+  --cta-bg:           linear-gradient(135deg, rgba(201, 168, 76, 0.10), rgba(201, 168, 76, 0.05));
+  --cta-bg-hover:     linear-gradient(135deg, rgba(201, 168, 76, 0.18), rgba(201, 168, 76, 0.10));
+  --accent-header-bg: linear-gradient(90deg, rgba(201, 168, 76, 0.05), transparent);
+
   --sidebar-w:    260px;
   --right-panel-w: 280px;
 }
 
 /* ─────────────────────────────────────────────
-   LIGHT THEME
+   LIGHT THEME — Zillow-inspired palette
+   Primary #006AFF · Sky #E0F2FF · Text #111116
 ───────────────────────────────────────────── */
 [data-theme="light"] {
-  --gold:         #B8922E;
-  --gold-light:   #9A7520;
-  --gold-dim:     #7A5E18;
-  --gold-faint:   rgba(184, 146, 46, 0.10);
-  --gold-border:  rgba(184, 146, 46, 0.30);
+  --gold:         #006AFF;
+  --gold-light:   #005AE0;
+  --gold-dim:     #0051CC;
+  --gold-faint:   #E0F2FF;
+  --gold-border:  rgba(0, 106, 255, 0.22);
 
-  --bg-deep:   #FAFAF7;
-  --bg-card:   #FFFFFF;
-  --bg-raised: #F5F3EE;
-  --bg-hover:  #EDE9E0;
+  --bg-deep:      #FFFFFF;
+  --bg-card:      #FFFFFF;
+  --bg-raised:    #F4F6F8;
+  --bg-hover:     #E0F2FF;
 
-  --text-primary:   #1C1A15;
-  --text-secondary: #5C5850;
-  --text-muted:     #9C9890;
+  --text-primary:   #111116;
+  --text-secondary: #53565A;
+  --text-muted:     #787C8D;
 
-  --border:     rgba(0, 0, 0, 0.07);
-  --border-mid: rgba(0, 0, 0, 0.12);
+  --border:     #E0E4EA;
+  --border-mid: #C8CDD5;
 
-  --accent-teal:  #1E9E82;
-  --accent-amber: #C8881E;
-  --accent-red:   #C03232;
+  --accent-teal:  #0A6640;
+  --accent-amber: #C88205;
+  --accent-red:   #C13515;
+
+  --on-accent:        #FFFFFF;
+  --accent-ring:      rgba(0, 106, 255, 0.14);
+  --accent-soft:      rgba(0, 106, 255, 0.12);
+  --user-bubble-bg:   linear-gradient(135deg, #E0F2FF, #F4FAFF);
+  --avatar-bg:        linear-gradient(135deg, #D6E8FF, #E0F2FF);
+  --avatar-color:     #006AFF;
+  --ambient-primary:  rgba(0, 106, 255, 0.05);
+  --ambient-secondary: rgba(224, 242, 255, 0.65);
+  --focus-ring:       0 0 0 3px rgba(0, 106, 255, 0.14);
+  --btn-hover-shadow: 0 4px 12px rgba(0, 106, 255, 0.28);
+  --cta-bg:           linear-gradient(135deg, rgba(0, 106, 255, 0.08), rgba(0, 106, 255, 0.04));
+  --cta-bg-hover:     linear-gradient(135deg, rgba(0, 106, 255, 0.14), rgba(0, 106, 255, 0.08));
+  --accent-header-bg: linear-gradient(90deg, #E0F2FF, transparent);
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.06;
+}
+
+[data-theme="light"] .sidebar-accent::after {
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  opacity: 0.25;
+}
+
+[data-theme="light"] app-sidebar > aside {
+  border-right-color: var(--border) !important;
+}
+
+[data-theme="light"] app-right-panel > aside {
+  border-left-color: var(--border) !important;
+}
+
+[data-theme="light"] .right-panel-toggle {
+  border-color: var(--border);
+  box-shadow: -2px 0 8px rgba(17, 17, 22, 0.06);
 }
 
 /* ─────────────────────────────────────────────
@@ -74,9 +146,21 @@ html, body {
   height: 100%;
   background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
   overflow: hidden;
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+input, button, textarea, select {
+  font-family: inherit;
 }
 
 /* ─────────────────────────────────────────────
@@ -120,6 +204,38 @@ body::before {
 ───────────────────────────────────────────── */
 .gold-gradient {
   background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: var(--on-accent);
+}
+
+.accent-avatar {
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: var(--on-accent);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+
+.accent-btn {
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+  color: var(--on-accent);
+  border: none;
+}
+
+.accent-btn:hover {
+  transform: scale(1.05);
+  box-shadow: var(--btn-hover-shadow);
+}
+
+.user-avatar {
+  background: var(--avatar-bg);
+  border: 1px solid var(--gold-border);
+  color: var(--avatar-color);
+}
+
+.ambient-blob-primary {
+  background: var(--ambient-primary);
+}
+
+.ambient-blob-secondary {
+  background: var(--ambient-secondary);
 }
 
 /* ─────────────────────────────────────────────
@@ -156,8 +272,8 @@ body::before {
 }
 
 @keyframes breathe {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
-  50%       { box-shadow: 0 0 0 4px rgba(201,168,76,0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-ring); }
+  50%       { box-shadow: 0 0 0 4px var(--accent-ring); }
 }
 
 @keyframes blink {

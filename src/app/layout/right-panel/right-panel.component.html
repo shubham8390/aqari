@@ -78,10 +78,10 @@
 
     <!-- Schedule CTA -->
     <div class="m-4 p-4 rounded-xl cursor-pointer text-center transition-all duration-200"
-         style="background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.05));border:1px solid var(--gold-border);"
+         style="background:var(--cta-bg);border:1px solid var(--gold-border);"
          (click)="scheduleViewing()"
-         onmouseenter="this.style.background='linear-gradient(135deg,rgba(201,168,76,0.18),rgba(201,168,76,0.1))'"
-         onmouseleave="this.style.background='linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.05))'">
+         onmouseenter="this.style.background='var(--cta-bg-hover)'"
+         onmouseleave="this.style.background='var(--cta-bg)'">
       <div class="text-xs font-medium" style="color:var(--gold-light);">📅 Schedule a Viewing</div>
       <div class="text-xs mt-1" style="color:var(--text-muted);">Agent will coordinate with broker</div>
     </div>

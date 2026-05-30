@@ -22,8 +22,9 @@ module.exports = {
         'amber-col':  'var(--accent-amber)',
       },
       fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        body:    ['DM Sans', 'sans-serif'],
+        display: ['Ivar Headline', 'Georgia', 'Times New Roman', 'serif'],
+        body:    ['Open Sans', 'Arial', 'Helvetica', 'sans-serif'],
+        sans:    ['Open Sans', 'Arial', 'Helvetica', 'sans-serif'],
       },
       keyframes: {
         fadeUp: {

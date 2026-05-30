@@ -1,13 +1,16 @@
 <div class="flex gap-3 view-fade" [class.flex-row-reverse]="message.role === 'user'">
   <!-- Avatar -->
-  <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
-       style="width:36px;height:36px;"
-       [style.background]="message.role === 'agent' ? 'linear-gradient(135deg,var(--gold-dim),var(--gold))' : 'var(--bg-raised)'"
-       [style.color]="message.role === 'agent' ? '#0B0B0E' : 'var(--text-primary)'"
-       [style.border]="message.role === 'user' ? '1px solid var(--border-mid)' : 'none'"
-       [style.boxShadow]="message.role === 'agent' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none'">
-    {{ message.role === 'agent' ? 'Z' : 'AK' }}
-  </div>
+  @if (message.role === 'agent') {
+    <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0 accent-avatar"
+         style="width:36px;height:36px;">
+      Z
+    </div>
+  } @else {
+    <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
+         style="width:36px;height:36px;background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);">
+      AK
+    </div>
+  }
 
   <!-- Body -->
   <div class="flex flex-col gap-1.5" [class.items-end]="message.role === 'user'"
@@ -18,7 +21,7 @@
 
     <!-- Text bubble -->
     <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed"
-         [style.background]="message.role === 'agent' ? 'var(--bg-raised)' : 'linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.08))'"
+         [style.background]="message.role === 'agent' ? 'var(--bg-raised)' : 'var(--user-bubble-bg)'"
          [style.border]="message.role === 'agent' ? '1px solid var(--border)' : '1px solid var(--gold-border)'"
          [style.borderTopLeftRadius]="message.role === 'agent' ? '4px' : '16px'"
          [style.borderTopRightRadius]="message.role === 'user' ? '4px' : '16px'"
