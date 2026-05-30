@@ -465,6 +465,11 @@ input::placeholder {
   opacity: 1;
 }
 
+.auth-input:focus {
+  border-color: var(--gold-border) !important;
+  box-shadow: var(--focus-ring);
+}
+
 /* ─────────────────────────────────────────────
    TOGGLE SWITCH
 ───────────────────────────────────────────── */

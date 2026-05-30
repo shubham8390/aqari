@@ -6,13 +6,14 @@ import { filter } from 'rxjs/operators';
 import { SidebarComponent }    from './layout/sidebar/sidebar.component';
 import { TopbarComponent }     from './layout/topbar/topbar.component';
 import { RightPanelComponent } from './layout/right-panel/right-panel.component';
+import { AuthModalComponent } from './layout/auth/auth-modal.component';
 import { NavigationService, ViewKey } from './core/services/navigation.service';
 import { LayoutService } from './core/services/layout.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent, AuthModalComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
