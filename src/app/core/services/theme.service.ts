@@ -22,6 +22,6 @@ export class ThemeService {
 
   private getInitialTheme(): Theme {
     const stored = localStorage.getItem(this.STORAGE_KEY) as Theme | null;
-    return stored ?? 'dark';
+    return stored ?? 'light';
   }
 }

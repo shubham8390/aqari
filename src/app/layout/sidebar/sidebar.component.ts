@@ -55,7 +55,7 @@ export class SidebarComponent {
     { key: 'rera',      label: 'Move-in',           state: 'pending' },
   ];
 
-  collapsed = signal(false);
+  collapsed = signal(true);
   toggleCollapsed(): void { this.collapsed.update(v => !v); }
 
   navigate(key: ViewKey): void {

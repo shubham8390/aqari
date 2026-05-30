@@ -28,7 +28,7 @@ export class RightPanelComponent {
   insights    = AGENT_INSIGHTS;
   docs        = RIGHT_PANEL_DOCS;
 
-  collapsed = signal(false);
+  collapsed = signal(true);
   toggleCollapsed(): void { this.collapsed.update(v => !v); }
 
   navigateTo(route: string): void {
