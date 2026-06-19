@@ -1,0 +1,88 @@
+<div class="flex-1 overflow-y-auto custom-scroll px-4 py-5 md:px-8 md:py-8 view-fade">
+  <h1 class="font-display mb-1" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">My Properties</h1>
+  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">Manage projects, listings, and posted properties</p>
+
+  @if (!auth.isAuthenticated()) {
+    <div class="rounded-2xl p-8 text-center" style="background:var(--bg-card);border:1px solid var(--border);">
+      <p class="text-sm mb-4" style="color:var(--text-secondary);">Sign in to manage your properties.</p>
+      <button type="button" (click)="openLogin()" class="accent-btn px-5 py-2.5 rounded-xl text-sm font-semibold">Login</button>
+    </div>
+  } @else if (auth.isBuilder()) {
+    <div class="flex gap-2 mb-5 flex-wrap">
+      <button type="button" (click)="setTab('projects')" class="text-xs px-3 py-1.5 rounded-full font-semibold"
+              [style.background]="activeTab() === 'projects' ? 'var(--gold-faint)' : 'var(--bg-raised)'"
+              [style.border]="activeTab() === 'projects' ? '1px solid var(--gold-border)' : '1px solid var(--border)'"
+              [style.color]="activeTab() === 'projects' ? 'var(--gold)' : 'var(--text-secondary)'">Projects</button>
+      <button type="button" (click)="setTab('listings')" class="text-xs px-3 py-1.5 rounded-full font-semibold"
+              [style.background]="activeTab() === 'listings' ? 'var(--gold-faint)' : 'var(--bg-raised)'"
+              [style.border]="activeTab() === 'listings' ? '1px solid var(--gold-border)' : '1px solid var(--border)'"
+              [style.color]="activeTab() === 'listings' ? 'var(--gold)' : 'var(--text-secondary)'">Listings</button>
+      <button type="button" (click)="goNewProject()" class="accent-btn text-xs px-3 py-1.5 rounded-full ml-auto">+ New Project</button>
+      <button type="button" (click)="goNewListing()" class="accent-btn text-xs px-3 py-1.5 rounded-full">+ New Listing</button>
+    </div>
+
+    @if (activeTab() === 'projects') {
+      @if (!projectService.getCachedProjects().length) {
+        <p class="text-sm" style="color:var(--text-muted);">No projects yet. Create your first project.</p>
+      } @else {
+        <div class="grid gap-3 md:grid-cols-2">
+          @for (p of projectService.getCachedProjects(); track p.id) {
+            <div class="rounded-2xl p-4 cursor-pointer" style="background:var(--bg-card);border:1px solid var(--border);"
+                 (click)="openProject(p.id)">
+              <div class="flex justify-between gap-2">
+                <div>
+                  <div class="font-medium text-sm" style="color:var(--text-primary);">{{ p.project_name }}</div>
+                  <div class="text-xs mt-1" style="color:var(--text-muted);">{{ p.city }} · {{ p.locality }}</div>
+                </div>
+                <button type="button" (click)="deleteProject(p.id, $event)" class="text-xs" style="color:var(--accent-red);">Delete</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    @if (activeTab() === 'listings') {
+      @if (!listingService.getCachedListings().length) {
+        <p class="text-sm" style="color:var(--text-muted);">No listings yet. Create your first listing.</p>
+      } @else {
+        <div class="grid gap-3 md:grid-cols-2">
+          @for (l of listingService.getCachedListings(); track l.id) {
+            <div class="rounded-2xl p-4 cursor-pointer" style="background:var(--bg-card);border:1px solid var(--border);"
+                 (click)="openListing(l.id)">
+              <div class="flex justify-between gap-2">
+                <div>
+                  <div class="font-medium text-sm" style="color:var(--text-primary);">{{ l.property_name }}</div>
+                  <div class="text-xs mt-1" style="color:var(--text-muted);">{{ l.bhk }} BHK · {{ l.price }}</div>
+                </div>
+                <button type="button" (click)="deleteListing(l.id, $event)" class="text-xs" style="color:var(--accent-red);">Delete</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  } @else {
+    <div class="flex gap-2 mb-5">
+      <button type="button" (click)="goNewUserListing()" class="accent-btn text-xs px-3 py-1.5 rounded-full">+ Post Property</button>
+    </div>
+    @if (!userListingService.getCachedUserListings().length) {
+      <p class="text-sm" style="color:var(--text-muted);">No posted properties yet.</p>
+    } @else {
+      <div class="grid gap-3 md:grid-cols-2">
+        @for (l of userListingService.getCachedUserListings(); track l.id) {
+          <div class="rounded-2xl p-4 cursor-pointer" style="background:var(--bg-card);border:1px solid var(--border);"
+               (click)="openUserListing(l.id)">
+            <div class="flex justify-between gap-2">
+              <div>
+                <div class="font-medium text-sm" style="color:var(--text-primary);">{{ l.property_name }}</div>
+                <div class="text-xs mt-1" style="color:var(--text-muted);">{{ l.city }} · {{ l.price }}</div>
+              </div>
+              <button type="button" (click)="deleteUserListing(l.id, $event)" class="text-xs" style="color:var(--accent-red);">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

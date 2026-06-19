@@ -1,0 +1,24 @@
+<div class="flex-1 overflow-y-auto custom-scroll px-4 py-5 md:px-8 md:py-8 view-fade">
+  @if (loading()) {
+    <p class="text-sm" style="color:var(--text-muted);">Loading…</p>
+  } @else if (error()) {
+    <p class="text-sm" style="color:var(--accent-red);">{{ error() }}</p>
+  } @else {
+    @if (listing(); as l) {
+      <h1 class="font-display mb-2" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">{{ l.property_name }}</h1>
+      <p class="mb-4 text-sm" style="color:var(--text-muted);">{{ l.bhk }} BHK · {{ l.price }} · {{ l.status }}</p>
+      @if (l.description) {
+        <p class="mb-4 text-sm leading-relaxed" style="color:var(--text-secondary);">{{ l.description }}</p>
+      }
+      @if (l.images?.length) {
+        <div class="flex gap-2 flex-wrap mb-4">
+          @for (img of l.images; track img.id) {
+            <img [src]="imageUrl(img.filename)" [alt]="img.original_name" class="rounded-xl object-cover"
+                 style="width:120px;height:90px;border:1px solid var(--border);" />
+          }
+        </div>
+      }
+      <button type="button" (click)="edit()" class="accent-btn px-4 py-2 rounded-xl text-sm font-semibold">Edit listing</button>
+    }
+  }
+</div>

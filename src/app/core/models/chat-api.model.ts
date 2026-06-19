@@ -1,24 +1,43 @@
+export type ChatSourceType = 'listing' | 'user_listing';
+
 export interface ChatSource {
-  chunk_id: string;
+  id: number;
+  source: ChatSourceType | string;
   property_name: string;
   location: string;
   price: string;
   bhk: string;
-  builder_name: string;
-  rera_number?: string;
-  status?: string;
-  score: number;
 }
 
 export interface ChatRequest {
   query: string;
   top_k: number;
-  user_id: string;
-  session_id?: string;
+  session_id: string;
 }
 
 export interface ChatResponse {
   answer: string;
   sources: ChatSource[];
   session_id: string;
+}
+
+export interface ChatSession {
+  session_id: string;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ChatSessionListResponse {
+  sessions: ChatSession[];
+  total: number;
+}
+
+export interface ChatMessageRecord {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface StatusResponse {
+  status: string;
 }

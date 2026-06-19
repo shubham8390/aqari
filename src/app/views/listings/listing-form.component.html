@@ -1,0 +1,35 @@
+<div class="flex-1 overflow-y-auto custom-scroll px-4 py-5 md:px-8 md:py-8 view-fade max-w-xl">
+  <h1 class="font-display mb-4" style="font-size:clamp(22px,4vw,28px);color:var(--text-primary);">
+    {{ isEdit ? 'Edit listing' : 'Create listing' }}
+  </h1>
+  @if (error) {
+    <p class="text-xs mb-3 px-3 py-2 rounded-lg" style="background:rgba(193,53,21,0.08);color:var(--accent-red);">{{ error }}</p>
+  }
+  <form class="flex flex-col gap-3" (ngSubmit)="onSubmit()">
+    <input [(ngModel)]="form.property_name" name="property_name" required placeholder="Property name"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.property_type" name="property_type" placeholder="Property type"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.bhk" name="bhk" placeholder="BHK"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.price" name="price" placeholder="Price label e.g. Rs 85 L"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input type="number" [(ngModel)]="form.price_value" name="price_value" placeholder="Price value"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input type="number" [(ngModel)]="form.project_id" name="project_id" placeholder="Project ID (optional)"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <textarea [(ngModel)]="form.description" name="description" rows="3" placeholder="Description"
+              class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none resize-none"
+              style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);"></textarea>
+    <app-image-upload [(imageIds)]="imageIds" />
+    <button type="submit" [disabled]="loading" class="accent-btn w-full rounded-xl py-2.5 text-sm font-semibold mt-2 disabled:opacity-60">
+      {{ loading ? 'Saving…' : (isEdit ? 'Update listing' : 'Create listing') }}
+    </button>
+  </form>
+</div>

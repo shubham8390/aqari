@@ -1,0 +1,38 @@
+<div class="flex-1 overflow-y-auto custom-scroll px-4 py-5 md:px-8 md:py-8 view-fade max-w-xl">
+  <h1 class="font-display mb-4" style="font-size:clamp(22px,4vw,28px);color:var(--text-primary);">
+    {{ isEdit ? 'Edit project' : 'Create project' }}
+  </h1>
+  @if (error) {
+    <p class="text-xs mb-3 px-3 py-2 rounded-lg" style="background:rgba(193,53,21,0.08);color:var(--accent-red);">{{ error }}</p>
+  }
+  <form class="flex flex-col gap-3" (ngSubmit)="onSubmit()">
+    <input [(ngModel)]="form.project_name" name="project_name" required placeholder="Project name"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.rera_number" name="rera_number" placeholder="RERA number"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.address" name="address" placeholder="Address"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.city" name="city" placeholder="City"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.locality" name="locality" placeholder="Locality"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.total_towers" name="total_towers" placeholder="Total towers"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.total_floors" name="total_floors" placeholder="Total floors"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <input [(ngModel)]="form.total_units" name="total_units" placeholder="Total units"
+           class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+           style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+    <app-image-upload [(imageIds)]="imageIds" />
+    <button type="submit" [disabled]="loading" class="accent-btn w-full rounded-xl py-2.5 text-sm font-semibold mt-2 disabled:opacity-60">
+      {{ loading ? 'Saving…' : (isEdit ? 'Update project' : 'Create project') }}
+    </button>
+  </form>
+</div>

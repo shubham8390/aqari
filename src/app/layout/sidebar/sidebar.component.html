@@ -85,7 +85,7 @@
 
     <!-- Nav: Capabilities -->
     <nav class="flex flex-col gap-0.5 flex-shrink-0" [class.px-0]="!collapsed() || layout.isMobile()">
-      @for (item of navItems; track item.key) {
+      @for (item of visibleNavItems(); track item.key) {
         <button
           (click)="navigate(item.key)"
           class="flex items-center transition-all duration-200 cursor-pointer rounded-xl"
@@ -128,7 +128,7 @@
 
     <!-- Nav: Sessions -->
     <nav class="flex flex-col gap-0.5 flex-shrink-0">
-      @for (item of sessionItems; track item.key) {
+      @for (item of visibleSessionItems(); track item.key) {
         <button
           (click)="navigate(item.key)"
           class="flex items-center transition-all duration-200 cursor-pointer rounded-xl"
@@ -223,22 +223,25 @@
   </div><!-- end scrollable middle -->
 
   <!-- ── FIXED BOTTOM: User Area ── -->
-  <div class="flex-shrink-0 flex items-center gap-2.5 py-4"
+  <div class="flex-shrink-0 flex items-center gap-2.5 py-4 cursor-pointer"
        [class.px-5]="!collapsed() || layout.isMobile()"
        [class.justify-start]="!collapsed() || layout.isMobile()"
        [class.justify-center]="collapsed() && !layout.isMobile()"
-       style="border-top:1px solid var(--border);background:var(--bg-card);">
+       style="border-top:1px solid var(--border);background:var(--bg-card);"
+       (click)="auth.isAuthenticated() ? openProfile() : null">
     <div class="user-avatar flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
-         style="width:36px;height:36px;"
-         [title]="(collapsed() && !layout.isMobile()) ? 'Ahmed Khalid · Buyer · Dubai, UAE' : ''">
-      AK
+         style="width:36px;height:36px;">
+      {{ auth.isAuthenticated() ? userInitials() : '?' }}
     </div>
     @if (!collapsed() || layout.isMobile()) {
-      <div>
-        <div class="text-sm font-medium" style="color:var(--text-primary);">Ahmed Khalid</div>
-        <div style="font-size:11px;color:var(--text-muted);">Buyer · Dubai, UAE</div>
+      <div class="min-w-0">
+        <div class="text-sm font-medium truncate" style="color:var(--text-primary);">
+          {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
+        </div>
+        <div class="truncate" style="font-size:11px;color:var(--text-muted);">
+          {{ auth.isAuthenticated() ? (auth.user()?.user_type === 'builder' ? 'Builder' : 'Buyer') : 'Sign in to chat' }}
+        </div>
       </div>
-      <span class="ml-auto" style="font-size:16px;">🇦🇪</span>
     }
   </div>
 </aside>

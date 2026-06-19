@@ -1,0 +1,28 @@
+<div class="flex-1 overflow-y-auto custom-scroll px-4 py-5 md:px-8 md:py-8 view-fade">
+  @if (loading()) {
+    <p class="text-sm" style="color:var(--text-muted);">Loading…</p>
+  } @else if (error()) {
+    <p class="text-sm" style="color:var(--accent-red);">{{ error() }}</p>
+  } @else {
+    @if (project(); as p) {
+      <h1 class="font-display mb-2" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">{{ p.project_name }}</h1>
+      <p class="mb-2 text-sm" style="color:var(--text-muted);">{{ p.city }} · {{ p.locality }} · RERA {{ p.rera_number }}</p>
+      <p class="mb-4 text-sm" style="color:var(--text-secondary);">{{ p.address }}</p>
+      <div class="grid grid-cols-2 gap-2 mb-4 text-xs" style="color:var(--text-secondary);">
+        <div>Towers: {{ p.total_towers }}</div>
+        <div>Floors: {{ p.total_floors }}</div>
+        <div>Units: {{ p.total_units }}</div>
+        <div>Progress: {{ p.construction_progress }}</div>
+      </div>
+      @if (p.images?.length) {
+        <div class="flex gap-2 flex-wrap mb-4">
+          @for (img of p.images; track img.id) {
+            <img [src]="imageUrl(img.filename)" [alt]="img.original_name" class="rounded-xl object-cover"
+                 style="width:120px;height:90px;border:1px solid var(--border);" />
+          }
+        </div>
+      }
+      <button type="button" (click)="edit()" class="accent-btn px-4 py-2 rounded-xl text-sm font-semibold">Edit project</button>
+    }
+  }
+</div>

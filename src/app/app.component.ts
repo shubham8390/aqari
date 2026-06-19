@@ -7,13 +7,14 @@ import { SidebarComponent }    from './layout/sidebar/sidebar.component';
 import { TopbarComponent }     from './layout/topbar/topbar.component';
 import { RightPanelComponent } from './layout/right-panel/right-panel.component';
 import { AuthModalComponent } from './layout/auth/auth-modal.component';
+import { ProfileSetupModalComponent } from './layout/auth/profile-setup-modal.component';
 import { NavigationService, ViewKey } from './core/services/navigation.service';
 import { LayoutService } from './core/services/layout.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent, AuthModalComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent, AuthModalComponent, ProfileSetupModalComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
@@ -26,10 +27,12 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        const segment = e.urlAfterRedirects.replace(/^#?\//, '').split('?')[0] as ViewKey;
-        const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history'];
-        if (valid.includes(segment)) {
-          this.nav.activeView.set(segment);
+        const segment = e.urlAfterRedirects.replace(/^#\/?/, '').split('?')[0].split('/')[0];
+        const propertyRoutes = new Set(['properties', 'listings', 'projects', 'user-listings']);
+        const view = (propertyRoutes.has(segment) ? 'properties' : segment) as ViewKey;
+        const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history', 'properties'];
+        if (valid.includes(view)) {
+          this.nav.activeView.set(view);
         }
       });
   }
