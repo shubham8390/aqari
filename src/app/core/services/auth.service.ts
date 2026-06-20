@@ -1,8 +1,11 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { API } from '../config/api.config';
 import { SignupRequest, TokenResponse, UserRead } from '../models/auth.model';
+import { NavigationService } from './navigation.service';
+import { PropertyCacheService } from './property-cache.service';
 
 const TOKEN_KEY = 'aqari_access_token';
 const USER_KEY  = 'aqari_user';
@@ -10,6 +13,9 @@ const USER_KEY  = 'aqari_user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly nav = inject(NavigationService);
+  private readonly propertyCache = inject(PropertyCacheService);
 
   private readonly _token = signal<string | null>(this.loadToken());
   private readonly _user  = signal<UserRead | null>(this.loadUser());
@@ -38,11 +44,18 @@ export class AuthService {
     );
   }
 
-  logout(): void {
+  logout(options: { redirect?: boolean } = {}): void {
+    const { redirect = true } = options;
     this._token.set(null);
     this._user.set(null);
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    this.propertyCache.clearAll();
+
+    if (redirect) {
+      this.nav.navigate('search');
+      this.router.navigate(['/search']);
+    }
   }
 
   updateUser(user: UserRead): void {

@@ -22,7 +22,7 @@ module.exports = {
         'amber-col':  'var(--accent-amber)',
       },
       fontFamily: {
-        display: ['Ivar Headline', 'Georgia', 'Times New Roman', 'serif'],
+        display: ['Open Sans', 'Arial', 'Helvetica', 'sans-serif'],
         body:    ['Open Sans', 'Arial', 'Helvetica', 'sans-serif'],
         sans:    ['Open Sans', 'Arial', 'Helvetica', 'sans-serif'],
       },

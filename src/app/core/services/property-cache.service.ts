@@ -41,6 +41,15 @@ export class PropertyCacheService {
     this.persist(USER_LISTINGS_KEY, this.userListings());
   }
 
+  clearAll(): void {
+    this.listings.set([]);
+    this.projects.set([]);
+    this.userListings.set([]);
+    localStorage.removeItem(LISTINGS_KEY);
+    localStorage.removeItem(PROJECTS_KEY);
+    localStorage.removeItem(USER_LISTINGS_KEY);
+  }
+
   private upsert<T extends { id: number }>(list: T[], item: T): T[] {
     const idx = list.findIndex(i => i.id === item.id);
     if (idx >= 0) {

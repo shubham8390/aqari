@@ -4,12 +4,12 @@
        data-overlay="true"
        (click)="onOverlayClick($event)">
 
-    <div class="w-full max-w-lg flex flex-col rounded-2xl overflow-hidden"
+    <div class="profile-modal w-full max-w-lg flex flex-col rounded-2xl overflow-hidden"
          style="max-height:calc(100dvh - 2rem);background:var(--bg-card);border:1px solid var(--border);"
          (click)="$event.stopPropagation()">
 
       <div class="px-5 py-4 flex-shrink-0" style="border-bottom:1px solid var(--border);">
-        <h2 class="font-display text-lg" style="color:var(--text-primary);">Complete your profile</h2>
+        <h2 class="modal-title">Complete your profile</h2>
         <p class="text-xs mt-1" style="color:var(--text-muted);">
           {{ isBuilder ? 'Tell us about your company so buyers can find you' : 'Help us personalize your property search' }}
         </p>
