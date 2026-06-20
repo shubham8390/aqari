@@ -10,7 +10,9 @@
 
       <div class="px-5 py-4 flex-shrink-0" style="border-bottom:1px solid var(--border);">
         <h2 class="font-display text-lg" style="color:var(--text-primary);">Complete your profile</h2>
-        <p class="text-xs mt-1" style="color:var(--text-muted);">Help us personalize your property search</p>
+        <p class="text-xs mt-1" style="color:var(--text-muted);">
+          {{ isBuilder ? 'Tell us about your company so buyers can find you' : 'Help us personalize your property search' }}
+        </p>
       </div>
 
       <form class="flex-1 overflow-y-auto custom-scroll px-5 py-4 flex flex-col gap-3 min-h-0" (ngSubmit)="onSubmit()">
@@ -28,32 +30,35 @@
           <input [(ngModel)]="form.phone" name="phone" class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
                  style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
         </div>
-        <div>
-          <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Requirement</label>
-          <input [(ngModel)]="form.requirement" name="requirement" placeholder="e.g. 2BHK"
-                 class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                 style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-        </div>
-        <div class="grid grid-cols-2 gap-3">
+
+        @if (!isBuilder) {
           <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Min budget</label>
-            <input type="number" [(ngModel)]="form.min_budget" name="min_budget"
+            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Requirement</label>
+            <input [(ngModel)]="form.requirement" name="requirement" placeholder="e.g. 2BHK"
                    class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
                    style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
           </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Min budget</label>
+              <input type="number" [(ngModel)]="form.min_budget" name="min_budget"
+                     class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+                     style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Max budget</label>
+              <input type="number" [(ngModel)]="form.max_budget" name="max_budget"
+                     class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
+                     style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
+            </div>
+          </div>
           <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Max budget</label>
-            <input type="number" [(ngModel)]="form.max_budget" name="max_budget"
+            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Preferred areas</label>
+            <input [(ngModel)]="form.preferred_areas" name="preferred_areas" placeholder="Baner, Wakad"
                    class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
                    style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
           </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Preferred areas</label>
-          <input [(ngModel)]="form.preferred_areas" name="preferred_areas" placeholder="Baner, Wakad"
-                 class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                 style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-        </div>
+        }
 
         @if (isBuilder) {
           <div>

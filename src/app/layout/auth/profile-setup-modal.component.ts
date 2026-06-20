@@ -49,9 +49,22 @@ export class ProfileSetupModalComponent {
   onSubmit(): void {
     this.loading = true;
     this.error = '';
-    const payload: ProfileUpdate = { ...this.form };
-    if (!payload.min_budget) delete payload.min_budget;
-    if (!payload.max_budget) delete payload.max_budget;
+    const payload: ProfileUpdate = this.isBuilder
+      ? {
+          name: this.form.name,
+          phone: this.form.phone,
+          company_name: this.form.company_name,
+          website: this.form.website,
+          builder_description: this.form.builder_description,
+        }
+      : {
+          name: this.form.name,
+          phone: this.form.phone,
+          requirement: this.form.requirement,
+          preferred_areas: this.form.preferred_areas,
+          ...(this.form.min_budget ? { min_budget: this.form.min_budget } : {}),
+          ...(this.form.max_budget ? { max_budget: this.form.max_budget } : {}),
+        };
 
     this.profileService.updateProfile(payload).subscribe({
       next: (user) => {

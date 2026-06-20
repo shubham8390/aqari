@@ -10,7 +10,7 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
   standalone: true,
   imports: [CommonModule, FormsModule, ChatMessageComponent],
   templateUrl: './property-search.component.html',
-  host: { style: 'display:flex;flex:1;overflow:hidden;' },
+  host: { style: 'display:flex;flex:1;overflow:hidden;min-height:0;' },
 })
 export class PropertySearchComponent implements AfterViewChecked {
   chat = inject(ChatService);
