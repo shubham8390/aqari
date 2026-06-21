@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs';
 import { API } from '../config/api.config';
 import { UserListingCreate, UserListingRead, UserListingUpdate } from '../models/property-api.model';
 import { StatusResponse } from '../models/chat-api.model';
@@ -9,6 +10,16 @@ import { PropertyCacheService } from './property-cache.service';
 export class UserListingService {
   private readonly http = inject(HttpClient);
   private readonly cache = inject(PropertyCacheService);
+
+  list() {
+    return this.http.get<UserListingRead[]>(API.userListings);
+  }
+
+  refreshForUser(userId: number) {
+    return this.list().pipe(
+      tap(listings => this.cache.setUserListings(listings.filter(l => l.user_id === userId))),
+    );
+  }
 
   get(id: number) {
     return this.http.get<UserListingRead>(API.userListing(id));

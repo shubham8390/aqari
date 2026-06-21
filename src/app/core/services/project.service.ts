@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs';
 import { API } from '../config/api.config';
 import { ProjectCreate, ProjectRead, ProjectUpdate } from '../models/property-api.model';
 import { StatusResponse } from '../models/chat-api.model';
@@ -9,6 +10,16 @@ import { PropertyCacheService } from './property-cache.service';
 export class ProjectService {
   private readonly http = inject(HttpClient);
   private readonly cache = inject(PropertyCacheService);
+
+  list() {
+    return this.http.get<ProjectRead[]>(API.projects);
+  }
+
+  refreshForBuilder(builderId: number) {
+    return this.list().pipe(
+      tap(projects => this.cache.setProjects(projects.filter(p => p.builder_id === builderId))),
+    );
+  }
 
   get(id: number) {
     return this.http.get<ProjectRead>(API.project(id));

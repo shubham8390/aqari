@@ -8,6 +8,7 @@ import { TopbarComponent }     from './layout/topbar/topbar.component';
 import { RightPanelComponent } from './layout/right-panel/right-panel.component';
 import { AuthModalComponent } from './layout/auth/auth-modal.component';
 import { LogoutConfirmComponent } from './layout/auth/logout-confirm.component';
+import { DeleteConfirmComponent } from './shared/delete-confirm/delete-confirm.component';
 import { ProfileSetupModalComponent } from './layout/auth/profile-setup-modal.component';
 import { NavigationService, ViewKey } from './core/services/navigation.service';
 import { LayoutService } from './core/services/layout.service';
@@ -15,7 +16,7 @@ import { LayoutService } from './core/services/layout.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent, AuthModalComponent, ProfileSetupModalComponent, LogoutConfirmComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, TopbarComponent, RightPanelComponent, AuthModalComponent, ProfileSetupModalComponent, LogoutConfirmComponent, DeleteConfirmComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {

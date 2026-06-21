@@ -21,10 +21,14 @@ export interface ListingCreate {
   bhk?: string | null;
   price?: string | null;
   price_value?: number | null;
+  price_per_sqft?: string | null;
   carpet_area?: string | null;
   builtup_area?: string | null;
   status?: string | null;
+  possession_date?: string | null;
+  rera_number?: string | null;
   locality_id?: number | null;
+  locality_name?: string | null;
   description?: string | null;
   image_ids?: number[];
 }
@@ -39,9 +43,12 @@ export interface ListingRead {
   bhk?: string | null;
   price?: string | null;
   price_value?: number | null;
+  price_per_sqft?: string | null;
   carpet_area?: string | null;
   builtup_area?: string | null;
   status?: string | null;
+  possession_date?: string | null;
+  rera_number?: string | null;
   locality_id?: number | null;
   description?: string | null;
   images?: ImageRef[] | null;
@@ -57,10 +64,13 @@ export interface ProjectCreate {
   address?: string | null;
   city?: string | null;
   locality?: string | null;
+  lat?: number | null;
+  lon?: number | null;
   total_area?: string | null;
   total_towers?: string | null;
   total_floors?: string | null;
   total_units?: string | null;
+  brochure?: string | null;
   construction_progress?: string | null;
   image_ids?: number[];
 }
@@ -74,10 +84,13 @@ export interface ProjectRead {
   address?: string | null;
   city?: string | null;
   locality?: string | null;
+  lat?: number | null;
+  lon?: number | null;
   total_area?: string | null;
   total_towers?: string | null;
   total_floors?: string | null;
   total_units?: string | null;
+  brochure?: string | null;
   construction_progress?: string | null;
   images?: ImageRef[] | null;
   created_at: string;
@@ -96,6 +109,7 @@ export interface UserListingCreate {
   address?: string | null;
   city?: string | null;
   locality_id?: number | null;
+  locality_name?: string | null;
   status?: string | null;
   possession_date?: string | null;
   description?: string | null;

@@ -6,6 +6,7 @@ import { API } from '../config/api.config';
 import { SignupRequest, TokenResponse, UserRead } from '../models/auth.model';
 import { NavigationService } from './navigation.service';
 import { PropertyCacheService } from './property-cache.service';
+import { PropertySyncService } from './property-sync.service';
 
 const TOKEN_KEY = 'aqari_access_token';
 const USER_KEY  = 'aqari_user';
@@ -16,9 +17,18 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly nav = inject(NavigationService);
   private readonly propertyCache = inject(PropertyCacheService);
+  private readonly propertySync = inject(PropertySyncService);
 
   private readonly _token = signal<string | null>(this.loadToken());
   private readonly _user  = signal<UserRead | null>(this.loadUser());
+
+  constructor() {
+    const user = this._user();
+    if (user?.id) {
+      this.propertyCache.loadForUser(user.id);
+      this.propertySync.refreshForUser(user).subscribe();
+    }
+  }
 
   readonly token = this._token.asReadonly();
   readonly user  = this._user.asReadonly();
@@ -50,7 +60,7 @@ export class AuthService {
     this._user.set(null);
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    this.propertyCache.clearAll();
+    this.propertyCache.clearSession();
 
     if (redirect) {
       this.nav.navigate('search');
@@ -72,6 +82,10 @@ export class AuthService {
     this._user.set(res.user);
     localStorage.setItem(TOKEN_KEY, res.access_token);
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+    if (res.user?.id) {
+      this.propertyCache.loadForUser(res.user.id);
+      this.propertySync.refreshForUser(res.user).subscribe();
+    }
   }
 
   private loadToken(): string | null {
