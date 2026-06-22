@@ -13,14 +13,12 @@
        style="border-bottom:1px solid var(--border);min-height:72px;">
 
     @if (!collapsed() || layout.isMobile()) {
-      <div>
-        <div class="flex items-center gap-2.5 mb-1">
-          <img [src]="logoSrc" alt="Aqari" class="flex-shrink-0 rounded-lg"
-               style="height:40px;width:auto;max-width:140px;object-fit:contain;" />
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2.5">
+          <img [src]="logoSrc" alt="Propnut" class="flex-shrink-0 rounded-lg"
+               style="height:36px;width:36px;object-fit:contain;" />
+          <span class="sidebar-brand-name">Propnut</span>
         </div>
-        <p class="uppercase tracking-widest" style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;">
-          Pune Real Estate · AI Agent
-        </p>
       </div>
       <!-- Desktop: collapse toggle; Mobile: X close button -->
       @if (layout.isMobile()) {
@@ -36,7 +34,7 @@
       }
     } @else {
       <div class="flex flex-col items-center gap-2">
-        <img [src]="logoSrc" alt="Aqari" class="rounded-lg"
+        <img [src]="logoSrc" alt="Propnut" class="rounded-lg"
              style="width:34px;height:34px;object-fit:contain;" />
         <button (click)="toggleCollapsed()"
                 class="sidebar-toggle-btn flex items-center justify-center rounded-lg"
