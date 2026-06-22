@@ -15,13 +15,13 @@
       {{ message.role === 'agent' ? agentLabel : auth.displayName() }}
     </div>
 
-    <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed"
+    <div class="chat-markdown px-4 py-3.5 rounded-2xl text-sm leading-relaxed"
          [style.background]="message.role === 'agent' ? 'var(--bg-raised)' : 'var(--user-bubble-bg)'"
          [style.border]="message.role === 'agent' ? '1px solid var(--border)' : '1px solid var(--gold-border)'"
          [style.borderTopLeftRadius]="message.role === 'agent' ? '4px' : '16px'"
          [style.borderTopRightRadius]="message.role === 'user' ? '4px' : '16px'"
          [style.color]="'var(--text-primary)'"
-         [innerHTML]="message.text">
+         [innerHTML]="messageHtml()">
     </div>
 
     @if (message.sources?.length) {

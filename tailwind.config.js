@@ -13,6 +13,7 @@ module.exports = {
         'gold':       'var(--gold)',
         'gold-light': 'var(--gold-light)',
         'gold-dim':   'var(--gold-dim)',
+        'brand':      'var(--brand)',
         'text-pri':   'var(--text-primary)',
         'text-sec':   'var(--text-secondary)',
         'text-muted': 'var(--text-muted)',
@@ -36,8 +37,8 @@ module.exports = {
           '100%': { opacity: '0',   transform: 'scale(1.5)' },
         },
         breathe: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
-          '50%':      { boxShadow: '0 0 0 4px rgba(201,168,76,0.15)' },
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(0,92,168,0)' },
+          '50%':      { boxShadow: '0 0 0 4px rgba(0,92,168,0.15)' },
         },
         blink: {
           '0%, 80%, 100%': { transform: 'translateY(0)', opacity: '0.4' },

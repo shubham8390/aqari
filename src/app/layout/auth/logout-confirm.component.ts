@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogoutConfirmService } from './logout-confirm.service';
 import { AuthService } from '../../core/services/auth.service';
+import { AuthModalService } from './auth-modal.service';
 import { ChatService } from '../../core/services/chat.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { ChatService } from '../../core/services/chat.service';
 export class LogoutConfirmComponent {
   confirm = inject(LogoutConfirmService);
   private auth = inject(AuthService);
+  private authModal = inject(AuthModalService);
   private chat = inject(ChatService);
 
   close(): void {
@@ -29,5 +31,6 @@ export class LogoutConfirmComponent {
     this.auth.logout();
     this.chat.startNewSession();
     this.close();
+    this.authModal.open('signin');
   }
 }

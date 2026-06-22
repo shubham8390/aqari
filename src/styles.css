@@ -536,6 +536,99 @@ input::placeholder {
 }
 
 /* ─────────────────────────────────────────────
+   CHAT MARKDOWN
+───────────────────────────────────────────── */
+.chat-markdown {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.chat-markdown p {
+  margin: 0 0 0.75rem;
+}
+
+.chat-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-markdown ul,
+.chat-markdown ol {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.chat-markdown li {
+  margin-bottom: 0.25rem;
+}
+
+.chat-markdown strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chat-markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.chat-markdown pre {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.chat-markdown pre code {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.chat-markdown .chat-table-wrap {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.chat-markdown table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.chat-markdown th,
+.chat-markdown td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.chat-markdown th {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.chat-markdown tr:last-child td {
+  border-bottom: none;
+}
+
+.chat-markdown tbody tr:hover td {
+  background: var(--bg-hover);
+}
+
+/* ─────────────────────────────────────────────
    TOGGLE SWITCH
 ───────────────────────────────────────────── */
 .toggle-track {

@@ -1,9 +1,11 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, SecurityContext } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ChatMessage } from '../models/message.model';
 import { ChatRequest, ChatResponse, ChatSource } from '../models/chat-api.model';
 import { API, CHAT_TOP_K } from '../config/api.config';
 import { AGENT_LABEL, AGENT_NAME } from '../constants/agent.constants';
+import { renderChatMarkdown } from '../utils/chat-markdown.util';
 import { AuthService } from './auth.service';
 import { AuthModalService } from '../../layout/auth/auth-modal.service';
 
@@ -12,6 +14,7 @@ export class ChatService {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
   private readonly authModal = inject(AuthModalService);
+  private readonly sanitizer = inject(DomSanitizer);
 
   messages = signal<ChatMessage[]>(this.buildInitialMessages());
   isTyping = signal(false);
@@ -135,10 +138,7 @@ export class ChatService {
   }
 
   private formatAnswer(answer: string): string {
-    return answer
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\n/g, '<br>');
+    const html = renderChatMarkdown(answer);
+    return this.sanitizer.sanitize(SecurityContext.HTML, html) ?? '';
   }
 }

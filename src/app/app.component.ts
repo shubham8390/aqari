@@ -7,6 +7,8 @@ import { SidebarComponent }    from './layout/sidebar/sidebar.component';
 import { TopbarComponent }     from './layout/topbar/topbar.component';
 import { RightPanelComponent } from './layout/right-panel/right-panel.component';
 import { AuthModalComponent } from './layout/auth/auth-modal.component';
+import { AuthModalService } from './layout/auth/auth-modal.service';
+import { AuthService } from './core/services/auth.service';
 import { LogoutConfirmComponent } from './layout/auth/logout-confirm.component';
 import { DeleteConfirmComponent } from './shared/delete-confirm/delete-confirm.component';
 import { ProfileSetupModalComponent } from './layout/auth/profile-setup-modal.component';
@@ -23,8 +25,14 @@ export class AppComponent implements OnInit {
   nav    = inject(NavigationService);
   router = inject(Router);
   layout = inject(LayoutService);
+  private auth = inject(AuthService);
+  private authModal = inject(AuthModalService);
 
   ngOnInit(): void {
+    if (!this.auth.isAuthenticated()) {
+      this.authModal.open('signin');
+    }
+
     // Keep NavigationService in sync with the router URL
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))

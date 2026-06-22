@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModalService } from './auth-modal.service';
@@ -37,7 +37,22 @@ export class AuthModalComponent {
     confirmPassword: '',
   };
 
+  signInFormNonce = 0;
+  signUpFormNonce = 0;
+  private modalWasOpen = false;
+
+  constructor() {
+    effect(() => {
+      const isOpen = this.auth.isOpen();
+      if (isOpen && !this.modalWasOpen) {
+        this.resetForms();
+      }
+      this.modalWasOpen = isOpen;
+    });
+  }
+
   close(): void {
+    if (!this.authService.isAuthenticated()) return;
     this.auth.close();
     this.error = '';
     this.resetSignUpValidation();
@@ -56,6 +71,7 @@ export class AuthModalComponent {
   }
 
   onOverlayClick(event: MouseEvent): void {
+    if (!this.authService.isAuthenticated()) return;
     if ((event.target as HTMLElement).dataset['overlay'] === 'true') {
       this.close();
     }
@@ -71,6 +87,7 @@ export class AuthModalComponent {
     this.authService.login(this.signInEmail, this.signInPassword).subscribe({
       next: (res) => {
         this.loading = false;
+        this.resetForms();
         this.auth.close();
         this.chat.refreshWelcomeIfInitial();
         if (!res.user.profile_complete) {
@@ -97,6 +114,7 @@ export class AuthModalComponent {
     }).subscribe({
       next: (res) => {
         this.loading = false;
+        this.resetForms();
         this.auth.close();
         this.chat.refreshWelcomeIfInitial();
         this.resetSignUpValidation();
@@ -128,6 +146,20 @@ export class AuthModalComponent {
   private resetSignUpValidation(): void {
     this.signUpAttempted = false;
     this.signUpFieldErrors = { email: '', password: '', confirmPassword: '' };
+  }
+
+  private resetForms(): void {
+    this.signInEmail = '';
+    this.signInPassword = '';
+    this.signUpEmail = '';
+    this.signUpPassword = '';
+    this.signUpConfirmPassword = '';
+    this.signUpUserType = 'regular';
+    this.loading = false;
+    this.error = '';
+    this.resetSignUpValidation();
+    this.signInFormNonce++;
+    this.signUpFormNonce++;
   }
 
   private validateSignUpForm(): boolean {
