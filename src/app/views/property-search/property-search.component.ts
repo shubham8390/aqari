@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewChecked, computed } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../core/services/chat.service';
@@ -25,16 +25,17 @@ export class PropertySearchComponent implements AfterViewChecked {
   readonly agentLabel = AGENT_LABEL;
   readonly agentInitial = AGENT_INITIAL;
 
-  showQuickPills = computed(() =>
-    this.chat.messages().some(m => m.role === 'user'),
-  );
-
-  quickPills = [
-    { label: '🏢 Project details',       text: 'Give me details about Galaxy Orizzonte' },
-    { label: '📋 RERA & builder info',   text: 'What is the RERA number and builder for Galaxy Orizzonte?' },
-    { label: '💰 Pricing & configs',     text: 'What are the 2 BHK and 3 BHK prices for Galaxy Orizzonte?' },
-    { label: '📅 Possession timeline',   text: 'When is Galaxy Orizzonte expected to be completed?' },
-  ];
+  // TODO: Quick suggestion pills — implement later
+  // showQuickPills = computed(() =>
+  //   this.chat.messages().some(m => m.role === 'user'),
+  // );
+  //
+  // quickPills = [
+  //   { label: '🏢 Project details',       text: 'Give me details about Galaxy Orizzonte' },
+  //   { label: '📋 RERA & builder info',   text: 'What is the RERA number and builder for Galaxy Orizzonte?' },
+  //   { label: '💰 Pricing & configs',     text: 'What are the 2 BHK and 3 BHK prices for Galaxy Orizzonte?' },
+  //   { label: '📅 Possession timeline',   text: 'When is Galaxy Orizzonte expected to be completed?' },
+  // ];
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
@@ -46,9 +47,9 @@ export class PropertySearchComponent implements AfterViewChecked {
     this.inputText = '';
   }
 
-  sendQuick(text: string): void {
-    this.chat.sendMessage(text);
-  }
+  // sendQuick(text: string): void {
+  //   this.chat.sendMessage(text);
+  // }
 
   onKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') this.send();
