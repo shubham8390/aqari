@@ -24,46 +24,46 @@
 }
 
 /* ─────────────────────────────────────────────
-   DARK THEME (default)
+   DARK THEME (default) — logo blue + light grey text
 ───────────────────────────────────────────── */
 :root {
   --font-body:    'Open Sans', Arial, Helvetica, sans-serif;
   --font-display: 'Open Sans', Arial, Helvetica, sans-serif;
-  --gold:         #C9A84C;
-  --gold-light:   #E8C97A;
-  --gold-dim:     #8A6E2E;
-  --gold-faint:   rgba(201, 168, 76, 0.08);
-  --gold-border:  rgba(201, 168, 76, 0.22);
+  --gold:         #006AFF;
+  --gold-light:   #4D9AFF;
+  --gold-dim:     #0051CC;
+  --gold-faint:   rgba(0, 106, 255, 0.10);
+  --gold-border:  rgba(0, 106, 255, 0.28);
 
-  --bg-deep:   #0B0B0E;
-  --bg-card:   #121217;
-  --bg-raised: #1A1A22;
-  --bg-hover:  #1F1F28;
+  --bg-deep:   #0A0D12;
+  --bg-card:   #0F1319;
+  --bg-raised: #151B24;
+  --bg-hover:  #1A222D;
 
-  --text-primary:   #F0EDE6;
-  --text-secondary: #9E9A90;
-  --text-muted:     #5A5750;
+  --text-primary:   #E8EAED;
+  --text-secondary: #A8ADB8;
+  --text-muted:     #6B7280;
 
-  --border:     rgba(255, 255, 255, 0.06);
-  --border-mid: rgba(255, 255, 255, 0.10);
+  --border:     rgba(255, 255, 255, 0.07);
+  --border-mid: rgba(255, 255, 255, 0.11);
 
   --accent-teal:  #2EBFA0;
   --accent-amber: #E8A838;
   --accent-red:   #E05252;
 
-  --on-accent:        #0B0B0E;
-  --accent-ring:      rgba(201, 168, 76, 0.10);
-  --accent-soft:      rgba(201, 168, 76, 0.15);
-  --user-bubble-bg:   linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.08));
-  --avatar-bg:        linear-gradient(135deg, #2A2A36, #3A3A48);
+  --on-accent:        #FFFFFF;
+  --accent-ring:      rgba(0, 106, 255, 0.14);
+  --accent-soft:      rgba(0, 106, 255, 0.18);
+  --user-bubble-bg:   linear-gradient(135deg, rgba(0, 106, 255, 0.16), rgba(0, 106, 255, 0.08));
+  --avatar-bg:        linear-gradient(135deg, #1A2840, #243552);
   --avatar-color:     var(--gold-light);
-  --ambient-primary:  rgba(201, 168, 76, 0.04);
-  --ambient-secondary: rgba(46, 191, 160, 0.04);
-  --focus-ring:       0 0 0 3px rgba(201, 168, 76, 0.06);
-  --btn-hover-shadow: 0 4px 12px rgba(201, 168, 76, 0.30);
-  --cta-bg:           linear-gradient(135deg, rgba(201, 168, 76, 0.10), rgba(201, 168, 76, 0.05));
-  --cta-bg-hover:     linear-gradient(135deg, rgba(201, 168, 76, 0.18), rgba(201, 168, 76, 0.10));
-  --accent-header-bg: linear-gradient(90deg, rgba(201, 168, 76, 0.05), transparent);
+  --ambient-primary:  rgba(0, 106, 255, 0.06);
+  --ambient-secondary: rgba(77, 154, 255, 0.05);
+  --focus-ring:       0 0 0 3px rgba(0, 106, 255, 0.14);
+  --btn-hover-shadow: 0 4px 12px rgba(0, 106, 255, 0.35);
+  --cta-bg:           linear-gradient(135deg, rgba(0, 106, 255, 0.12), rgba(0, 106, 255, 0.06));
+  --cta-bg-hover:     linear-gradient(135deg, rgba(0, 106, 255, 0.20), rgba(0, 106, 255, 0.12));
+  --accent-header-bg: linear-gradient(90deg, rgba(0, 106, 255, 0.08), transparent);
 
   --sidebar-w:    260px;
   --right-panel-w: 280px;
@@ -231,7 +231,7 @@ body::before {
 }
 
 /* ─────────────────────────────────────────────
-   GOLD GRADIENT
+   ACCENT GRADIENT
 ───────────────────────────────────────────── */
 .gold-gradient {
   background: linear-gradient(135deg, var(--gold-dim), var(--gold));
@@ -357,7 +357,7 @@ body::before {
 }
 
 /* ─────────────────────────────────────────────
-   SIDEBAR GOLD LINE ACCENT
+   SIDEBAR ACCENT LINE
 ───────────────────────────────────────────── */
 .sidebar-accent::after {
   content: '';
