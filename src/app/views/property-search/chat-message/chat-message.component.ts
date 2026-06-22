@@ -2,6 +2,7 @@ import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/models/message.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { AGENT_INITIAL, AGENT_LABEL } from '../../../core/constants/agent.constants';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,6 +16,9 @@ export class ChatMessageComponent {
 
   auth = inject(AuthService);
   router = inject(Router);
+
+  readonly agentLabel = AGENT_LABEL;
+  readonly agentInitial = AGENT_INITIAL;
 
   userInitials(): string {
     return this.auth.displayName().slice(0, 2).toUpperCase();

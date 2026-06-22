@@ -1,6 +1,6 @@
 <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scroll view-fade">
   <h1 class="font-display mb-1" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">Negotiation Guide</h1>
-  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">AI strategies backed by RERA transaction data</p>
+  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">AI strategies backed by Pune market and MahaRERA data</p>
 
   <!-- Guide Cards -->
   <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
@@ -27,16 +27,16 @@
     }
   </div>
 
-  <!-- Cheque Strategy -->
+  <!-- Payment Strategy -->
   <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
-    Cheque Strategy — Savings on AED 115,000 unit
+    Payment Strategy — Savings on ₹85 L unit (Baner 2 BHK)
   </div>
   <div class="rounded-2xl p-5 mb-6" style="background:var(--bg-card);border:1px solid var(--border);">
     <div class="uppercase tracking-wider mb-3.5" style="font-size:11px;letter-spacing:0.08em;color:var(--gold);">
-      💰 Number of Cheques vs. Discount
+      💰 Down Payment vs. Discount
     </div>
     <div class="flex flex-wrap gap-2.5">
-      @for (pill of chequePills; track pill.num) {
+      @for (pill of paymentPills; track pill.num) {
         <div class="flex-1 rounded-xl p-3 text-center border"
              style="min-width:80px;"
              [style.opacity]="pill.type === 'bad' ? '0.6' : '1'"
@@ -66,14 +66,14 @@
     </div>
     <div class="text-sm italic leading-relaxed p-4 rounded-xl mb-3"
          style="background:var(--bg-raised);border:1px solid var(--border);color:var(--text-secondary);line-height:1.7;">
-      "Dear [Broker Name],<br><br>
-      We are very interested in the Marina Gate II unit on Floor 18. After reviewing recent comparable rentals registered with RERA in the area, we would like to propose
-      <strong style="color:var(--gold-light);font-style:normal;">AED 110,000/year paid in 2 cheques</strong>.<br><br>
-      We are prepared to sign the tenancy contract and complete Ejari registration within 2 weeks of your acceptance."
+      "Dear [Sales Manager],<br><br>
+      We are very interested in the 2 BHK at [Project Name], Baner. After reviewing recent comparable sales registered on MahaRERA in the area, we would like to propose
+      <strong style="color:var(--gold-light);font-style:normal;">₹82 lakhs with 20% down payment</strong> and balance per the RERA payment schedule.<br><br>
+      We are prepared to pay the booking amount and execute the sale agreement within 2 weeks of your acceptance."
     </div>
     <div class="flex gap-2 flex-wrap">
       <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Firm offer</span>
-      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Fewer cheques</span>
+      <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Strong down payment</span>
       <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(46,191,160,0.08);border:1px solid rgba(46,191,160,0.25);color:var(--accent-teal);">✓ Fast timeline</span>
       <span class="text-xs px-2.5 py-1 rounded-xl" style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);color:var(--accent-amber);">Personalise before sending</span>
     </div>

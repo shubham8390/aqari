@@ -34,6 +34,7 @@ interface JourneyStep {
   },
 })
 export class SidebarComponent {
+  readonly logoSrc = '/images/Light_Logo.jpg';
   nav    = inject(NavigationService);
   theme  = inject(ThemeService);
   router = inject(Router);
@@ -45,31 +46,27 @@ export class SidebarComponent {
     { key: 'search',     icon: '🔍', label: 'Property Search' },
     { key: 'properties', icon: '🏠', label: 'My Properties', authOnly: true },
     { key: 'market',     icon: '📊', label: 'Market Insights' },
-    { key: 'negotiate',  icon: '🤝', label: 'Negotiation Guide' },
-    { key: 'docs',       icon: '📋', label: 'Documents & Ejari' },
-    { key: 'rera',       icon: '🏛️', label: 'RERA Compliance' },
+    { key: 'negotiate',  icon: '🤝', label: 'Negotiation Guide', regularOnly: true },
+    { key: 'docs',       icon: '📋', label: 'Documents & Ejari', regularOnly: true },
+    { key: 'rera',       icon: '🏛️', label: 'RERA Compliance', regularOnly: true },
   ];
 
   sessionItems: NavItem[] = [
     { key: 'history', icon: '💬', label: 'Past Sessions', authOnly: true },
   ];
 
-  journeySteps: JourneyStep[] = [
-    { key: 'search', label: 'Search', state: 'active' },
-    { key: 'market', label: 'Market Insights', state: 'pending' },
-    { key: 'negotiate', label: 'Negotiate', state: 'pending' },
-    { key: 'docs', label: 'Documents', state: 'pending' },
-    { key: 'rera', label: 'RERA', state: 'pending' },
-  ];
-
-  private readonly journeyOrder: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera'];
+  private readonly buyerJourneyOrder: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera'];
+  private readonly builderJourneyOrder: ViewKey[] = ['search', 'market', 'properties'];
   private readonly journeyLabels: Record<string, string> = {
     search: 'Search',
     market: 'Market Insights',
+    properties: 'My Properties',
     negotiate: 'Negotiate',
     docs: 'Documents',
     rera: 'RERA',
   };
+
+  journeySteps: JourneyStep[] = this.buildJourneySteps('search');
 
   collapsed = signal(true);
   toggleCollapsed(): void { this.collapsed.update(v => !v); }
@@ -82,14 +79,23 @@ export class SidebarComponent {
   }
 
   private updateJourneySteps(active: ViewKey): void {
-    const activeIdx = this.journeyOrder.indexOf(active);
-    this.journeySteps = this.journeyOrder.map((key, i) => ({
+    this.journeySteps = this.buildJourneySteps(active);
+  }
+
+  private buildJourneySteps(active: ViewKey): JourneyStep[] {
+    const order = this.auth.isBuilder() ? this.builderJourneyOrder : this.buyerJourneyOrder;
+    const activeIdx = order.indexOf(active);
+    return order.map((key, i) => ({
       key,
       label: this.journeyLabels[key] ?? key,
       state: activeIdx < 0
         ? (key === 'search' ? 'active' : 'pending')
         : i < activeIdx ? 'done' : i === activeIdx ? 'active' : 'pending',
     }));
+  }
+
+  journeySectionTitle(): string {
+    return this.auth.isBuilder() ? 'Builder Requirement' : 'Your Journey';
   }
 
   isActive(key: ViewKey): boolean {

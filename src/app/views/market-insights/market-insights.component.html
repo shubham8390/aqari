@@ -1,6 +1,6 @@
 <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scroll view-fade">
   <h1 class="font-display mb-1" style="font-size:clamp(22px,4vw,32px);color:var(--text-primary);">Market Insights</h1>
-  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">Live Dubai rental &amp; sales data · Updated daily</p>
+  <p class="mb-6" style="font-size:13px;color:var(--text-muted);">Pune property market overview · Sample data</p>
 
   <!-- Key Indicators -->
   <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
@@ -21,7 +21,7 @@
 
   <!-- Districts -->
   <div class="uppercase tracking-widest mb-3.5 mt-7" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
-    Rental by District — 2BHK Furnished
+    Locality Prices — 2BHK Ready to Move
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-1">
     @for (d of districts; track d.name) {
@@ -46,8 +46,8 @@
   <div class="rounded-2xl overflow-x-auto mb-1" style="background:var(--bg-card);border:1px solid var(--border);">
     <!-- Header -->
     <div class="flex items-center px-4 py-3 text-xs uppercase tracking-wider" style="background:rgba(0,0,0,0.2);color:var(--text-muted);letter-spacing:0.07em;min-width:480px;">
-      <div class="flex-[1.5]">District</div>
-      <div class="flex-1">Avg Rent</div>
+      <div class="flex-[1.5]">Locality</div>
+      <div class="flex-1">Avg Price</div>
       <div class="flex-1">YoY Change</div>
       <div class="flex-1">Occupancy</div>
       <div class="flex-1">Yield</div>

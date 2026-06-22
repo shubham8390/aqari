@@ -12,6 +12,7 @@ import { LoginButtonComponent } from '../auth/login-button.component';
   host: { style: 'display:block;flex-shrink:0;' },
 })
 export class TopbarComponent {
+  readonly logoSrc = '/images/Light_Logo.jpg';
   nav    = inject(NavigationService);
   layout = inject(LayoutService);
 }

@@ -1,7 +1,7 @@
 <div class="flex gap-3 view-fade" [class.flex-row-reverse]="message.role === 'user'">
   @if (message.role === 'agent') {
     <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0 accent-avatar"
-         style="width:36px;height:36px;">Z</div>
+         style="width:36px;height:36px;">{{ agentInitial }}</div>
   } @else {
     <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
          style="width:36px;height:36px;background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);">
@@ -12,7 +12,7 @@
   <div class="flex flex-col gap-1.5" [class.items-end]="message.role === 'user'"
        [style.maxWidth]="message.sources?.length ? '90%' : '72%'">
     <div class="text-xs uppercase tracking-wide px-1" style="color:var(--text-muted);letter-spacing:0.06em;">
-      {{ message.role === 'agent' ? 'Agent Zayed · AI' : auth.displayName() }}
+      {{ message.role === 'agent' ? agentLabel : auth.displayName() }}
     </div>
 
     <div class="px-4 py-3.5 rounded-2xl text-sm leading-relaxed"

@@ -7,7 +7,7 @@ interface GuideCard {
   tips: { num: string; bold: string; rest: string }[];
 }
 
-interface ChequePill {
+interface PaymentPill {
   num: string;
   label: string;
   save: string;
@@ -26,41 +26,41 @@ export class NegotiationGuideComponent {
     {
       icon: '💼', title: 'Before You Offer',
       tips: [
-        { num: '1', bold: 'Research comparables',     rest: ' — Know the last 90-day avg rent for similar units in the same building' },
-        { num: '2', bold: 'Check days on market',     rest: ' — Units listed 30+ days give 7–10% more room to negotiate' },
-        { num: '3', bold: 'Know your walk-away price', rest: ' — Decide your max before talking to any broker' },
+        { num: '1', bold: 'Research comparables',      rest: ' — Check last 90-day prices for similar 2/3 BHK units in Baner, Wakad, or Kharadi' },
+        { num: '2', bold: 'Check unsold inventory',  rest: ' — Projects with 30+ days of unsold stock often allow 3–7% room to negotiate' },
+        { num: '3', bold: 'Know your walk-away price', rest: ' — Set your max all-in budget before meeting the builder sales team' },
       ],
     },
     {
       icon: '🗣️', title: 'During Negotiation',
       tips: [
-        { num: '1', bold: 'Offer fewer cheques', rest: ' — 1–2 cheques vs 4–12 can save AED 5K–10K annually' },
-        { num: '2', bold: 'Fast timeline',        rest: ' — Commit to signing within 2 weeks; landlords reward certainty' },
-        { num: '3', bold: 'Package deal',         rest: ' — Offer to cover minor maintenance in exchange for rent reduction' },
+        { num: '1', bold: 'Offer stronger upfront payment', rest: ' — Higher down payment vs stretched plans can save ₹2–5 L on an ₹85 L unit' },
+        { num: '2', bold: 'Fast booking timeline',          rest: ' — Commit to token and agreement within 7–14 days; sales teams reward certainty' },
+        { num: '3', bold: 'Bundle concessions',             rest: ' — Ask for waived PLC, parking, or stamp-duty support in exchange for list price' },
       ],
     },
     {
       icon: '📉', title: 'Leverage Signals',
       tips: [
-        { num: '1', bold: 'Vacancy = your power',   rest: ' — Every empty day costs the landlord AED 300–500' },
-        { num: '2', bold: 'Off-peak timing',         rest: ' — Best deals in Q1 and Q3 when seasonal demand dips' },
-        { num: '3', bold: 'Comparable printout',     rest: ' — Show the landlord actual RERA-registered transactions' },
+        { num: '1', bold: 'Slow quarter = your power', rest: ' — Every unsold unit adds carrying cost for the builder' },
+        { num: '2', bold: 'Festive & year-end windows', rest: ' — Best deals often in Oct–Dec and Mar when sales targets peak' },
+        { num: '3', bold: 'Comparable printout',        rest: ' — Show recent MahaRERA-registered sales in the same micro-market' },
       ],
     },
     {
       icon: '⚠️', title: 'Common Mistakes',
       tips: [
-        { num: '✗', bold: "Don't lowball below 8%",     rest: " — Landlords disengage; aim for 5–7% below asking" },
-        { num: '✗', bold: "Don't show desperation",     rest: " — Never say \"this is my favourite property\"" },
-        { num: '✗', bold: "Don't skip RERA check",      rest: " — Always verify ownership before negotiating" },
+        { num: '✗', bold: "Don't lowball below 8%",        rest: ' — Builders disengage; aim for 3–6% below quoted all-in price' },
+        { num: '✗', bold: "Don't show desperation",        rest: ' — Never say "this is our dream flat"' },
+        { num: '✗', bold: "Don't skip MahaRERA check",     rest: ' — Always verify project registration before paying token' },
       ],
     },
   ];
 
-  chequePills: ChequePill[] = [
-    { num: '1',  label: 'Cheque',   save: 'Save AED 8,000–10,000',     type: 'best' },
-    { num: '2',  label: 'Cheques',  save: 'Save AED 5,000–7,000',      type: 'good' },
-    { num: '4',  label: 'Cheques',  save: 'Standard — no discount',    type: 'ok'   },
-    { num: '12', label: 'Cheques',  save: '+AED 3,000–5,000 premium',  type: 'bad'  },
+  paymentPills: PaymentPill[] = [
+    { num: '100%', label: 'Upfront',       save: 'Save ₹3–5 L',           type: 'best' },
+    { num: '30%',  label: 'Down payment', save: 'Save ₹2–3 L',           type: 'good' },
+    { num: '20%',  label: 'Down payment', save: 'Standard — no discount', type: 'ok'   },
+    { num: '10%',  label: 'Down payment', save: '+₹1–2 L premium',       type: 'bad'  },
   ];
 }

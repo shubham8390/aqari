@@ -11,23 +11,30 @@
     </button>
   }
 
-  <!-- Title -->
+  <!-- Title / mobile logo -->
   <div class="flex-1 min-w-0">
-    <div class="font-display font-semibold truncate"
-         style="font-size:clamp(15px,2.5vw,20px);color:var(--text-primary);">
-      {{ nav.meta().title }}
-    </div>
-    <div class="hidden sm:block" style="font-size:11px;color:var(--text-muted);margin-top:2px;">
-      {{ nav.meta().subtitle }}
-    </div>
+    @if (layout.isMobile()) {
+      <img [src]="logoSrc" alt="Aqari" class="rounded-lg"
+           style="height:32px;width:auto;max-width:120px;object-fit:contain;" />
+    } @else {
+      <div class="font-display font-semibold truncate"
+           style="font-size:clamp(15px,2.5vw,20px);color:var(--text-primary);">
+        {{ nav.meta().title }}
+      </div>
+      <div class="hidden sm:block" style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+        {{ nav.meta().subtitle }}
+      </div>
+    }
   </div>
 
   <!-- Actions -->
   <div class="flex items-center gap-2 flex-shrink-0">
+    <!-- TODO: i18n — EN / AR language toggle (implement later)
     <button class="hidden sm:flex text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all duration-200"
             style="border:1px solid var(--border);color:var(--text-secondary);background:transparent;">
       🌐 EN / AR
     </button>
+    -->
     <app-login-button />
 
     <!-- Right panel toggle: mobile only -->

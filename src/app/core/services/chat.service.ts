@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChatMessage } from '../models/message.model';
 import { ChatRequest, ChatResponse, ChatSource } from '../models/chat-api.model';
 import { API, CHAT_TOP_K } from '../config/api.config';
+import { AGENT_LABEL, AGENT_NAME } from '../constants/agent.constants';
 import { AuthService } from './auth.service';
 import { AuthModalService } from '../../layout/auth/auth-modal.service';
 
@@ -50,7 +51,7 @@ export class ChatService {
           id: (Date.now() + 1).toString(),
           role: 'agent',
           text: this.formatAnswer(response.answer),
-          time: 'Just now · Agent Zayed',
+          time: `Just now · ${AGENT_LABEL}`,
           sources: response.sources?.length ? response.sources : undefined,
         };
         this.messages.update(msgs => [...msgs, agentMsg]);
@@ -61,7 +62,7 @@ export class ChatService {
           id: (Date.now() + 1).toString(),
           role: 'agent',
           text: 'Sorry, I couldn\'t reach the property assistant right now. Please try again in a moment.',
-          time: 'Just now · Agent Zayed',
+          time: `Just now · ${AGENT_LABEL}`,
         };
         this.messages.update(msgs => [...msgs, errorMsg]);
       },
@@ -99,6 +100,15 @@ export class ChatService {
     this.messages.set(this.buildInitialMessages());
   }
 
+  /** Refresh the welcome bubble after sign-in when the user has not started chatting yet. */
+  refreshWelcomeIfInitial(): void {
+    if (this.sessionId) return;
+    const msgs = this.messages();
+    if (msgs.length === 1 && msgs[0].id === '1' && msgs[0].role === 'agent') {
+      this.messages.set(this.buildInitialMessages());
+    }
+  }
+
   getSessionId(): string {
     return this.sessionId;
   }
@@ -108,10 +118,20 @@ export class ChatService {
       {
         id: '1',
         role: 'agent',
-        text: `Welcome — I'm Agent Zayed, your property AI assistant.<br><br>Sign in to ask about projects, pricing, RERA details, amenities, availability, and more.`,
+        text: this.welcomeText(),
         time: 'Just now',
       },
     ];
+  }
+
+  private welcomeText(): string {
+    if (!this.auth.isAuthenticated()) {
+      return `Welcome — I'm ${AGENT_NAME}, your property AI assistant for Pune.<br><br>Sign in to explore projects, pricing, and availability.`;
+    }
+    if (this.auth.isBuilder()) {
+      return `Welcome — I'm ${AGENT_NAME}, your property AI assistant.<br><br>Ask about your projects, unit pricing, listings, and Pune market trends.`;
+    }
+    return `Welcome — I'm ${AGENT_NAME}, your property AI assistant.<br><br>Ask about projects, pricing, amenities, availability, and RERA details.`;
   }
 
   private formatAnswer(answer: string): string {

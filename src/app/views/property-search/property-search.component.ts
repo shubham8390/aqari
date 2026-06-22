@@ -1,9 +1,10 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewChecked, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../core/services/chat.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/agent.constants';
 
 @Component({
   selector: 'app-property-search',
@@ -19,6 +20,14 @@ export class PropertySearchComponent implements AfterViewChecked {
   @ViewChild('chatScroll') chatScroll!: ElementRef<HTMLDivElement>;
 
   inputText = '';
+
+  readonly agentName = AGENT_NAME;
+  readonly agentLabel = AGENT_LABEL;
+  readonly agentInitial = AGENT_INITIAL;
+
+  showQuickPills = computed(() =>
+    this.chat.messages().some(m => m.role === 'user'),
+  );
 
   quickPills = [
     { label: '🏢 Project details',       text: 'Give me details about Galaxy Orizzonte' },

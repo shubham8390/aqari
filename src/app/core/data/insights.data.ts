@@ -3,17 +3,17 @@ import { ReraCard, ReraRule } from '../models/market.model';
 export const AGENT_INSIGHTS = [
   {
     icon: '🔥',
-    text: 'High demand floors 10–22 with sea view — act fast on shortlisted unit',
+    text: 'High demand for 2 BHK in Baner & Wakad — ready-to-move units moving fast',
     route: 'search',
   },
   {
     icon: '💡',
-    text: '2-cheque offer is your strongest lever — saves AED 5K–8K typically',
+    text: 'Under-construction projects in Kharadi often offer 8–12% better value vs ready',
     route: 'negotiate',
   },
   {
     icon: '📅',
-    text: 'Best deals in Q1 & Q3 — landlords most flexible outside peak season',
+    text: 'Festive season (Oct–Dec) — builders in Pune frequently run limited-time offers',
     route: 'market',
   },
 ];

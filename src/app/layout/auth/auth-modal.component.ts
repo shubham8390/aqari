@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModalService } from './auth-modal.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ChatService } from '../../core/services/chat.service';
 import { ProfileSetupService } from './profile-setup.service';
 import { UserType } from '../../core/models/auth.model';
 
@@ -15,6 +16,7 @@ import { UserType } from '../../core/models/auth.model';
 export class AuthModalComponent {
   auth = inject(AuthModalService);
   authService = inject(AuthService);
+  chat = inject(ChatService);
   profileSetup = inject(ProfileSetupService);
 
   signInEmail    = '';
@@ -70,6 +72,7 @@ export class AuthModalComponent {
       next: (res) => {
         this.loading = false;
         this.auth.close();
+        this.chat.refreshWelcomeIfInitial();
         if (!res.user.profile_complete) {
           this.profileSetup.open();
         }
@@ -95,6 +98,7 @@ export class AuthModalComponent {
       next: (res) => {
         this.loading = false;
         this.auth.close();
+        this.chat.refreshWelcomeIfInitial();
         this.resetSignUpValidation();
         if (!res.user.profile_complete) {
           this.profileSetup.open();
