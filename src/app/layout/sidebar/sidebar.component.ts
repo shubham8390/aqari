@@ -13,8 +13,6 @@ interface NavItem {
   label: string;
   badge?: string;
   authOnly?: boolean;
-  builderOnly?: boolean;
-  regularOnly?: boolean;
 }
 
 interface JourneyStep {
@@ -44,23 +42,20 @@ export class SidebarComponent {
 
   navItems: NavItem[] = [
     { key: 'search',     icon: '🔍', label: 'Property Search' },
-    { key: 'properties', icon: '🏠', label: 'My Properties', authOnly: true },
     { key: 'market',     icon: '📊', label: 'Market Insights' },
-    { key: 'negotiate',  icon: '🤝', label: 'Negotiation Guide', regularOnly: true },
-    { key: 'docs',       icon: '📋', label: 'Documents & Ejari', regularOnly: true },
-    { key: 'rera',       icon: '🏛️', label: 'RERA Compliance', regularOnly: true },
+    { key: 'negotiate',  icon: '🤝', label: 'Negotiation Guide' },
+    { key: 'docs',       icon: '📋', label: 'Documents & Ejari' },
+    { key: 'rera',       icon: '🏛️', label: 'RERA Compliance' },
   ];
 
   sessionItems: NavItem[] = [
     { key: 'history', icon: '💬', label: 'Past Sessions', authOnly: true },
   ];
 
-  private readonly buyerJourneyOrder: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera'];
-  private readonly builderJourneyOrder: ViewKey[] = ['search', 'market', 'properties'];
+  private readonly journeyOrder: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera'];
   private readonly journeyLabels: Record<string, string> = {
     search: 'Search',
     market: 'Market Insights',
-    properties: 'My Properties',
     negotiate: 'Negotiate',
     docs: 'Documents',
     rera: 'RERA',
@@ -83,9 +78,8 @@ export class SidebarComponent {
   }
 
   private buildJourneySteps(active: ViewKey): JourneyStep[] {
-    const order = this.auth.isBuilder() ? this.builderJourneyOrder : this.buyerJourneyOrder;
-    const activeIdx = order.indexOf(active);
-    return order.map((key, i) => ({
+    const activeIdx = this.journeyOrder.indexOf(active);
+    return this.journeyOrder.map((key, i) => ({
       key,
       label: this.journeyLabels[key] ?? key,
       state: activeIdx < 0
@@ -95,7 +89,7 @@ export class SidebarComponent {
   }
 
   journeySectionTitle(): string {
-    return this.auth.isBuilder() ? 'Builder Requirement' : 'Your Journey';
+    return 'Your Journey';
   }
 
   isActive(key: ViewKey): boolean {
@@ -125,8 +119,6 @@ export class SidebarComponent {
 
   private canShow(item: NavItem): boolean {
     if (item.authOnly && !this.auth.isAuthenticated()) return false;
-    if (item.builderOnly && !this.auth.isBuilder()) return false;
-    if (item.regularOnly && this.auth.isBuilder()) return false;
     return true;
   }
 }

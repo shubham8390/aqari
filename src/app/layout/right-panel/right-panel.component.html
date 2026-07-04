@@ -19,10 +19,10 @@
     <!-- Market / portfolio snapshot -->
     <div class="p-5" style="border-bottom:1px solid var(--border);">
       <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
-        {{ marketSectionTitle() }}
+        {{ marketSectionTitle }}
       </div>
       <div class="grid grid-cols-2 gap-2">
-        @for (stat of marketStats(); track stat.label) {
+        @for (stat of marketStats; track stat.label) {
           <div class="rounded-xl p-3" style="background:var(--bg-raised);border:1px solid var(--border);">
             <div class="font-display font-medium" style="font-size:18px;color:var(--text-primary);">{{ stat.value }}</div>
             <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">{{ stat.label }}</div>
@@ -40,7 +40,7 @@
       <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
         Agent Insights
       </div>
-      @for (ins of insights(); track ins.icon) {
+      @for (ins of insights; track ins.icon) {
         <div class="flex items-start gap-2.5 rounded-xl p-2.5 mb-2 cursor-pointer transition-all duration-200 group relative"
              style="background:var(--bg-raised);border:1px solid var(--border);"
              (click)="navigateTo(ins.route)"
@@ -57,9 +57,9 @@
     <!-- Readiness checklist -->
     <div class="p-5" style="border-bottom:1px solid var(--border);">
       <div class="uppercase tracking-widest mb-3.5" style="font-size:10px;color:var(--text-muted);letter-spacing:0.1em;">
-        {{ readinessSectionTitle() }}
+        {{ readinessSectionTitle }}
       </div>
-      @for (doc of readinessItems(); track doc.name) {
+      @for (doc of readinessItems; track doc.name) {
         <div class="flex items-center gap-2.5 p-2 rounded-lg mb-1.5 cursor-pointer text-xs transition-all duration-200 group"
              style="background:var(--bg-raised);border:1px solid var(--border);color:var(--text-secondary);"
              (click)="navigateTo(doc.route)"
@@ -82,8 +82,8 @@
          (click)="onCtaClick()"
          onmouseenter="this.style.background='var(--cta-bg-hover)'"
          onmouseleave="this.style.background='var(--cta-bg)'">
-      <div class="text-xs font-medium" style="color:var(--gold-light);">{{ ctaTitle() }}</div>
-      <div class="text-xs mt-1" style="color:var(--text-muted);">{{ ctaSubtitle() }}</div>
+      <div class="text-xs font-medium" style="color:var(--gold-light);">{{ ctaTitle }}</div>
+      <div class="text-xs mt-1" style="color:var(--text-muted);">{{ ctaSubtitle }}</div>
     </div>
 
   </div>

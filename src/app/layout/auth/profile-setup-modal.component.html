@@ -11,7 +11,7 @@
       <div class="px-5 py-4 flex-shrink-0" style="border-bottom:1px solid var(--border);">
         <h2 class="modal-title">Complete your profile</h2>
         <p class="text-xs mt-1" style="color:var(--text-muted);">
-          {{ isBuilder ? 'Tell us about your company so buyers can find you' : 'Help us personalize your property search' }}
+          Add your name and phone so we can personalize your experience
         </p>
       </div>
 
@@ -30,56 +30,6 @@
           <input [(ngModel)]="form.phone" name="phone" class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
                  style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
         </div>
-
-        @if (!isBuilder) {
-          <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Requirement</label>
-            <input [(ngModel)]="form.requirement" name="requirement" placeholder="e.g. 2BHK"
-                   class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                   style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Min budget</label>
-              <input type="number" [(ngModel)]="form.min_budget" name="min_budget"
-                     class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                     style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Max budget</label>
-              <input type="number" [(ngModel)]="form.max_budget" name="max_budget"
-                     class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                     style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Preferred areas</label>
-            <input [(ngModel)]="form.preferred_areas" name="preferred_areas" placeholder="Baner, Wakad"
-                   class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                   style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-          </div>
-        }
-
-        @if (isBuilder) {
-          <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Company name</label>
-            <input [(ngModel)]="form.company_name" name="company_name"
-                   class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                   style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">Website</label>
-            <input [(ngModel)]="form.website" name="website"
-                   class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none"
-                   style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1.5" style="color:var(--text-secondary);">About your company</label>
-            <textarea [(ngModel)]="form.builder_description" name="builder_description" rows="3"
-                      class="auth-input w-full rounded-xl px-3.5 py-2.5 text-sm outline-none resize-none"
-                      style="background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);"></textarea>
-          </div>
-        }
 
         <div class="flex gap-2 pt-2 pb-1">
           <button type="button" (click)="close()" class="flex-1 rounded-xl py-2.5 text-sm font-semibold"

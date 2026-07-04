@@ -129,12 +129,9 @@ export class ChatService {
 
   private welcomeText(): string {
     if (!this.auth.isAuthenticated()) {
-      return `Welcome — I'm ${AGENT_NAME}, your property AI assistant for Pune.<br><br>Sign in to explore projects, pricing, and availability.`;
+      return `Welcome — I'm ${AGENT_NAME}, your real estate AI assistant for Pune.<br><br>Sign in to search projects by locality, BHK, budget, and builder.`;
     }
-    if (this.auth.isBuilder()) {
-      return `Welcome — I'm ${AGENT_NAME}, your property AI assistant.<br><br>Ask about your projects, unit pricing, listings, and Pune market trends.`;
-    }
-    return `Welcome — I'm ${AGENT_NAME}, your property AI assistant.<br><br>Ask about projects, pricing, amenities, availability, and RERA details.`;
+    return `Welcome — I'm ${AGENT_NAME}, your real estate AI assistant.<br><br>Ask about projects, pricing, amenities, possession timelines, and RERA details. Try: "2 BHK in Baner under 1 Cr".`;
   }
 
   private formatAnswer(answer: string): string {

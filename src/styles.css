@@ -543,6 +543,42 @@ input::placeholder {
   word-break: break-word;
 }
 
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  margin: 0.75rem 0 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.chat-markdown h1 { font-size: 1.125rem; }
+.chat-markdown h2 { font-size: 1.05rem; }
+.chat-markdown h3 { font-size: 1rem; }
+.chat-markdown h4 { font-size: 0.95rem; }
+
+.chat-markdown img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.chat-markdown a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.chat-markdown hr {
+  margin: 0.75rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
 .chat-markdown p {
   margin: 0 0 0.75rem;
 }

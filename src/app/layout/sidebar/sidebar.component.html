@@ -236,7 +236,7 @@
           {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
         </div>
         <div class="truncate" style="font-size:11px;color:var(--text-muted);">
-          {{ auth.isAuthenticated() ? (auth.user()?.user_type === 'builder' ? 'Builder' : 'Buyer') : 'Sign in to chat' }}
+          {{ auth.isAuthenticated() ? auth.user()?.email : 'Sign in to chat' }}
         </div>
       </div>
     }

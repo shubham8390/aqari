@@ -1,10 +1,16 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/models/message.model';
+import { ChatSource } from '../../../core/models/chat-api.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { formatUserMessage } from '../../../core/utils/chat-markdown.util';
+import {
+  formatSourceBhk,
+  formatSourceLocation,
+  formatSourcePrice,
+  sourceThumbnail,
+} from '../../../core/utils/chat-source.util';
 import { AGENT_INITIAL, AGENT_LABEL } from '../../../core/constants/agent.constants';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-message',
@@ -16,7 +22,6 @@ export class ChatMessageComponent {
   @Input() message!: ChatMessage;
 
   auth = inject(AuthService);
-  router = inject(Router);
 
   readonly agentLabel = AGENT_LABEL;
   readonly agentInitial = AGENT_INITIAL;
@@ -31,11 +36,19 @@ export class ChatMessageComponent {
       : this.message.text;
   }
 
-  openSource(source: { id: number; source: string }): void {
-    if (source.source === 'user_listing') {
-      this.router.navigate(['/user-listings', source.id]);
-    } else {
-      this.router.navigate(['/listings', source.id]);
-    }
+  location(source: ChatSource): string {
+    return formatSourceLocation(source);
+  }
+
+  bhk(source: ChatSource): string | null {
+    return formatSourceBhk(source);
+  }
+
+  price(source: ChatSource): string | null {
+    return formatSourcePrice(source);
+  }
+
+  thumbnail(source: ChatSource): string | null {
+    return sourceThumbnail(source);
   }
 }

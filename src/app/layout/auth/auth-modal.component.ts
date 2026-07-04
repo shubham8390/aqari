@@ -5,7 +5,6 @@ import { AuthModalService } from './auth-modal.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ChatService } from '../../core/services/chat.service';
 import { ProfileSetupService } from './profile-setup.service';
-import { UserType } from '../../core/models/auth.model';
 
 @Component({
   selector: 'app-auth-modal',
@@ -25,7 +24,6 @@ export class AuthModalComponent {
   signUpEmail            = '';
   signUpPassword         = '';
   signUpConfirmPassword  = '';
-  signUpUserType: UserType = 'regular';
 
   loading = false;
   error   = '';
@@ -110,7 +108,6 @@ export class AuthModalComponent {
     this.authService.register({
       email: this.signUpEmail.trim(),
       password: this.signUpPassword,
-      user_type: this.signUpUserType,
     }).subscribe({
       next: (res) => {
         this.loading = false;
@@ -124,7 +121,10 @@ export class AuthModalComponent {
       },
       error: (err) => {
         this.loading = false;
-        this.error = err?.error?.detail?.[0]?.msg || 'Registration failed. Email may already be in use.';
+        const detail = err?.error?.detail;
+        this.error = typeof detail === 'string'
+          ? detail
+          : detail?.[0]?.msg || 'Registration failed. Email may already be in use.';
       },
     });
   }
@@ -154,7 +154,6 @@ export class AuthModalComponent {
     this.signUpEmail = '';
     this.signUpPassword = '';
     this.signUpConfirmPassword = '';
-    this.signUpUserType = 'regular';
     this.loading = false;
     this.error = '';
     this.resetSignUpValidation();

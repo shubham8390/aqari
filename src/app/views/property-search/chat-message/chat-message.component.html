@@ -28,37 +28,58 @@
       <div class="rounded-2xl overflow-hidden mt-1 w-full" style="background:var(--bg-card);border:1px solid var(--border);">
         <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--border);">
           <span class="uppercase tracking-wider" style="font-size:11px;color:var(--text-muted);letter-spacing:0.07em;">
-            Matched properties
+            Matched projects
           </span>
           <span class="text-xs px-2 py-0.5 rounded-full" style="color:var(--gold);background:var(--gold-faint);border:1px solid var(--gold-border);">
-            {{ message.sources!.length }} source{{ message.sources!.length === 1 ? '' : 's' }}
+            {{ message.sources!.length }} project{{ message.sources!.length === 1 ? '' : 's' }}
           </span>
         </div>
 
         @for (source of message.sources; track source.id) {
-          <div class="flex items-start gap-3.5 px-4 py-3.5 cursor-pointer transition-colors duration-150"
-               [style.borderBottom]="$last ? 'none' : '1px solid var(--border)'"
-               (click)="openSource(source)"
-               onmouseenter="this.style.background='var(--bg-hover)'"
-               onmouseleave="this.style.background='transparent'">
-            <div class="flex items-center justify-center rounded-lg flex-shrink-0"
-                 style="width:56px;height:44px;background:linear-gradient(135deg,var(--bg-raised),var(--bg-hover));border:1px solid var(--border);font-size:20px;">
-              🏢
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ source.property_name }}</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
-                {{ source.location }} · {{ source.bhk }} BHK
+          <div class="flex items-start gap-3.5 px-4 py-3.5"
+               [style.borderBottom]="$last ? 'none' : '1px solid var(--border)'">
+            @if (thumbnail(source); as imageUrl) {
+              <img [src]="imageUrl" [alt]="source.project_name"
+                   class="rounded-lg flex-shrink-0 object-cover"
+                   style="width:56px;height:44px;border:1px solid var(--border);background:var(--bg-raised);" />
+            } @else {
+              <div class="flex items-center justify-center rounded-lg flex-shrink-0"
+                   style="width:56px;height:44px;background:linear-gradient(135deg,var(--bg-raised),var(--bg-hover));border:1px solid var(--border);font-size:20px;">
+                🏢
               </div>
+            }
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium truncate" style="color:var(--text-primary);">{{ source.project_name }}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+                {{ location(source) }}
+                @if (bhk(source); as configs) {
+                  · {{ configs }}
+                }
+              </div>
+              @if (source.builder_name) {
+                <div class="truncate" style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+                  {{ source.builder_name }}
+                </div>
+              }
               <div class="flex gap-1.5 mt-1.5 flex-wrap">
-                <span class="text-xs px-1.5 py-0.5 rounded-lg"
-                      style="background:var(--gold-faint);border:1px solid var(--gold-border);color:var(--gold);">
-                  {{ source.price }}
-                </span>
-                <span class="text-xs px-1.5 py-0.5 rounded-lg capitalize"
-                      style="border:1px solid var(--border);color:var(--text-muted);">
-                  {{ source.source === 'user_listing' ? 'Owner listing' : 'Builder listing' }}
-                </span>
+                @if (price(source); as priceLabel) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="background:var(--gold-faint);border:1px solid var(--gold-border);color:var(--gold);">
+                    {{ priceLabel }}
+                  </span>
+                }
+                @if (source.status) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="border:1px solid var(--border);color:var(--text-muted);">
+                    {{ source.status }}
+                  </span>
+                }
+                @if (source.property_type) {
+                  <span class="text-xs px-1.5 py-0.5 rounded-lg"
+                        style="border:1px solid var(--border);color:var(--text-muted);">
+                    {{ source.property_type }}
+                  </span>
+                }
               </div>
             </div>
           </div>

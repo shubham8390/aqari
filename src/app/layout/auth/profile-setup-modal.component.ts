@@ -20,21 +20,10 @@ export class ProfileSetupModalComponent {
   form: ProfileUpdate = {
     name: '',
     phone: '',
-    requirement: '',
-    min_budget: undefined,
-    max_budget: undefined,
-    preferred_areas: '',
-    company_name: '',
-    website: '',
-    builder_description: '',
   };
 
   loading = false;
   error = '';
-
-  get isBuilder(): boolean {
-    return this.auth.user()?.user_type === 'builder';
-  }
 
   close(): void {
     this.profileSetup.close();
@@ -49,24 +38,11 @@ export class ProfileSetupModalComponent {
   onSubmit(): void {
     this.loading = true;
     this.error = '';
-    const payload: ProfileUpdate = this.isBuilder
-      ? {
-          name: this.form.name,
-          phone: this.form.phone,
-          company_name: this.form.company_name,
-          website: this.form.website,
-          builder_description: this.form.builder_description,
-        }
-      : {
-          name: this.form.name,
-          phone: this.form.phone,
-          requirement: this.form.requirement,
-          preferred_areas: this.form.preferred_areas,
-          ...(this.form.min_budget ? { min_budget: this.form.min_budget } : {}),
-          ...(this.form.max_budget ? { max_budget: this.form.max_budget } : {}),
-        };
 
-    this.profileService.updateProfile(payload).subscribe({
+    this.profileService.updateProfile({
+      name: this.form.name,
+      phone: this.form.phone,
+    }).subscribe({
       next: (user) => {
         this.auth.updateUser(user);
         this.loading = false;
