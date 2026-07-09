@@ -1,0 +1,203 @@
+<div class="landing-page">
+  <!-- Top header -->
+  <header class="landing-header">
+    <div class="landing-header-inner landing-header-inner--offset">
+      <div class="landing-header-spacer" aria-hidden="true"></div>
+
+      <button type="button" class="landing-header-logo-center" (click)="goHome()" aria-label="Aqari home">
+        <img [src]="logoSrc" alt="Propnut" class="landing-header-logo-img brand-logo" />
+      </button>
+
+      <div class="landing-header-right">
+        <div class="landing-header-actions">
+          <app-login-button />
+        </div>
+      </div>
+
+      <div class="landing-header-actions landing-header-actions--mobile">
+        <app-login-button />
+      </div>
+    </div>
+  </header>
+
+  <div class="landing-body">
+    <!-- Left icon rail -->
+    <aside class="landing-rail">
+      <button type="button" class="landing-rail-logo" (click)="goHome()" aria-label="Go to home">
+        <img [src]="railLogoSrc" alt="Propnut" class="landing-rail-logo-img" />
+      </button>
+
+      <nav class="landing-rail-nav">
+        @for (item of railItems; track item.route) {
+          <button type="button" class="landing-rail-item" (click)="goTo(item.route)">
+            <span class="landing-rail-icon">{{ item.icon }}</span>
+            <span class="landing-rail-label">{{ item.label }}</span>
+          </button>
+        }
+      </nav>
+
+      <button type="button" class="app-rail-user landing-rail-user" (click)="onUserClick()">
+        <div class="user-avatar app-rail-avatar">
+          {{ auth.isAuthenticated() ? userInitials() : '?' }}
+        </div>
+        <span class="app-rail-label app-rail-user-name">
+          {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
+        </span>
+        <span class="app-rail-user-sub">
+          {{ auth.isAuthenticated() ? auth.user()?.email : 'Sign in to chat' }}
+        </span>
+      </button>
+    </aside>
+
+    <main class="landing-main">
+      <!-- Hero -->
+      <div class="landing-hero-block">
+        <section class="landing-hero" [style.background-image]="'url(' + heroImage + ')'">
+          <div class="landing-hero-overlay"></div>
+          <div class="landing-hero-content">
+            <h1 class="landing-hero-title">{{ heroHeadline }}</h1>
+            <form class="landing-search-form" (ngSubmit)="onSearchSubmit()">
+              <input
+                type="text"
+                [(ngModel)]="searchQuery"
+                name="heroSearch"
+                [placeholder]="searchPlaceholder"
+                (keydown)="onSearchKeydown($event)"
+                class="landing-search-input"
+                autocomplete="off"
+              />
+              <button type="submit" class="landing-search-btn" aria-label="Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <button type="button" class="landing-hero-scroll" (click)="scrollToContent()" aria-label="Scroll down">
+          <svg class="landing-scroll-svg" viewBox="0 0 32 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="6" y="2" width="20" height="32" rx="10" stroke="currentColor" stroke-width="1.5"/>
+            <circle class="landing-scroll-wheel" cx="16" cy="11" r="2" fill="currentColor"/>
+            <path class="landing-scroll-chevron" d="M8 40 L16 48 L24 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="landing-scroll-chevron landing-scroll-chevron--delay" d="M8 47 L16 54 L24 47" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+          </svg>
+          <span class="landing-scroll-label">Scroll</span>
+        </button>
+      </div>
+
+      <!-- Recommendations -->
+      <section id="landing-content" class="landing-section">
+        <div class="landing-rec-grid">
+          <div class="landing-rec-copy">
+            <h2 class="landing-section-title">Get personalized project recommendations</h2>
+            <p class="landing-section-subtitle">Sign in for a more personalized experience with Rahaa, your Pune real estate AI assistant.</p>
+            @if (!auth.isAuthenticated()) {
+              <button type="button" class="landing-outline-btn" (click)="openSignIn()">Sign in</button>
+            } @else {
+              <button type="button" class="landing-outline-btn" (click)="goTo('/search')">Continue with Rahaa</button>
+            }
+          </div>
+
+          <div class="landing-card-stack">
+            @for (project of recommendedProjects; track project.id; let i = $index) {
+              <article class="landing-stack-card" [style.--stack-index]="i">
+                @if (project.badge) {
+                  <span class="landing-badge"
+                        [class.landing-badge--green]="project.badgeTone === 'green'"
+                        [class.landing-badge--orange]="project.badgeTone === 'orange'">
+                    {{ project.badge }}
+                  </span>
+                }
+                <img [src]="project.image" [alt]="project.name" class="landing-stack-card-img" loading="lazy" />
+                <div class="landing-stack-card-body">
+                  <div class="landing-stack-card-price">{{ project.price }}</div>
+                  <div class="landing-stack-card-specs">{{ project.specs }}</div>
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Budget / affordability -->
+      <section class="landing-section landing-section--muted">
+        <h2 class="landing-section-title">Find projects you can afford</h2>
+        <p class="landing-section-subtitle landing-section-subtitle--spaced">Tell Rahaa your budget — we'll highlight projects you're likely to qualify for.</p>
+
+        <div class="landing-budget-row">
+          <div class="landing-budget-card">
+            <div class="landing-budget-card-header">Your budget estimate</div>
+            <div class="landing-budget-stat">
+              <span class="landing-budget-label">Target budget</span>
+              <span class="landing-budget-value">₹ --</span>
+            </div>
+            <div class="landing-budget-stat">
+              <span class="landing-budget-label">Max project price</span>
+              <span class="landing-budget-value">₹ --</span>
+            </div>
+            <div class="landing-budget-stat">
+              <span class="landing-budget-label">Preferred localities</span>
+              <span class="landing-budget-value">Baner, Wakad…</span>
+            </div>
+            <button type="button" class="landing-primary-btn landing-primary-btn--full" (click)="startBudgetSearch()">
+              Search within budget
+            </button>
+          </div>
+
+          <div class="landing-scroll-row">
+            @for (project of affordableProjects; track project.id) {
+              <article class="landing-scroll-card">
+                <div class="landing-scroll-card-img-wrap">
+                  @if (project.badge) {
+                    <span class="landing-scroll-badge">{{ project.badge }}</span>
+                  }
+                  <img [src]="project.image" [alt]="project.name" class="landing-scroll-card-img" loading="lazy" />
+                </div>
+                <div class="landing-scroll-card-body">
+                  <div class="landing-scroll-card-price">{{ project.price }}</div>
+                  <div class="landing-scroll-card-specs">{{ project.specs }}</div>
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Service cards -->
+      <section class="landing-section">
+        <div class="landing-services-grid">
+          @for (card of serviceCards; track card.title) {
+            <article class="landing-service-card">
+              <div class="landing-service-emoji">{{ card.emoji }}</div>
+              <h3 class="landing-service-title">{{ card.title }}</h3>
+              <p class="landing-service-desc">{{ card.description }}</p>
+              <button type="button" class="landing-outline-btn" (click)="goTo(card.route, card.query)">
+                {{ card.cta }}
+              </button>
+            </article>
+          }
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="landing-footer">
+        <div class="landing-footer-inner">
+          <img [src]="logoSrc" alt="Propnut" class="landing-footer-logo brand-logo" />
+          <p class="landing-footer-text">
+            Aqari helps buyers explore RERA-registered projects across Pune with AI-powered search.
+            Sample listings shown for illustration — chat with Rahaa for live project data.
+          </p>
+          <div class="landing-footer-links">
+            @for (link of footerLinks; track link.route) {
+              <button type="button" class="landing-footer-link" (click)="goTo(link.route)">{{ link.label }}</button>
+            }
+            <button type="button" class="landing-footer-link" (click)="goTo('/search')">AI Search</button>
+          </div>
+          <p class="landing-footer-copy">© {{ currentYear }} Aqari · Pune Real Estate AI</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+</div>

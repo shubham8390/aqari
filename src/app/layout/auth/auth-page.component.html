@@ -1,0 +1,101 @@
+<div class="auth-page">
+  <section class="auth-page-form">
+    <div class="auth-page-form-inner">
+      <button type="button" class="auth-page-logo-btn" (click)="goHome()" aria-label="Back to home">
+        <img [src]="logoSrc" alt="Propnut" class="auth-page-logo brand-logo" />
+      </button>
+
+      <h1 class="auth-page-title">{{ isSignIn ? 'Sign in' : 'Create account' }}</h1>
+      <p class="auth-page-subtitle">
+        {{ isSignIn ? 'Welcome back — sign in to continue' : 'Create your account to get started' }}
+      </p>
+
+      @if (error) {
+        <div class="auth-page-error">{{ error }}</div>
+      }
+
+      @if (isSignIn) {
+        @for (nonce of [signInFormNonce]; track nonce) {
+          <form class="auth-page-fields" (ngSubmit)="onSignInSubmit()" autocomplete="off">
+            <div class="auth-page-field">
+              <label class="auth-page-label" for="signInEmail">Email</label>
+              <input id="signInEmail" type="email" [(ngModel)]="signInEmail" [name]="'signInEmail_' + nonce"
+                     required placeholder="you@example.com" autocomplete="email" class="auth-page-input" />
+            </div>
+            <div class="auth-page-field">
+              <label class="auth-page-label" for="signInPassword">Password</label>
+              <input id="signInPassword" type="password" [(ngModel)]="signInPassword" [name]="'signInPassword_' + nonce"
+                     required placeholder="Enter your password" autocomplete="current-password" class="auth-page-input" />
+            </div>
+            <button type="submit" [disabled]="loading" class="auth-page-submit">
+              {{ loading ? 'Signing in…' : 'Continue' }}
+            </button>
+          </form>
+        }
+
+        <p class="auth-page-switch">
+          Don't have an account?
+          <a routerLink="/signup" [queryParamsHandling]="'preserve'" class="auth-page-link">Create account</a>
+        </p>
+      } @else {
+        @for (nonce of [signUpFormNonce]; track nonce) {
+          <form class="auth-page-fields" (ngSubmit)="onSignUpSubmit()" autocomplete="off">
+            <div class="auth-page-field">
+              <label class="auth-page-label" for="signUpEmail">Email</label>
+              <input id="signUpEmail" type="email" [(ngModel)]="signUpEmail" name="signUpEmail" required
+                     placeholder="you@example.com" autocomplete="email" class="auth-page-input"
+                     [style.border]="signUpInputBorder('email')"
+                     (ngModelChange)="onSignUpFieldChange('email')" />
+              @if (signUpAttempted && signUpFieldErrors.email) {
+                <p class="auth-page-field-error">{{ signUpFieldErrors.email }}</p>
+              }
+            </div>
+            <div class="auth-page-field">
+              <label class="auth-page-label" for="signUpPassword">Password</label>
+              <input id="signUpPassword" type="password" [(ngModel)]="signUpPassword" name="signUpPassword" required
+                     minlength="8" placeholder="Create a password" autocomplete="new-password" class="auth-page-input"
+                     [style.border]="signUpInputBorder('password')"
+                     (ngModelChange)="onSignUpFieldChange('password')" />
+              @if (signUpAttempted && signUpFieldErrors.password) {
+                <p class="auth-page-field-error">{{ signUpFieldErrors.password }}</p>
+              } @else {
+                <p class="auth-page-field-hint">At least 8 characters</p>
+              }
+            </div>
+            <div class="auth-page-field">
+              <label class="auth-page-label" for="signUpConfirmPassword">Confirm password</label>
+              <input id="signUpConfirmPassword" type="password" [(ngModel)]="signUpConfirmPassword"
+                     name="signUpConfirmPassword" required placeholder="Confirm your password"
+                     autocomplete="new-password" class="auth-page-input"
+                     [style.border]="signUpInputBorder('confirmPassword')"
+                     (ngModelChange)="onSignUpFieldChange('confirmPassword')" />
+              @if (signUpAttempted && signUpFieldErrors.confirmPassword) {
+                <p class="auth-page-field-error">{{ signUpFieldErrors.confirmPassword }}</p>
+              }
+            </div>
+            <button type="submit" [disabled]="loading" class="auth-page-submit">
+              {{ loading ? 'Creating account…' : 'Create account' }}
+            </button>
+          </form>
+        }
+
+        <p class="auth-page-switch">
+          Already have an account?
+          <a routerLink="/login" [queryParamsHandling]="'preserve'" class="auth-page-link">Sign in</a>
+        </p>
+      }
+
+      <div class="auth-page-divider"><span>OR</span></div>
+
+      <div class="auth-page-social">
+        <button type="button" disabled class="auth-page-social-btn">Continue with Google (coming soon)</button>
+        <button type="button" disabled class="auth-page-social-btn">Continue with Microsoft (coming soon)</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="auth-page-visual" aria-hidden="true">
+    <img [src]="heroImage" [alt]="''" class="auth-page-visual-img"
+         (error)="onHeroError($event)" />
+  </aside>
+</div>

@@ -51,7 +51,7 @@ export class PastSessionsComponent implements OnInit {
   }
 
   openLogin(): void {
-    this.authModal.open('signin');
+    this.authModal.open('signin', '/history');
   }
 
   openSession(session: ChatSession): void {

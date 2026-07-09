@@ -60,8 +60,16 @@
         ↑
       </button>
     </div>
-    <div class="text-center mt-2 hidden sm:block" style="font-size:11px;color:var(--text-muted);">
-      Rahaa · Live property data · RERA listings · Pune market insights
+    <div class="flex items-center justify-between mt-2 gap-3">
+      <div class="text-center flex-1 hidden sm:block" style="font-size:11px;color:var(--text-muted);">
+        Rahaa · Live property data · RERA listings · Pune market insights
+      </div>
+      <div class="chat-theme-toggle">
+        <span class="chat-theme-label">{{ isLight ? 'Light' : 'Dark' }}</span>
+        <button type="button" (click)="theme.toggle()" class="toggle-track" [class.active]="isLight" aria-label="Toggle theme">
+          <div class="toggle-thumb"></div>
+        </button>
+      </div>
     </div>
   </div>
 </div>

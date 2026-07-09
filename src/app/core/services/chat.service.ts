@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, SecurityContext } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { ChatMessage } from '../models/message.model';
 import { ChatRequest, ChatResponse, ChatSource } from '../models/chat-api.model';
 import { API, CHAT_TOP_K } from '../config/api.config';
@@ -14,6 +15,7 @@ export class ChatService {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
   private readonly authModal = inject(AuthModalService);
+  private readonly router = inject(Router);
   private readonly sanitizer = inject(DomSanitizer);
 
   messages = signal<ChatMessage[]>(this.buildInitialMessages());
@@ -26,7 +28,7 @@ export class ChatService {
     if (!query || this.isTyping()) return false;
 
     if (!this.auth.isAuthenticated()) {
-      this.authModal.open('signin');
+      this.authModal.open('signin', this.router.url);
       return false;
     }
 

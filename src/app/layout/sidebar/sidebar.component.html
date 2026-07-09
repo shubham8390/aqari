@@ -1,244 +1,35 @@
-<aside
-  class="sidebar-accent relative flex flex-col"
-  [style.width]="layout.isMobile() ? 'var(--sidebar-w)' : (collapsed() ? '60px' : 'var(--sidebar-w)')"
-  [style.min-width]="layout.isMobile() ? 'var(--sidebar-w)' : (collapsed() ? '60px' : 'var(--sidebar-w)')"
-  style="flex:1;background:var(--bg-card);border-right:1px solid var(--gold-border);overflow:hidden;transition:width 0.3s ease,min-width 0.3s ease;">
+<aside class="app-rail sidebar-accent">
 
-  <!-- ── FIXED TOP: Logo + Toggle ── -->
-  <div class="flex-shrink-0 py-5 flex items-center"
-       [class.px-6]="!collapsed() || layout.isMobile()"
-       [class.px-3]="collapsed() && !layout.isMobile()"
-       [class.justify-between]="!collapsed() || layout.isMobile()"
-       [class.justify-center]="collapsed() && !layout.isMobile()"
-       style="border-bottom:1px solid var(--border);min-height:72px;">
+  @if (layout.isMobile()) {
+    <button type="button" class="app-rail-close" (click)="layout.closeSidebar()" aria-label="Close menu">✕</button>
+  }
 
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="min-w-0 flex-1">
-        <div class="flex items-center gap-2.5">
-          <img [src]="logoSrc" alt="Propnut" class="flex-shrink-0 rounded-lg"
-               style="height:36px;width:36px;object-fit:contain;" />
-          <span class="sidebar-brand-name">Propnut</span>
-        </div>
-      </div>
-      <!-- Desktop: collapse toggle; Mobile: X close button -->
-      @if (layout.isMobile()) {
-        <button (click)="layout.closeSidebar()"
-                class="sidebar-toggle-btn flex items-center justify-center rounded-lg flex-shrink-0"
-                style="width:32px;height:32px;font-size:18px;"
-                aria-label="Close menu">✕</button>
-      } @else {
-        <button (click)="toggleCollapsed()"
-                class="sidebar-toggle-btn flex items-center justify-center rounded-lg flex-shrink-0"
-                style="width:26px;height:26px;"
-                title="Collapse sidebar">‹</button>
-      }
-    } @else {
-      <div class="flex flex-col items-center gap-2">
-        <img [src]="logoSrc" alt="Propnut" class="rounded-lg"
-             style="width:34px;height:34px;object-fit:contain;" />
-        <button (click)="toggleCollapsed()"
-                class="sidebar-toggle-btn flex items-center justify-center rounded-lg"
-                style="width:26px;height:26px;"
-                title="Expand sidebar">›</button>
-      </div>
+  <button type="button" class="app-rail-logo-btn" (click)="goHome()" aria-label="Go to home">
+    <img [src]="logoSrc" alt="Propnut" class="app-rail-logo brand-logo" />
+  </button>
+
+  <nav class="app-rail-nav">
+    @for (item of visibleRailItems(); track item.route) {
+      <button
+        type="button"
+        class="app-rail-item"
+        [class.app-rail-item--active]="isRouteActive(item.route)"
+        (click)="goTo(item.route)">
+        <span class="app-rail-icon">{{ item.icon }}</span>
+        <span class="app-rail-label">{{ item.label }}</span>
+      </button>
     }
-  </div>
+  </nav>
 
-  <!-- ── SCROLLABLE MIDDLE ── -->
-  <div class="flex-1 overflow-y-auto hidden-scroll flex flex-col">
-
-    <!-- Agent Status -->
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="mx-4 mt-4 mb-2 flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 flex-shrink-0"
-           style="background:var(--gold-faint);border:1px solid var(--gold-border);">
-        <div class="pulse-ring relative flex items-center justify-center rounded-full flex-shrink-0"
-             style="width:28px;height:28px;background:var(--accent-soft);">
-          <div class="rounded-full" style="width:8px;height:8px;background:var(--gold);"></div>
-        </div>
-        <div>
-          <div style="font-size:12px;font-weight:500;color:var(--gold-light);">Rahaa</div>
-          <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">Analyzing 2,400+ listings</div>
-        </div>
-      </div>
-    } @else {
-      <div class="flex justify-center mt-4 mb-2 flex-shrink-0">
-        <div class="pulse-ring relative flex items-center justify-center rounded-full"
-             style="width:32px;height:32px;background:var(--accent-soft);"
-             title="Rahaa · Active">
-          <div class="rounded-full" style="width:8px;height:8px;background:var(--gold);"></div>
-        </div>
-      </div>
-    }
-
-    <!-- Capabilities label -->
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="uppercase tracking-widest px-6 pb-2 pt-3 flex-shrink-0"
-           style="font-size:9px;color:var(--text-muted);letter-spacing:0.12em;">
-        Capabilities
-      </div>
-    } @else {
-      <div class="my-2 mx-3 flex-shrink-0" style="height:1px;background:var(--border);"></div>
-    }
-
-    <!-- Nav: Capabilities -->
-    <nav class="flex flex-col gap-0.5 flex-shrink-0" [class.px-0]="!collapsed() || layout.isMobile()">
-      @for (item of visibleNavItems(); track item.key) {
-        <button
-          (click)="navigate(item.key)"
-          class="flex items-center transition-all duration-200 cursor-pointer rounded-xl"
-          [class.gap-3]="!collapsed() || layout.isMobile()"
-          [class.mx-2]="!collapsed() || layout.isMobile()"
-          [class.px-3]="!collapsed() || layout.isMobile()"
-          [class.py-2.5]="!collapsed() || layout.isMobile()"
-          [class.justify-center]="collapsed() && !layout.isMobile()"
-          [class.mx-1.5]="collapsed() && !layout.isMobile()"
-          [style.background]="isActive(item.key) ? 'var(--gold-faint)' : 'transparent'"
-          [style.border]="isActive(item.key) ? '1px solid var(--gold-border)' : '1px solid transparent'"
-          [attr.title]="(collapsed() && !layout.isMobile()) ? item.label : null"
-          style="width:auto;text-align:left;">
-          <span class="text-sm opacity-70 text-center" [class.w-4]="!collapsed() || layout.isMobile()">{{ item.icon }}</span>
-          @if (!collapsed() || layout.isMobile()) {
-            <span class="text-sm flex-1"
-                  [style.color]="isActive(item.key) ? 'var(--gold-light)' : 'var(--text-secondary)'">
-              {{ item.label }}
-            </span>
-            @if (item.badge) {
-              <span class="text-xs px-1.5 py-0.5 rounded-full"
-                    style="background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-border);">
-                {{ item.badge }}
-              </span>
-            }
-          }
-        </button>
-      }
-    </nav>
-
-    <!-- Sessions label -->
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="uppercase tracking-widest px-6 pb-2 pt-4 flex-shrink-0"
-           style="font-size:9px;color:var(--text-muted);letter-spacing:0.12em;">
-        Sessions
-      </div>
-    } @else {
-      <div class="my-2 mx-3 flex-shrink-0" style="height:1px;background:var(--border);"></div>
-    }
-
-    <!-- Nav: Sessions -->
-    <nav class="flex flex-col gap-0.5 flex-shrink-0">
-      @for (item of visibleSessionItems(); track item.key) {
-        <button
-          (click)="navigate(item.key)"
-          class="flex items-center transition-all duration-200 cursor-pointer rounded-xl"
-          [class.gap-3]="!collapsed() || layout.isMobile()"
-          [class.mx-2]="!collapsed() || layout.isMobile()"
-          [class.px-3]="!collapsed() || layout.isMobile()"
-          [class.py-2.5]="!collapsed() || layout.isMobile()"
-          [class.justify-center]="collapsed() && !layout.isMobile()"
-          [class.mx-1.5]="collapsed() && !layout.isMobile()"
-          [style.background]="isActive(item.key) ? 'var(--gold-faint)' : 'transparent'"
-          [style.border]="isActive(item.key) ? '1px solid var(--gold-border)' : '1px solid transparent'"
-          [attr.title]="(collapsed() && !layout.isMobile()) ? item.label : null"
-          style="width:auto;text-align:left;">
-          <span class="text-sm opacity-70 text-center" [class.w-4]="!collapsed() || layout.isMobile()">{{ item.icon }}</span>
-          @if (!collapsed() || layout.isMobile()) {
-            <span class="text-sm flex-1"
-                  [style.color]="isActive(item.key) ? 'var(--gold-light)' : 'var(--text-secondary)'">
-              {{ item.label }}
-            </span>
-            @if (item.badge) {
-              <span class="text-xs px-1.5 py-0.5 rounded-full"
-                    style="background:var(--gold-faint);color:var(--gold);border:1px solid var(--gold-border);">
-                {{ item.badge }}
-              </span>
-            }
-          }
-        </button>
-      }
-    </nav>
-
-    <!-- Journey Progress (expanded only) -->
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="mx-4 my-4 rounded-xl p-4 flex-shrink-0"
-           style="background:var(--bg-raised);border:1px solid var(--border);">
-        <div class="uppercase tracking-widest mb-3"
-             style="font-size:10px;color:var(--text-muted);letter-spacing:0.08em;">
-          {{ journeySectionTitle() }}
-        </div>
-        <div class="flex flex-col gap-0">
-          @for (step of journeySteps; track $index) {
-            <div class="flex items-center gap-2 cursor-pointer rounded-lg px-1 py-0.5 -mx-1 transition-colors duration-200 hover:bg-white/5 group"
-                 (click)="navigate(step.key)">
-              <div class="flex flex-col items-center flex-shrink-0">
-                <div class="flex items-center justify-center rounded-full transition-all duration-200"
-                     style="width:18px;height:18px;font-size:9px;"
-                     [style.background]="step.state === 'done' ? 'rgba(46,191,160,0.2)' : step.state === 'active' ? 'var(--gold-faint)' : 'var(--border)'"
-                     [style.color]="step.state === 'done' ? 'var(--accent-teal)' : step.state === 'active' ? 'var(--gold)' : 'var(--text-muted)'"
-                     [style.border]="step.state === 'done' ? '1px solid rgba(46,191,160,0.4)' : step.state === 'active' ? '1px solid var(--gold-border)' : '1px solid var(--border)'"
-                     [style.animation]="step.state === 'active' ? 'breathe 2s ease-in-out infinite' : 'none'">
-                  {{ step.state === 'done' ? '✓' : step.state === 'active' ? '●' : '○' }}
-                </div>
-              </div>
-              <span class="text-xs transition-colors duration-200"
-                    [style.color]="step.state === 'done' ? 'var(--accent-teal)' : step.state === 'active' ? 'var(--gold-light)' : 'var(--text-muted)'"
-                    [style.fontWeight]="step.state === 'active' ? '500' : '400'">
-                {{ step.label }}
-              </span>
-              <span class="ml-auto text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    style="color:var(--text-muted);">›</span>
-            </div>
-            @if ($index < journeySteps.length - 1) {
-              <div style="width:1px;height:8px;background:var(--border);margin-left:12px;"></div>
-            }
-          }
-        </div>
-      </div>
-    }
-
-    <!-- Theme Toggle -->
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="mx-4 mb-3 flex items-center justify-between rounded-xl px-4 py-3 flex-shrink-0"
-           style="background:var(--bg-raised);border:1px solid var(--border);">
-        <div class="flex items-center gap-2">
-          <span style="font-size:14px;">{{ isLight ? '☀️' : '🌙' }}</span>
-          <span class="text-xs" style="color:var(--text-secondary);">{{ isLight ? 'Light Mode' : 'Dark Mode' }}</span>
-        </div>
-        <button (click)="theme.toggle()" class="toggle-track" [class.active]="isLight" aria-label="Toggle theme">
-          <div class="toggle-thumb"></div>
-        </button>
-      </div>
-    } @else {
-      <div class="flex justify-center mb-3 mt-auto flex-shrink-0">
-        <button (click)="theme.toggle()"
-                class="flex items-center justify-center rounded-xl"
-                style="width:40px;height:40px;background:var(--bg-raised);border:1px solid var(--border);"
-                [title]="isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
-          <span style="font-size:16px;">{{ isLight ? '☀️' : '🌙' }}</span>
-        </button>
-      </div>
-    }
-
-  </div><!-- end scrollable middle -->
-
-  <!-- ── FIXED BOTTOM: User Area ── -->
-  <div class="flex-shrink-0 flex items-center gap-2.5 py-4 cursor-pointer"
-       [class.px-5]="!collapsed() || layout.isMobile()"
-       [class.justify-start]="!collapsed() || layout.isMobile()"
-       [class.justify-center]="collapsed() && !layout.isMobile()"
-       style="border-top:1px solid var(--border);background:var(--bg-card);"
-       (click)="auth.isAuthenticated() ? openProfile() : null">
-    <div class="user-avatar flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
-         style="width:36px;height:36px;">
+  <button type="button" class="app-rail-user" (click)="onUserClick()">
+    <div class="user-avatar app-rail-avatar">
       {{ auth.isAuthenticated() ? userInitials() : '?' }}
     </div>
-    @if (!collapsed() || layout.isMobile()) {
-      <div class="min-w-0">
-        <div class="text-sm font-medium truncate" style="color:var(--text-primary);">
-          {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
-        </div>
-        <div class="truncate" style="font-size:11px;color:var(--text-muted);">
-          {{ auth.isAuthenticated() ? auth.user()?.email : 'Sign in to chat' }}
-        </div>
-      </div>
-    }
-  </div>
+    <span class="app-rail-label app-rail-user-name">
+      {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
+    </span>
+    <span class="app-rail-user-sub">
+      {{ auth.isAuthenticated() ? auth.user()?.email : 'Sign in to chat' }}
+    </span>
+  </button>
 </aside>

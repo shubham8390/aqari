@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { LogoutConfirmService } from './logout-confirm.service';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthModalService } from './auth-modal.service';
@@ -16,6 +17,7 @@ export class LogoutConfirmComponent {
   private auth = inject(AuthService);
   private authModal = inject(AuthModalService);
   private chat = inject(ChatService);
+  private router = inject(Router);
 
   close(): void {
     this.confirm.close();
@@ -28,9 +30,9 @@ export class LogoutConfirmComponent {
   }
 
   confirmLogout(): void {
-    this.auth.logout();
+    this.auth.logout({ redirect: false });
     this.chat.startNewSession();
     this.close();
-    this.authModal.open('signin');
+    this.authModal.open('signin', '/');
   }
 }

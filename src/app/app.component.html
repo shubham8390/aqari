@@ -1,36 +1,4 @@
-<!-- Ambient blobs -->
-<div class="ambient-blob-primary fixed rounded-full pointer-events-none"
-     style="width:500px;height:500px;top:-100px;left:-100px;filter:blur(80px);z-index:0;"></div>
-<div class="ambient-blob-secondary fixed rounded-full pointer-events-none"
-     style="width:400px;height:400px;bottom:-80px;right:200px;filter:blur(80px);z-index:0;"></div>
+<router-outlet />
 
-<!-- App Shell -->
-<div class="flex relative app-shell" style="z-index:1;">
-
-  <!-- Mobile overlay — inside app shell so it shares the same stacking context as the drawers.
-       z-index:45 sits between regular content and the drawers (z-index:50). -->
-  @if (layout.isMobile() && (layout.sidebarOpen() || layout.rightPanelOpen())) {
-    <div class="fixed inset-0 bg-black/50"
-         style="z-index:45;"
-         (click)="layout.closeAll()"></div>
-  }
-
-  <!-- Sidebar -->
-  <app-sidebar />
-
-  <!-- Main Column: Topbar + Router View -->
-  <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-    <app-topbar />
-    <div class="flex flex-1 overflow-hidden min-h-0">
-      <router-outlet />
-    </div>
-  </div>
-
-  <!-- Right Panel -->
-  <app-right-panel />
-</div>
-
-<!-- Auth modal overlay -->
-<app-auth-modal />
 <app-profile-setup-modal />
 <app-logout-confirm />

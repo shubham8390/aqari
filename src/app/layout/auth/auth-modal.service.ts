@@ -1,22 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 export type AuthMode = 'signin' | 'signup';
 
 @Injectable({ providedIn: 'root' })
 export class AuthModalService {
-  isOpen = signal(false);
-  mode   = signal<AuthMode>('signin');
+  private readonly router = inject(Router);
 
-  open(mode: AuthMode = 'signin'): void {
-    this.mode.set(mode);
-    this.isOpen.set(true);
+  open(mode: AuthMode = 'signin', returnUrl?: string): void {
+    const path = mode === 'signup' ? '/signup' : '/login';
+    this.router.navigate([path], {
+      queryParams: returnUrl ? { returnUrl } : {},
+    });
   }
 
-  close(): void {
-    this.isOpen.set(false);
-  }
+  /** @deprecated Full-page auth — use router navigation instead */
+  close(): void {}
 
   setMode(mode: AuthMode): void {
-    this.mode.set(mode);
+    const path = mode === 'signup' ? '/signup' : '/login';
+    this.router.navigate([path], { queryParamsHandling: 'preserve' });
   }
 }

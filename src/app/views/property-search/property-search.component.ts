@@ -1,8 +1,12 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewChecked, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChatService } from '../../core/services/chat.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { AuthService } from '../../core/services/auth.service';
+import { AuthModalService } from '../../layout/auth/auth-modal.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
 import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/agent.constants';
 
@@ -13,9 +17,14 @@ import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/age
   templateUrl: './property-search.component.html',
   host: { style: 'display:flex;flex:1;overflow:hidden;min-height:0;' },
 })
-export class PropertySearchComponent implements AfterViewChecked {
+export class PropertySearchComponent implements OnInit, AfterViewChecked {
   chat = inject(ChatService);
   nav  = inject(NavigationService);
+  theme = inject(ThemeService);
+  private auth = inject(AuthService);
+  private authModal = inject(AuthModalService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   @ViewChild('chatScroll') chatScroll!: ElementRef<HTMLDivElement>;
 
@@ -25,17 +34,24 @@ export class PropertySearchComponent implements AfterViewChecked {
   readonly agentLabel = AGENT_LABEL;
   readonly agentInitial = AGENT_INITIAL;
 
-  // TODO: Quick suggestion pills — implement later
-  // showQuickPills = computed(() =>
-  //   this.chat.messages().some(m => m.role === 'user'),
-  // );
-  //
-  // quickPills = [
-  //   { label: '🏢 Project details',       text: 'Give me details about Galaxy Orizzonte' },
-  //   { label: '📋 RERA & builder info',   text: 'What is the RERA number and builder for Galaxy Orizzonte?' },
-  //   { label: '💰 Pricing & configs',     text: 'What are the 2 BHK and 3 BHK prices for Galaxy Orizzonte?' },
-  //   { label: '📅 Possession timeline',   text: 'When is Galaxy Orizzonte expected to be completed?' },
-  // ];
+  get isLight(): boolean {
+    return this.theme.theme() === 'light';
+  }
+
+  ngOnInit(): void {
+    this.nav.navigate('search');
+
+    const q = this.route.snapshot.queryParamMap.get('q')?.trim();
+    if (!q) return;
+
+    if (!this.auth.isAuthenticated()) {
+      this.authModal.open('signin', `/search?q=${encodeURIComponent(q)}`);
+      return;
+    }
+
+    void this.router.navigate(['/search'], { replaceUrl: true });
+    queueMicrotask(() => this.chat.sendMessage(q));
+  }
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
@@ -46,10 +62,6 @@ export class PropertySearchComponent implements AfterViewChecked {
     this.chat.sendMessage(this.inputText.trim());
     this.inputText = '';
   }
-
-  // sendQuick(text: string): void {
-  //   this.chat.sendMessage(text);
-  // }
 
   onKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') this.send();

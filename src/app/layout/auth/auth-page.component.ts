@@ -1,32 +1,41 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthModalService } from './auth-modal.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ChatService } from '../../core/services/chat.service';
 import { ProfileSetupService } from './profile-setup.service';
+import { AUTH_HERO_IMAGE, AUTH_HERO_IMAGE_FALLBACK } from '../../core/data/auth.data';
+import { APP_LOGO_SRC } from '../../core/constants/brand.constants';
 
 @Component({
-  selector: 'app-auth-modal',
+  selector: 'app-auth-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './auth-modal.component.html',
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './auth-page.component.html',
+  host: { class: 'auth-page-root' },
 })
-export class AuthModalComponent {
-  auth = inject(AuthModalService);
-  authService = inject(AuthService);
-  chat = inject(ChatService);
-  profileSetup = inject(ProfileSetupService);
+export class AuthPageComponent implements OnInit, OnDestroy {
+  private readonly authService = inject(AuthService);
+  private readonly chat = inject(ChatService);
+  private readonly profileSetup = inject(ProfileSetupService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  signInEmail    = '';
+  readonly logoSrc = APP_LOGO_SRC;
+  readonly heroImage = AUTH_HERO_IMAGE;
+
+  mode: 'signin' | 'signup' = 'signin';
+
+  signInEmail = '';
   signInPassword = '';
 
-  signUpEmail            = '';
-  signUpPassword         = '';
-  signUpConfirmPassword  = '';
+  signUpEmail = '';
+  signUpPassword = '';
+  signUpConfirmPassword = '';
 
   loading = false;
-  error   = '';
+  error = '';
 
   signUpAttempted = false;
   signUpFieldErrors = {
@@ -37,41 +46,35 @@ export class AuthModalComponent {
 
   signInFormNonce = 0;
   signUpFormNonce = 0;
-  private modalWasOpen = false;
 
-  constructor() {
-    effect(() => {
-      const isOpen = this.auth.isOpen();
-      if (isOpen && !this.modalWasOpen) {
-        this.resetForms();
-      }
-      this.modalWasOpen = isOpen;
-    });
+  ngOnInit(): void {
+    document.documentElement.classList.add('auth-page-active');
+    document.body.classList.add('auth-page-active');
+
+    this.mode = this.route.snapshot.data['mode'] === 'signup' ? 'signup' : 'signin';
+
+    if (this.authService.isAuthenticated()) {
+      void this.router.navigateByUrl(this.resolveReturnUrl());
+    }
   }
 
-  close(): void {
-    if (!this.authService.isAuthenticated()) return;
-    this.auth.close();
-    this.error = '';
-    this.resetSignUpValidation();
+  ngOnDestroy(): void {
+    document.documentElement.classList.remove('auth-page-active');
+    document.body.classList.remove('auth-page-active');
   }
 
-  switchToSignUp(): void {
-    this.auth.setMode('signup');
-    this.error = '';
-    this.resetSignUpValidation();
+  get isSignIn(): boolean {
+    return this.mode === 'signin';
   }
 
-  switchToSignIn(): void {
-    this.auth.setMode('signin');
-    this.error = '';
-    this.resetSignUpValidation();
+  goHome(): void {
+    void this.router.navigate(['/']);
   }
 
-  onOverlayClick(event: MouseEvent): void {
-    if (!this.authService.isAuthenticated()) return;
-    if ((event.target as HTMLElement).dataset['overlay'] === 'true') {
-      this.close();
+  onHeroError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (!img.src.includes(AUTH_HERO_IMAGE_FALLBACK)) {
+      img.src = AUTH_HERO_IMAGE_FALLBACK;
     }
   }
 
@@ -83,15 +86,7 @@ export class AuthModalComponent {
     this.loading = true;
     this.error = '';
     this.authService.login(this.signInEmail, this.signInPassword).subscribe({
-      next: (res) => {
-        this.loading = false;
-        this.resetForms();
-        this.auth.close();
-        this.chat.refreshWelcomeIfInitial();
-        if (!res.user.profile_complete) {
-          this.profileSetup.open();
-        }
-      },
+      next: (res) => this.handleAuthSuccess(res.user.profile_complete),
       error: () => {
         this.loading = false;
         this.error = 'Invalid email or password.';
@@ -110,14 +105,8 @@ export class AuthModalComponent {
       password: this.signUpPassword,
     }).subscribe({
       next: (res) => {
-        this.loading = false;
-        this.resetForms();
-        this.auth.close();
-        this.chat.refreshWelcomeIfInitial();
         this.resetSignUpValidation();
-        if (!res.user.profile_complete) {
-          this.profileSetup.open();
-        }
+        this.handleAuthSuccess(res.user.profile_complete);
       },
       error: (err) => {
         this.loading = false;
@@ -140,25 +129,29 @@ export class AuthModalComponent {
   signUpInputBorder(field: 'email' | 'password' | 'confirmPassword'): string {
     return this.signUpAttempted && this.signUpFieldErrors[field]
       ? '1px solid var(--accent-red)'
-      : '1px solid var(--border-mid)';
+      : '1px solid #C8CDD5';
+  }
+
+  private handleAuthSuccess(profileComplete: boolean): void {
+    this.loading = false;
+    this.chat.refreshWelcomeIfInitial();
+    if (!profileComplete) {
+      this.profileSetup.open();
+    }
+    void this.router.navigateByUrl(this.resolveReturnUrl());
+  }
+
+  private resolveReturnUrl(): string {
+    const raw = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (raw && raw.startsWith('/') && !raw.startsWith('//')) {
+      return raw;
+    }
+    return '/search';
   }
 
   private resetSignUpValidation(): void {
     this.signUpAttempted = false;
     this.signUpFieldErrors = { email: '', password: '', confirmPassword: '' };
-  }
-
-  private resetForms(): void {
-    this.signInEmail = '';
-    this.signInPassword = '';
-    this.signUpEmail = '';
-    this.signUpPassword = '';
-    this.signUpConfirmPassword = '';
-    this.loading = false;
-    this.error = '';
-    this.resetSignUpValidation();
-    this.signInFormNonce++;
-    this.signUpFormNonce++;
   }
 
   private validateSignUpForm(): boolean {
