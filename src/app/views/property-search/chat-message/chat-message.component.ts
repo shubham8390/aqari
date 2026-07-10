@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessage } from '../../../core/models/message.model';
 import { ChatSource } from '../../../core/models/chat-api.model';
@@ -20,6 +20,7 @@ import { AGENT_INITIAL, AGENT_LABEL } from '../../../core/constants/agent.consta
 })
 export class ChatMessageComponent {
   @Input() message!: ChatMessage;
+  @Output() focusProject = new EventEmitter<number>();
 
   auth = inject(AuthService);
 
@@ -50,5 +51,15 @@ export class ChatMessageComponent {
 
   thumbnail(source: ChatSource): string | null {
     return sourceThumbnail(source);
+  }
+
+  hasCoords(source: ChatSource): boolean {
+    return Number.isFinite(source.lat) && Number.isFinite(source.lon);
+  }
+
+  onSourceClick(source: ChatSource): void {
+    if (this.hasCoords(source)) {
+      this.focusProject.emit(source.id);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -19,16 +19,20 @@ export class AppShellComponent implements OnInit {
   private nav = inject(NavigationService);
   private router = inject(Router);
 
+  readonly hideRightPanel = signal(false);
+
   ngOnInit(): void {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        const segment = e.urlAfterRedirects.replace(/^#\/?/, '').split('?')[0].split('/')[0];
+        const path = e.urlAfterRedirects.replace(/^#\/?/, '').split('?')[0];
+        const segment = path.split('/').filter(Boolean)[0] ?? '';
         const view = segment as ViewKey;
         const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history'];
         if (valid.includes(view)) {
           this.nav.activeView.set(view);
         }
+        this.hideRightPanel.set(view === 'search');
       });
   }
 }

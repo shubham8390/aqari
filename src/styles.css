@@ -1949,3 +1949,131 @@ body.auth-page-active {
     min-height: 100dvh;
   }
 }
+
+/* ─────────────────────────────────────────────
+   SEARCH SPLIT (map left + chat right)
+───────────────────────────────────────────── */
+.property-search-host {
+  width: 100%;
+}
+
+.search-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search-split-chat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+
+.search-split-chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+.search-split-map {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+
+.search-map-toggle {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+  background: var(--gold-faint);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.search-map-toggle:hover {
+  background: var(--accent-soft);
+}
+
+.chat-source-row {
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  transition: background 0.15s ease;
+}
+
+.chat-source-row:hover {
+  background: var(--bg-hover);
+}
+
+@media (max-width: 899px) {
+  .search-split {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .search-split-map {
+    display: none;
+    flex: 1 1 auto;
+    min-height: 0;
+    order: 1;
+  }
+
+  .search-split-chat {
+    border-left: none;
+    flex: 1 1 auto;
+    min-height: 0;
+    order: 2;
+    z-index: 1;
+  }
+
+  .search-split-chat-scroll {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .search-split-input {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .search-split--map-open .search-split-map {
+    display: block;
+  }
+
+  .search-split--map-open .search-split-chat {
+    flex: 0 0 auto;
+  }
+
+  .search-split--map-open .search-split-chat-scroll {
+    display: none;
+  }
+
+  .search-map-toggle {
+    display: inline-flex;
+  }
+}
+

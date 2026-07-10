@@ -19,5 +19,7 @@
     </div>
   </div>
 
-  <app-right-panel />
+  @if (!hideRightPanel()) {
+    <app-right-panel />
+  }
 </div>

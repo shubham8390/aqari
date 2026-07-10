@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewChecked, OnInit } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,28 +7,36 @@ import { NavigationService } from '../../core/services/navigation.service';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthModalService } from '../../layout/auth/auth-modal.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { MapMarkersService } from '../../core/services/map-markers.service';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { ProjectMapComponent } from './project-map/project-map.component';
 import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/agent.constants';
 
 @Component({
   selector: 'app-property-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, ChatMessageComponent],
+  imports: [CommonModule, FormsModule, ChatMessageComponent, ProjectMapComponent],
   templateUrl: './property-search.component.html',
-  host: { style: 'display:flex;flex:1;overflow:hidden;min-height:0;' },
+  host: {
+    class: 'property-search-host',
+    style: 'display:flex;flex:1;overflow:hidden;min-height:0;',
+  },
 })
-export class PropertySearchComponent implements OnInit, AfterViewChecked {
+export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   chat = inject(ChatService);
-  nav  = inject(NavigationService);
+  nav = inject(NavigationService);
   theme = inject(ThemeService);
+  private readonly mapMarkers = inject(MapMarkersService);
   private auth = inject(AuthService);
   private authModal = inject(AuthModalService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
   @ViewChild('chatScroll') chatScroll!: ElementRef<HTMLDivElement>;
+  @ViewChild(ProjectMapComponent) projectMap?: ProjectMapComponent;
 
   inputText = '';
+  mobileMapOpen = false;
 
   readonly agentName = AGENT_NAME;
   readonly agentLabel = AGENT_LABEL;
@@ -39,6 +47,8 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    document.documentElement.classList.add('search-map-active');
+    document.body.classList.add('search-map-active');
     this.nav.navigate('search');
 
     const q = this.route.snapshot.queryParamMap.get('q')?.trim();
@@ -53,6 +63,11 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked {
     queueMicrotask(() => this.chat.sendMessage(q));
   }
 
+  ngOnDestroy(): void {
+    document.documentElement.classList.remove('search-map-active');
+    document.body.classList.remove('search-map-active');
+  }
+
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
@@ -65,6 +80,21 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked {
 
   onKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') this.send();
+  }
+
+  toggleMobileMap(): void {
+    this.mobileMapOpen = !this.mobileMapOpen;
+    if (this.mobileMapOpen) {
+      queueMicrotask(() => this.projectMap?.refreshSize());
+    }
+  }
+
+  onFocusProject(id: number): void {
+    this.mapMarkers.focus(id);
+    if (window.matchMedia('(max-width: 899px)').matches) {
+      this.mobileMapOpen = true;
+      queueMicrotask(() => this.projectMap?.refreshSize());
+    }
   }
 
   private scrollToBottom(): void {

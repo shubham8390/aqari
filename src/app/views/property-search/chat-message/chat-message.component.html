@@ -36,8 +36,10 @@
         </div>
 
         @for (source of message.sources; track source.id) {
-          <div class="flex items-start gap-3.5 px-4 py-3.5"
-               [style.borderBottom]="$last ? 'none' : '1px solid var(--border)'">
+          <button type="button" class="chat-source-row flex items-start gap-3.5 px-4 py-3.5 w-full text-left"
+               (click)="onSourceClick(source)"
+               [style.borderBottom]="$last ? 'none' : '1px solid var(--border)'"
+               [style.cursor]="hasCoords(source) ? 'pointer' : 'default'">
             @if (thumbnail(source); as imageUrl) {
               <img [src]="imageUrl" [alt]="source.project_name"
                    class="rounded-lg flex-shrink-0 object-cover"
@@ -82,7 +84,7 @@
                 }
               </div>
             </div>
-          </div>
+          </button>
         }
       </div>
     }

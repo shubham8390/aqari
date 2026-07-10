@@ -1,0 +1,51 @@
+@if (mapsError()) {
+  <div class="project-map-fallback">
+    <p>{{ mapsError() }}</p>
+  </div>
+} @else if (!mapsReady()) {
+  <div class="project-map-fallback">
+    <p>Loading map…</p>
+  </div>
+} @else {
+  <google-map
+    class="project-map-canvas"
+    height="100%"
+    width="100%"
+    [center]="center()"
+    [zoom]="zoom()"
+    [options]="mapOptions"
+    (mapClick)="onMapClick()">
+    @for (marker of markersService.markers(); track marker.id) {
+      <map-marker
+        #mapMarker="mapMarker"
+        [position]="marker.position"
+        [options]="markerOptions(marker)"
+        (mapMarkerClick)="onMarkerClick(marker, mapMarker)" />
+    }
+
+    <map-info-window>
+      @if (selected(); as item) {
+        <div class="project-map-info">
+          <div class="project-map-info-title">{{ item.title }}</div>
+          @if (item.locality) {
+            <div class="project-map-info-meta">{{ item.locality }}</div>
+          }
+          @if (item.status) {
+            <div class="project-map-info-meta">{{ item.status }}</div>
+          }
+          @if (item.price) {
+            <div class="project-map-info-price">{{ item.price }}</div>
+          }
+        </div>
+      }
+    </map-info-window>
+  </google-map>
+
+  <div class="project-map-badge">
+    @if (markersService.markers().length) {
+      {{ markersService.markers().length }} project{{ markersService.markers().length === 1 ? '' : 's' }} on map
+    } @else {
+      Ask Rahaa to see projects on the map
+    }
+  </div>
+}
