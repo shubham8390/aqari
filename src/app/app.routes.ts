@@ -8,11 +8,13 @@ import { DocumentsEjariComponent } from './views/documents-ejari/documents-ejari
 import { ReraComplianceComponent } from './views/rera-compliance/rera-compliance.component';
 import { PastSessionsComponent } from './views/past-sessions/past-sessions.component';
 import { AuthPageComponent } from './layout/auth/auth-page.component';
+import { AuthLoadingComponent } from './layout/auth/auth-loading.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'login', component: AuthPageComponent, data: { mode: 'signin' } },
   { path: 'signup', component: AuthPageComponent, data: { mode: 'signup' } },
+  { path: 'loading', component: AuthLoadingComponent },
   {
     path: '',
     component: AppShellComponent,

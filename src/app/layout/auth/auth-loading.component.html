@@ -1,0 +1,15 @@
+<div class="auth-loading">
+  <img [src]="logoSrc" alt="Propnut" class="auth-loading-logo brand-logo" />
+  <div class="auth-loading-card">
+    @if (!error) {
+      <div class="auth-loading-spinner" aria-hidden="true"></div>
+    }
+    <h1 class="auth-loading-title">{{ status }}</h1>
+    @if (error) {
+      <p class="auth-loading-error">{{ error }}</p>
+      <button type="button" class="auth-loading-btn" (click)="retry()">Back to sign in</button>
+    } @else {
+      <p class="auth-loading-hint">Please wait while we finish connecting your Google account.</p>
+    }
+  </div>
+</div>

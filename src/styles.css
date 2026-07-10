@@ -1907,6 +1907,10 @@ body.auth-page-active {
 
 .auth-page-social-btn {
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   padding: 12px 16px;
   border: 1px solid #C8CDD5;
   border-radius: 8px;
@@ -1917,6 +1921,112 @@ body.auth-page-active {
   cursor: not-allowed;
   opacity: 0.7;
   text-align: center;
+}
+
+.auth-page-social-btn--google {
+  cursor: pointer;
+  opacity: 1;
+  color: #111116;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.auth-page-social-btn--google:hover:not(:disabled) {
+  background: #F7F9FB;
+  border-color: #A8B0BD;
+}
+
+.auth-page-social-btn--google:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.auth-page-google-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.auth-loading-root {
+  display: block;
+  min-height: 100dvh;
+}
+
+.auth-loading {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px 20px;
+  background: #fff;
+}
+
+.auth-loading-logo {
+  height: 44px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+.auth-loading-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 32px 24px;
+  border: 1px solid #E0E4EA;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(17, 17, 22, 0.06);
+}
+
+.auth-loading-spinner {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 16px;
+  border: 3px solid #E0E4EA;
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: authSpin 0.8s linear infinite;
+}
+
+@keyframes authSpin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-loading-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111116;
+  margin: 0 0 8px;
+}
+
+.auth-loading-hint {
+  font-size: 14px;
+  color: #787C8D;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.auth-loading-error {
+  font-size: 14px;
+  color: var(--accent-red, #C13515);
+  margin: 0 0 16px;
+  line-height: 1.45;
+}
+
+.auth-loading-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .auth-page-visual {

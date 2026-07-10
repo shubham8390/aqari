@@ -1,13 +1,18 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
-import { API } from '../config/api.config';
-import { SignupRequest, TokenResponse, UserRead } from '../models/auth.model';
+import { Observable, of, tap, catchError, finalize } from 'rxjs';
+import {
+  API,
+  AUTH_PROVIDER_KEY,
+  AUTH_RETURN_URL_KEY,
+} from '../config/api.config';
+import { AuthProvider, SignupRequest, TokenResponse, UserRead } from '../models/auth.model';
 import { NavigationService } from './navigation.service';
+import { environment } from '../../../environments/environment';
 
 const TOKEN_KEY = 'aqari_access_token';
-const USER_KEY  = 'aqari_user';
+const USER_KEY = 'aqari_user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,10 +21,10 @@ export class AuthService {
   private readonly nav = inject(NavigationService);
 
   private readonly _token = signal<string | null>(this.loadToken());
-  private readonly _user  = signal<UserRead | null>(this.loadUser());
+  private readonly _user = signal<UserRead | null>(this.loadUser());
 
   readonly token = this._token.asReadonly();
-  readonly user  = this._user.asReadonly();
+  readonly user = this._user.asReadonly();
   readonly isAuthenticated = computed(() => !!this._token());
   readonly displayName = computed(() => {
     const u = this._user();
@@ -28,7 +33,7 @@ export class AuthService {
 
   register(payload: SignupRequest) {
     return this.http.post<TokenResponse>(API.authRegister, payload).pipe(
-      tap(res => this.setSession(res)),
+      tap(res => this.setSession(res, 'password')),
     );
   }
 
@@ -37,21 +42,62 @@ export class AuthService {
     return this.http.post<TokenResponse>(API.authToken, body, {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }),
     }).pipe(
-      tap(res => this.setSession(res)),
+      tap(res => this.setSession(res, 'password')),
     );
+  }
+
+  /** Full-page redirect into Google OAuth (backend handles consent + callback). */
+  startGoogleLogin(returnUrl?: string): void {
+    const safeReturn = this.sanitizeReturnUrl(returnUrl);
+    if (safeReturn) {
+      sessionStorage.setItem(AUTH_RETURN_URL_KEY, safeReturn);
+    } else {
+      sessionStorage.removeItem(AUTH_RETURN_URL_KEY);
+    }
+    window.location.href = environment.googleLoginUrl || API.authGoogleLogin;
+  }
+
+  /** Exchange one-time nonce from /loading redirect for a JWT session. */
+  exchangeGoogleNonce(nonce: string): Observable<TokenResponse> {
+    const params = new HttpParams().set('nonce', nonce);
+    return this.http.get<TokenResponse>(API.authGoogleToken, { params }).pipe(
+      tap(res => this.setSession(res, 'google')),
+    );
+  }
+
+  consumeReturnUrl(fallback = '/search'): string {
+    const stored = sessionStorage.getItem(AUTH_RETURN_URL_KEY);
+    sessionStorage.removeItem(AUTH_RETURN_URL_KEY);
+    return this.sanitizeReturnUrl(stored) ?? fallback;
   }
 
   logout(options: { redirect?: boolean } = {}): void {
     const { redirect = true } = options;
-    this._token.set(null);
-    this._user.set(null);
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    const provider = this.getAuthProvider();
+    const token = this._token();
 
-    if (redirect) {
-      this.nav.navigate('search');
-      this.router.navigate(['/search']);
+    const clearLocal = (): void => {
+      this._token.set(null);
+      this._user.set(null);
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+      localStorage.removeItem(AUTH_PROVIDER_KEY);
+
+      if (redirect) {
+        this.nav.navigate('search');
+        void this.router.navigate(['/search']);
+      }
+    };
+
+    if (provider === 'google' && token) {
+      this.http.post(API.authGoogleLogout, {}).pipe(
+        catchError(() => of(null)),
+        finalize(clearLocal),
+      ).subscribe();
+      return;
     }
+
+    clearLocal();
   }
 
   updateUser(user: UserRead): void {
@@ -63,11 +109,24 @@ export class AuthService {
     return this._token();
   }
 
-  private setSession(res: TokenResponse): void {
+  getAuthProvider(): AuthProvider | null {
+    const raw = localStorage.getItem(AUTH_PROVIDER_KEY);
+    return raw === 'google' || raw === 'password' ? raw : null;
+  }
+
+  private setSession(res: TokenResponse, provider: AuthProvider): void {
     this._token.set(res.access_token);
     this._user.set(res.user);
     localStorage.setItem(TOKEN_KEY, res.access_token);
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+    localStorage.setItem(AUTH_PROVIDER_KEY, provider);
+  }
+
+  private sanitizeReturnUrl(raw?: string | null): string | null {
+    if (raw && raw.startsWith('/') && !raw.startsWith('//')) {
+      return raw;
+    }
+    return null;
   }
 
   private loadToken(): string | null {

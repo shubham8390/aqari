@@ -3,6 +3,7 @@ export interface UserRead {
   email: string;
   name: string | null;
   phone: string | null;
+  picture?: string | null;
   profile_complete: boolean;
   created_at: string;
 }
@@ -17,3 +18,6 @@ export interface TokenResponse {
   token_type: string;
   user: UserRead;
 }
+
+export type AuthProvider = 'password' | 'google';
+

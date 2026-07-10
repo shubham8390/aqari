@@ -78,6 +78,12 @@ export class AuthPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  onGoogleSignIn(): void {
+    this.error = '';
+    this.loading = true;
+    this.authService.startGoogleLogin(this.resolveReturnUrl());
+  }
+
   onSignInSubmit(): void {
     if (!this.signInEmail || !this.signInPassword) {
       this.error = 'Please enter email and password.';
