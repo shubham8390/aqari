@@ -9,6 +9,7 @@ import { ReraComplianceComponent } from './views/rera-compliance/rera-compliance
 import { PastSessionsComponent } from './views/past-sessions/past-sessions.component';
 import { AuthPageComponent } from './layout/auth/auth-page.component';
 import { AuthLoadingComponent } from './layout/auth/auth-loading.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -19,12 +20,12 @@ export const routes: Routes = [
     path: '',
     component: AppShellComponent,
     children: [
-      { path: 'search',    component: PropertySearchComponent   },
+      { path: 'search',    component: PropertySearchComponent,   canActivate: [authGuard] },
       { path: 'market',    component: MarketInsightsComponent   },
       { path: 'negotiate', component: NegotiationGuideComponent },
       { path: 'docs',      component: DocumentsEjariComponent   },
       { path: 'rera',      component: ReraComplianceComponent   },
-      { path: 'history',   component: PastSessionsComponent     },
+      { path: 'history',   component: PastSessionsComponent,     canActivate: [authGuard] },
     ],
   },
   { path: '**', redirectTo: '' },
