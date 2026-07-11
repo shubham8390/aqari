@@ -104,7 +104,7 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
   toggleMobileMap(): void {
     this.mobileMapOpen = !this.mobileMapOpen;
     if (this.mobileMapOpen) {
-      queueMicrotask(() => this.projectMap?.refreshSize());
+      this.scheduleMapResize();
     }
   }
 
@@ -112,8 +112,17 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
     this.mapMarkers.focus(id);
     if (window.matchMedia('(max-width: 899px)').matches) {
       this.mobileMapOpen = true;
-      queueMicrotask(() => this.projectMap?.refreshSize());
+      this.scheduleMapResize();
     }
+  }
+
+  private scheduleMapResize(): void {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.projectMap?.refreshSize();
+        setTimeout(() => this.projectMap?.refreshSize(), 200);
+      });
+    });
   }
 
   private scheduleScrollToBottom(force: boolean): void {

@@ -2184,12 +2184,19 @@ body.auth-page-active {
   .search-split {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .search-split-map {
     display: none;
     flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
     min-height: 0;
     order: 1;
   }
@@ -2197,6 +2204,8 @@ body.auth-page-active {
   .search-split-chat {
     border-left: none;
     flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
     min-height: 0;
     order: 2;
     z-index: 1;
@@ -2214,11 +2223,24 @@ body.auth-page-active {
   }
 
   .search-split--map-open .search-split-map {
+    display: flex;
+    flex: 1 1 0;
+    width: 100%;
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  .search-split--map-open .search-split-map app-project-map,
+  .search-split--map-open .search-split-map .project-map-host {
     display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
   }
 
   .search-split--map-open .search-split-chat {
     flex: 0 0 auto;
+    width: 100%;
   }
 
   .search-split--map-open .search-split-chat-scroll {

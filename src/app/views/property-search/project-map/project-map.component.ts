@@ -144,6 +144,13 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
   refreshSize(): void {
     const map = this.map?.googleMap;
     if (!map) return;
+
+    const mapDiv = map.getDiv();
+    if (mapDiv) {
+      mapDiv.style.width = '100%';
+      mapDiv.style.height = '100%';
+    }
+
     google.maps.event.trigger(map, 'resize');
     const markers = this.markersService.markers();
     if (markers.length) {
