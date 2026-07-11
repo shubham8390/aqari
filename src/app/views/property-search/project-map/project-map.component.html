@@ -9,11 +9,12 @@
 } @else {
   <google-map
     class="project-map-canvas"
-    [height]="null"
-    [width]="null"
+    height="100%"
+    width="100%"
     [center]="center()"
     [zoom]="zoom()"
     [options]="mapOptions"
+    (mapInitialized)="onMapInitialized()"
     (mapClick)="onMapClick()">
     @for (marker of markersService.markers(); track marker.id) {
       <map-marker

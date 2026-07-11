@@ -75,13 +75,18 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngAfterViewInit(): void {
     const el = this.chatScroll?.nativeElement;
-    if (!el) return;
+    if (el) {
+      this.chatResizeObserver = new ResizeObserver(() => {
+        this.scheduleScrollToBottom(false);
+      });
+      this.chatResizeObserver.observe(el);
+      this.scheduleScrollToBottom(true);
+    }
 
-    this.chatResizeObserver = new ResizeObserver(() => {
-      this.scheduleScrollToBottom(false);
-    });
-    this.chatResizeObserver.observe(el);
-    this.scheduleScrollToBottom(true);
+    // Desktop map is visible immediately; force a size sync after layout.
+    if (!window.matchMedia('(max-width: 899px)').matches) {
+      this.scheduleMapResize();
+    }
   }
 
   ngOnDestroy(): void {

@@ -92,7 +92,10 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
     loadGoogleMaps()
       .then(() => {
         this.mapsReady.set(true);
-        queueMicrotask(() => this.attachMapIdleListener());
+        queueMicrotask(() => {
+          this.attachMapIdleListener();
+          this.scheduleInitialResize();
+        });
       })
       .catch(() => this.mapsError.set('Unable to load Google Maps. Check your API key and network.'));
   }
@@ -100,9 +103,12 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.mapMarkerRefs?.changes.subscribe(() => this.bindMarkerHoverListeners());
     this.bindMarkerHoverListeners();
+    this.scheduleInitialResize();
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('resize', this.onWindowResize);
     this.clearMarkerHoverListeners();
     this.mapIdleListener?.remove();
     this.mapIdleListener = null;
@@ -120,16 +126,23 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
     return { ...base, zIndex: focused ? 2 : 1 };
   }
 
-  onMarkerClick(marker: MapMarkerItem, mapMarker: MapMarker): void {
-    this.selectMarker(marker, mapMarker);
+  onMarkerClick(marker: MapMarkerItem, _mapMarker: MapMarker): void {
+    this.openInGoogleMaps(marker);
   }
 
   openInGoogleMaps(marker: MapMarkerItem): void {
+    this.selected.set(marker);
+    this.markersService.focus(marker.id);
     openGoogleMapsForMarker(marker);
   }
 
   googleMapsUrl(marker: MapMarkerItem): string {
     return buildGoogleMapsSearchUrl(marker);
+  }
+
+  onMapInitialized(): void {
+    this.attachMapIdleListener();
+    this.scheduleInitialResize();
   }
 
   onMapClick(): void {
@@ -149,8 +162,6 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
     if (mapDiv) {
       mapDiv.style.width = '100%';
       mapDiv.style.height = '100%';
-      mapDiv.style.position = 'absolute';
-      mapDiv.style.inset = '0';
     }
 
     google.maps.event.trigger(map, 'resize');
@@ -164,13 +175,18 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.labelOverlay?.draw();
   }
 
-  private selectMarker(marker: MapMarkerItem, mapMarker?: MapMarker): void {
-    this.selected.set(marker);
-    this.markersService.focus(marker.id);
-    const ref = mapMarker ?? this.markerRefById.get(marker.id);
-    if (ref) {
-      this.infoWindow?.open(ref);
-    }
+  private readonly onWindowResize = (): void => {
+    this.refreshSize();
+  };
+
+  private scheduleInitialResize(): void {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.refreshSize();
+        setTimeout(() => this.refreshSize(), 100);
+        setTimeout(() => this.refreshSize(), 300);
+      });
+    });
   }
 
   private syncLabelOverlay(
