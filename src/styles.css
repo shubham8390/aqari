@@ -187,6 +187,8 @@
 }
 
 html, body {
+  width: 100%;
+  max-width: 100%;
   height: 100%;
   height: 100dvh;
   background: var(--bg-deep);
@@ -195,10 +197,22 @@ html, body {
   font-size: 16px;
   line-height: 1.5;
   overflow: hidden;
+  overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+app-root,
+app-shell {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
 .app-shell {
+  width: 100%;
+  max-width: 100%;
   height: 100vh;
   height: 100dvh;
   min-height: 0;
@@ -2060,17 +2074,60 @@ body.auth-page-active {
   }
 }
 
+html.search-map-active,
+body.search-map-active {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 899px) {
+  .app-shell > .flex.flex-col.flex-1 {
+    width: 100%;
+    min-width: 0;
+  }
+
+  app-property-search.property-search-host,
+  .property-search-host {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  .search-split {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ambient-blob-primary,
+  .ambient-blob-secondary {
+    width: 220px !important;
+    height: 220px !important;
+  }
+
+  .ambient-blob-secondary {
+    right: -40px !important;
+    bottom: -40px !important;
+  }
+}
+
 /* ─────────────────────────────────────────────
    SEARCH SPLIT (map left + chat right)
 ───────────────────────────────────────────── */
 .property-search-host {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
+/* Mobile-first: stack map + chat vertically; map hidden until toggled */
 .search-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -2079,29 +2136,133 @@ body.auth-page-active {
 .search-split-chat {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  border-left: 1px solid var(--border);
+  border-left: none;
   background: var(--bg-deep);
+  order: 2;
 }
 
 .search-split-chat-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   min-height: 0;
 }
 
 .search-split-map {
+  display: none;
   position: relative;
+  flex: 1 1 0;
+  width: 100%;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
   background: var(--bg-raised);
+  order: 1;
+}
+
+.search-split-input {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.search-split--map-open .search-split-map {
+  display: flex;
+  position: relative;
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.search-split--map-open .search-split-chat {
+  flex: 0 0 auto;
+}
+
+.search-split--map-open .search-split-chat-scroll {
+  display: none;
+}
+
+.search-split--map-open .search-split-map app-project-map,
+.search-split--map-open .search-split-map .project-map-host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.search-map-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+  background: var(--gold-faint);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.search-map-toggle:hover {
+  background: var(--accent-soft);
+}
+
+@media (min-width: 900px) {
+  .search-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .search-split-map {
+    display: block;
+    order: unset;
+  }
+
+  .search-split-chat {
+    order: unset;
+    flex: unset;
+    border-left: 1px solid var(--border);
+  }
+
+  .search-split-chat-scroll {
+    padding: 20px 24px;
+    gap: 20px;
+  }
+
+  .search-split-input {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-bottom: 1.25rem !important;
+  }
+
+  .search-split--map-open .search-split-map,
+  .search-split--map-open .search-split-chat {
+    flex: unset;
+  }
+
+  .search-split--map-open .search-split-chat-scroll {
+    display: flex;
+  }
+
+  .search-map-toggle {
+    display: none;
+  }
 }
 
 /* Google Maps overlay pane — must be global (outside Angular component DOM) */
@@ -2147,27 +2308,6 @@ body.auth-page-active {
   text-overflow: ellipsis;
 }
 
-.search-map-toggle {
-  display: none;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--gold-border);
-  background: var(--gold-faint);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.search-map-toggle:hover {
-  background: var(--accent-soft);
-}
-
 .chat-source-row {
   background: transparent;
   border-left: none;
@@ -2178,77 +2318,5 @@ body.auth-page-active {
 
 .chat-source-row:hover {
   background: var(--bg-hover);
-}
-
-@media (max-width: 899px) {
-  .search-split {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  .search-split-map {
-    display: none;
-    flex: 1 1 auto;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-    order: 1;
-  }
-
-  .search-split-chat {
-    border-left: none;
-    flex: 1 1 auto;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-    order: 2;
-    z-index: 1;
-  }
-
-  .search-split-chat-scroll {
-    padding: 16px;
-    gap: 16px;
-  }
-
-  .search-split-input {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
-  }
-
-  .search-split--map-open .search-split-map {
-    display: flex;
-    flex: 1 1 0;
-    width: 100%;
-    min-height: 0;
-    align-self: stretch;
-  }
-
-  .search-split--map-open .search-split-map app-project-map,
-  .search-split--map-open .search-split-map .project-map-host {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-  }
-
-  .search-split--map-open .search-split-chat {
-    flex: 0 0 auto;
-    width: 100%;
-  }
-
-  .search-split--map-open .search-split-chat-scroll {
-    display: none;
-  }
-
-  .search-map-toggle {
-    display: inline-flex;
-  }
 }
 

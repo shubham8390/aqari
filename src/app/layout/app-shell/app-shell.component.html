@@ -3,7 +3,7 @@
 <div class="ambient-blob-secondary fixed rounded-full pointer-events-none"
      style="width:400px;height:400px;bottom:-80px;right:200px;filter:blur(80px);z-index:0;"></div>
 
-<div class="flex relative app-shell" style="z-index:1;">
+<div class="flex relative app-shell" style="z-index:1;width:100%;max-width:100%;">
   @if (layout.isMobile() && (layout.sidebarOpen() || layout.rightPanelOpen())) {
     <div class="fixed inset-0 bg-black/50"
          style="z-index:45;"
@@ -12,9 +12,9 @@
 
   <app-sidebar />
 
-  <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+  <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden" style="width:100%;">
     <app-topbar />
-    <div class="flex flex-1 overflow-hidden min-h-0">
+    <div class="flex flex-1 overflow-hidden min-h-0" style="width:100%;min-width:0;">
       <router-outlet />
     </div>
   </div>

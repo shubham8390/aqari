@@ -22,17 +22,23 @@ export class AppShellComponent implements OnInit {
   readonly hideRightPanel = signal(false);
 
   ngOnInit(): void {
+    this.syncFromUrl(this.router.url);
+
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        const path = e.urlAfterRedirects.replace(/^#\/?/, '').split('?')[0];
-        const segment = path.split('/').filter(Boolean)[0] ?? '';
-        const view = segment as ViewKey;
-        const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history'];
-        if (valid.includes(view)) {
-          this.nav.activeView.set(view);
-        }
-        this.hideRightPanel.set(view === 'search');
+        this.syncFromUrl(e.urlAfterRedirects);
       });
+  }
+
+  private syncFromUrl(url: string): void {
+    const path = url.replace(/^#\/?/, '').split('?')[0];
+    const segment = path.split('/').filter(Boolean)[0] ?? '';
+    const view = segment as ViewKey;
+    const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history'];
+    if (valid.includes(view)) {
+      this.nav.activeView.set(view);
+    }
+    this.hideRightPanel.set(view === 'search');
   }
 }

@@ -149,6 +149,8 @@ export class ProjectMapComponent implements OnInit, AfterViewInit, OnDestroy {
     if (mapDiv) {
       mapDiv.style.width = '100%';
       mapDiv.style.height = '100%';
+      mapDiv.style.position = 'absolute';
+      mapDiv.style.inset = '0';
     }
 
     google.maps.event.trigger(map, 'resize');

@@ -19,7 +19,7 @@ import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/age
   templateUrl: './property-search.component.html',
   host: {
     class: 'property-search-host',
-    style: 'display:flex;flex:1;overflow:hidden;min-height:0;',
+    style: 'display:flex;flex-direction:column;flex:1;width:100%;min-width:0;overflow:hidden;min-height:0;',
   },
 })
 export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -120,7 +120,8 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         this.projectMap?.refreshSize();
-        setTimeout(() => this.projectMap?.refreshSize(), 200);
+        setTimeout(() => this.projectMap?.refreshSize(), 150);
+        setTimeout(() => this.projectMap?.refreshSize(), 250);
       });
     });
   }
