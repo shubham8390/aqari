@@ -36,6 +36,13 @@
           @if (item.price) {
             <div class="project-map-info-price">{{ item.price }}</div>
           }
+          <a class="project-map-info-link"
+             [href]="googleMapsUrl(item)"
+             target="_blank"
+             rel="noopener noreferrer"
+             (click)="$event.stopPropagation()">
+            View on Google Maps
+          </a>
         </div>
       }
     </map-info-window>

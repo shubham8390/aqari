@@ -66,3 +66,16 @@
   font-weight: 600;
   color: #005CA8;
 }
+
+.project-map-info-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.project-map-info-link:hover {
+  text-decoration: underline;
+}
