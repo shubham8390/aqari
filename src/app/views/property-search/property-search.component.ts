@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { AGENT_INITIAL, AGENT_LABEL, AGENT_NAME } from '../../core/constants/age
     style: 'display:flex;flex:1;overflow:hidden;min-height:0;',
   },
 })
-export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy {
   chat = inject(ChatService);
   nav = inject(NavigationService);
   theme = inject(ThemeService);
@@ -37,6 +37,8 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDest
 
   inputText = '';
   mobileMapOpen = false;
+  private chatResizeObserver?: ResizeObserver;
+  private scrollRaf = 0;
 
   readonly agentName = AGENT_NAME;
   readonly agentLabel = AGENT_LABEL;
@@ -44,6 +46,14 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDest
 
   get isLight(): boolean {
     return this.theme.theme() === 'light';
+  }
+
+  constructor() {
+    effect(() => {
+      this.chat.messages().length;
+      this.chat.isTyping();
+      this.scheduleScrollToBottom(true);
+    });
   }
 
   ngOnInit(): void {
@@ -63,13 +73,22 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDest
     queueMicrotask(() => this.chat.sendMessage(q));
   }
 
-  ngOnDestroy(): void {
-    document.documentElement.classList.remove('search-map-active');
-    document.body.classList.remove('search-map-active');
+  ngAfterViewInit(): void {
+    const el = this.chatScroll?.nativeElement;
+    if (!el) return;
+
+    this.chatResizeObserver = new ResizeObserver(() => {
+      this.scheduleScrollToBottom(false);
+    });
+    this.chatResizeObserver.observe(el);
+    this.scheduleScrollToBottom(true);
   }
 
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  ngOnDestroy(): void {
+    this.chatResizeObserver?.disconnect();
+    if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf);
+    document.documentElement.classList.remove('search-map-active');
+    document.body.classList.remove('search-map-active');
   }
 
   send(): void {
@@ -97,10 +116,25 @@ export class PropertySearchComponent implements OnInit, AfterViewChecked, OnDest
     }
   }
 
-  private scrollToBottom(): void {
-    if (this.chatScroll) {
-      const el = this.chatScroll.nativeElement;
-      el.scrollTop = el.scrollHeight;
-    }
+  private scheduleScrollToBottom(force: boolean): void {
+    if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf);
+    this.scrollRaf = requestAnimationFrame(() => {
+      this.scrollRaf = 0;
+      this.scrollToBottom(force);
+    });
+  }
+
+  private shouldAutoScroll(): boolean {
+    const el = this.chatScroll?.nativeElement;
+    if (!el) return true;
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+  }
+
+  private scrollToBottom(force: boolean): void {
+    if (!this.chatScroll) return;
+    if (!force && !this.shouldAutoScroll()) return;
+
+    const el = this.chatScroll.nativeElement;
+    el.scrollTop = el.scrollHeight;
   }
 }

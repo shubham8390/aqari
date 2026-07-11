@@ -6,6 +6,7 @@ import {
   effect,
   inject,
   signal,
+  untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleMap, MapInfoWindow, MapMarker, GoogleMapsModule } from '@angular/google-maps';
@@ -33,6 +34,8 @@ export class ProjectMapComponent implements OnInit, OnDestroy {
   readonly center = signal<google.maps.LatLngLiteral>(PUNE_CENTER);
   readonly zoom = signal(12);
   readonly selected = signal<MapMarkerItem | null>(null);
+  private lastViewKey = '';
+  private readonly markerOptionsCache = new Map<number, google.maps.MarkerOptions>();
 
   readonly mapOptions: google.maps.MapOptions = {
     disableDefaultUI: false,
@@ -49,24 +52,11 @@ export class ProjectMapComponent implements OnInit, OnDestroy {
       const focusedId = this.markersService.focusedId();
       if (!this.mapsReady() || !this.map?.googleMap) return;
 
-      if (!markers.length) {
-        this.center.set(PUNE_CENTER);
-        this.zoom.set(12);
-        this.selected.set(null);
-        return;
-      }
+      const viewKey = `${markers.map(m => m.id).join(',')}|${focusedId ?? ''}`;
+      if (viewKey === this.lastViewKey) return;
+      this.lastViewKey = viewKey;
 
-      if (focusedId != null) {
-        const match = markers.find(m => m.id === focusedId);
-        if (match) {
-          this.selected.set(match);
-          this.center.set(match.position);
-          this.zoom.set(15);
-          return;
-        }
-      }
-
-      this.fitToMarkers(markers);
+      untracked(() => this.applyMapView(markers, focusedId));
     });
   }
 
@@ -81,13 +71,12 @@ export class ProjectMapComponent implements OnInit, OnDestroy {
   }
 
   markerOptions(marker: MapMarkerItem): google.maps.MarkerOptions {
-    const focused = this.markersService.focusedId() === marker.id;
-    return {
-      title: marker.title,
-      animation: focused && typeof google !== 'undefined'
-        ? google.maps.Animation.BOUNCE
-        : undefined,
-    };
+    const cached = this.markerOptionsCache.get(marker.id);
+    if (cached) return cached;
+
+    const options: google.maps.MarkerOptions = { title: marker.title };
+    this.markerOptionsCache.set(marker.id, options);
+    return options;
   }
 
   onMarkerClick(marker: MapMarkerItem, mapMarker: MapMarker): void {
@@ -116,11 +105,45 @@ export class ProjectMapComponent implements OnInit, OnDestroy {
     }
   }
 
+  private applyMapView(markers: MapMarkerItem[], focusedId: number | null): void {
+    const map = this.map?.googleMap;
+    if (!map) return;
+
+    if (!markers.length) {
+      this.selected.set(null);
+      map.setCenter(PUNE_CENTER);
+      map.setZoom(12);
+      this.center.set(PUNE_CENTER);
+      this.zoom.set(12);
+      return;
+    }
+
+    if (focusedId != null) {
+      const match = markers.find(m => m.id === focusedId);
+      if (match) {
+        this.selected.set(match);
+        map.panTo(match.position);
+        if ((map.getZoom() ?? 0) < 14) map.setZoom(15);
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        if (center && zoom != null) {
+          this.center.set({ lat: center.lat(), lng: center.lng() });
+          this.zoom.set(zoom);
+        }
+        return;
+      }
+    }
+
+    this.fitToMarkers(markers);
+  }
+
   private fitToMarkers(markers: MapMarkerItem[]): void {
     const map = this.map?.googleMap;
     if (!map || !markers.length) return;
 
     if (markers.length === 1) {
+      map.setCenter(markers[0].position);
+      map.setZoom(14);
       this.center.set(markers[0].position);
       this.zoom.set(14);
       return;
@@ -129,5 +152,13 @@ export class ProjectMapComponent implements OnInit, OnDestroy {
     const bounds = new google.maps.LatLngBounds();
     markers.forEach(m => bounds.extend(m.position));
     map.fitBounds(bounds, 64);
+    google.maps.event.addListenerOnce(map, 'idle', () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      if (center && zoom != null) {
+        this.center.set({ lat: center.lat(), lng: center.lng() });
+        this.zoom.set(zoom);
+      }
+    });
   }
 }
