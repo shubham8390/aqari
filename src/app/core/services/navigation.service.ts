@@ -1,6 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 
-export type ViewKey = 'search' | 'market' | 'negotiate' | 'docs' | 'rera' | 'history';
+export type ViewKey = 'search' | 'market' | 'negotiate' | 'rera' | 'history';
 
 export interface ViewMeta {
   title: string;
@@ -11,7 +11,6 @@ const VIEW_META: Record<ViewKey, ViewMeta> = {
   search:     { title: 'Property Search',   subtitle: 'AI-powered project search across Pune real estate' },
   market:     { title: 'Market Insights',   subtitle: 'Pune property market overview · Sample data'       },
   negotiate:  { title: 'Negotiation Guide', subtitle: 'AI strategies backed by RERA transaction data'     },
-  docs:       { title: 'Documents & Ejari', subtitle: 'Complete checklist — RERA compliant'               },
   rera:       { title: 'RERA Compliance',   subtitle: 'Know your rights as a buyer'                       },
   history:    { title: 'Past Sessions',     subtitle: 'Your previous conversations with Rahaa'          },
 };

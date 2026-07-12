@@ -1,4 +1,5 @@
-import { Injectable, signal, effect } from '@angular/core';
+import { Injectable, signal, effect, computed } from '@angular/core';
+import { APP_LOGO_SRC, APP_LOGO_SRC_Dark } from '../constants/brand.constants';
 
 export type Theme = 'dark' | 'light';
 
@@ -7,6 +8,11 @@ export class ThemeService {
   private readonly STORAGE_KEY = 'aqari-theme';
 
   theme = signal<Theme>(this.getInitialTheme());
+
+  /** Wordmark for the current theme (dark → dark logo, light → blue logo). */
+  readonly logoSrc = computed(() =>
+    this.theme() === 'dark' ? APP_LOGO_SRC_Dark : APP_LOGO_SRC,
+  );
 
   constructor() {
     effect(() => {

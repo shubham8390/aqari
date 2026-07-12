@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavigationService } from '../../core/services/navigation.service';
 import { LayoutService } from '../../core/services/layout.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { LoginButtonComponent } from '../auth/login-button.component';
-import { APP_LOGO_SRC } from '../../core/constants/brand.constants';
 
 @Component({
   selector: 'app-topbar',
@@ -14,9 +14,9 @@ import { APP_LOGO_SRC } from '../../core/constants/brand.constants';
   host: { style: 'display:block;flex-shrink:0;' },
 })
 export class TopbarComponent {
-  readonly logoSrc = APP_LOGO_SRC;
-  nav    = inject(NavigationService);
+  nav = inject(NavigationService);
   layout = inject(LayoutService);
+  theme = inject(ThemeService);
   private router = inject(Router);
 
   goHome(): void {

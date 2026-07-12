@@ -43,7 +43,6 @@ export const SEARCH_PLACEHOLDER = 'Try: 2 BHK in Baner under 1 Cr';
 export const LANDING_FOOTER_LINKS: LandingNavLink[] = [
   { label: 'Market', route: '/market' },
   { label: 'Negotiate', route: '/negotiate' },
-  { label: 'Documents', route: '/docs' },
   { label: 'RERA', route: '/rera' },
 ];
 
@@ -126,8 +125,8 @@ export const SERVICE_CARDS: LandingServiceCard[] = [
     emoji: '📊',
   },
   {
-    title: 'RERA & Documents',
-    description: 'Understand compliance, document checklists, and buyer rights for Maharashtra projects.',
+    title: 'RERA Compliance',
+    description: 'Understand MahaRERA rules, buyer rights, and compliance for Maharashtra projects.',
     cta: 'Browse guides',
     route: '/rera',
     emoji: '📋',

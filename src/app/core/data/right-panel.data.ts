@@ -40,9 +40,9 @@ export const REGULAR_INSIGHTS: RightPanelInsight[] = [
 ];
 
 export const REGULAR_READINESS: RightPanelReadinessItem[] = [
-  { icon: '🪪', name: 'Aadhaar & PAN',              status: 'done',    route: 'docs' },
-  { icon: '🏦', name: 'Home Loan Pre-approval',     status: 'pending', route: 'docs' },
-  { icon: '📝', name: 'Sale Agreement Draft',       status: 'pending', route: 'docs' },
+  { icon: '🪪', name: 'Aadhaar & PAN',              status: 'done',    route: 'rera' },
+  { icon: '🏦', name: 'Home Loan Pre-approval',     status: 'pending', route: 'rera' },
+  { icon: '📝', name: 'Sale Agreement Draft',       status: 'pending', route: 'rera' },
   { icon: '🏛️', name: 'MahaRERA Allotment Letter', status: 'pending', route: 'rera' },
-  { icon: '💳', name: 'Stamp Duty & Registration', status: 'pending', route: 'docs' },
+  { icon: '💳', name: 'Stamp Duty & Registration', status: 'pending', route: 'rera' },
 ];

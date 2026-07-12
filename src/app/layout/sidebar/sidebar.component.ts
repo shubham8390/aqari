@@ -6,9 +6,9 @@ import { LayoutService } from '../../core/services/layout.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ChatService } from '../../core/services/chat.service';
 import { MapMarkersService } from '../../core/services/map-markers.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { AuthModalService } from '../auth/auth-modal.service';
 import { ProfileSetupService } from '../auth/profile-setup.service';
-import { APP_LOGO_SRC } from '../../core/constants/brand.constants';
 import { APP_SHELL_RAIL_ITEMS, AppShellRailItem } from '../../core/data/home.data';
 
 @Component({
@@ -22,12 +22,11 @@ import { APP_SHELL_RAIL_ITEMS, AppShellRailItem } from '../../core/data/home.dat
   },
 })
 export class SidebarComponent {
-  readonly logoSrc = APP_LOGO_SRC;
-
   nav = inject(NavigationService);
   router = inject(Router);
   layout = inject(LayoutService);
   auth = inject(AuthService);
+  theme = inject(ThemeService);
   private authModal = inject(AuthModalService);
   private chat = inject(ChatService);
   private mapMarkers = inject(MapMarkersService);

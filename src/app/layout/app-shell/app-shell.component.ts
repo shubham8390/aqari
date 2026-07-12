@@ -35,7 +35,7 @@ export class AppShellComponent implements OnInit {
     const path = url.replace(/^#\/?/, '').split('?')[0];
     const segment = path.split('/').filter(Boolean)[0] ?? '';
     const view = segment as ViewKey;
-    const valid: ViewKey[] = ['search', 'market', 'negotiate', 'docs', 'rera', 'history'];
+    const valid: ViewKey[] = ['search', 'market', 'negotiate', 'rera', 'history'];
     if (valid.includes(view)) {
       this.nav.activeView.set(view);
     }
