@@ -56,10 +56,18 @@ export class PastSessionsComponent implements OnInit {
 
   openSession(session: ChatSession): void {
     this.sessionService.getMessages(session.session_id).subscribe({
-      next: (messages) => {
-        this.chat.loadSession(session.session_id, messages);
+      next: (res) => {
+        this.chat.loadSession(
+          session.session_id,
+          res.messages,
+          undefined,
+          res.title ?? session.title,
+        );
         this.nav.navigate('search');
         this.router.navigate(['/search']);
+      },
+      error: () => {
+        this.error.set('Could not open that session.');
       },
     });
   }
@@ -69,6 +77,12 @@ export class PastSessionsComponent implements OnInit {
     this.sessionService.clearSession(session.session_id).subscribe({
       next: () => this.loadSessions(),
     });
+  }
+
+  sessionLabel(session: ChatSession): string {
+    const title = session.title?.trim();
+    if (title) return title;
+    return `Session ${session.session_id.slice(0, 8)}…`;
   }
 
   formatDate(value: string): string {

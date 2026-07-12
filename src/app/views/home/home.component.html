@@ -52,7 +52,15 @@
     <main class="landing-main">
       <!-- Hero -->
       <div class="landing-hero-block">
-        <section class="landing-hero" [style.background-image]="'url(' + heroImage + ')'">
+        <section class="landing-hero">
+          <img
+            class="landing-hero-img"
+            [src]="heroImage"
+            alt=""
+            decoding="async"
+            fetchpriority="high"
+            referrerpolicy="no-referrer"
+          />
           <div class="landing-hero-overlay"></div>
           <div class="landing-hero-content">
             <h1 class="landing-hero-title">{{ heroHeadline }}</h1>
@@ -110,7 +118,7 @@
                     {{ project.badge }}
                   </span>
                 }
-                <img [src]="project.image" [alt]="project.name" class="landing-stack-card-img" loading="lazy" />
+                <img [src]="project.image" [alt]="project.name" class="landing-stack-card-img" loading="lazy" referrerpolicy="no-referrer" />
                 <div class="landing-stack-card-body">
                   <div class="landing-stack-card-price">{{ project.price }}</div>
                   <div class="landing-stack-card-specs">{{ project.specs }}</div>
@@ -153,7 +161,7 @@
                   @if (project.badge) {
                     <span class="landing-scroll-badge">{{ project.badge }}</span>
                   }
-                  <img [src]="project.image" [alt]="project.name" class="landing-scroll-card-img" loading="lazy" />
+                  <img [src]="project.image" [alt]="project.name" class="landing-scroll-card-img" loading="lazy" referrerpolicy="no-referrer" />
                 </div>
                 <div class="landing-scroll-card-body">
                   <div class="landing-scroll-card-price">{{ project.price }}</div>

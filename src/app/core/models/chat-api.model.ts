@@ -39,11 +39,15 @@ export interface ChatResponse {
   answer: string;
   sources: ChatSource[];
   session_id: string;
+  /** First user query, truncated to 80 chars. Null if not yet set. */
+  title?: string | null;
 }
 
 export interface ChatSession {
   session_id: string;
   user_id: number | null;
+  /** First user query truncated to 80 chars. */
+  title?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -56,6 +60,12 @@ export interface ChatSessionListResponse {
 export interface ChatMessageRecord {
   role: 'user' | 'assistant';
   content: string;
+}
+
+/** GET /chat/{session_id}/messages — wrapped response. */
+export interface ChatMessagesResponse {
+  title?: string | null;
+  messages: ChatMessageRecord[];
 }
 
 export interface StatusResponse {

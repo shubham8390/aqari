@@ -30,6 +30,8 @@ export class AuthService {
     const u = this._user();
     return u?.name || u?.email?.split('@')[0] || 'User';
   });
+  /** Google profile photo URL when available; otherwise null. */
+  readonly pictureUrl = computed(() => this._user()?.picture?.trim() || null);
 
   register(payload: SignupRequest) {
     return this.http.post<TokenResponse>(API.authRegister, payload).pipe(

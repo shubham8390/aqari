@@ -3,10 +3,16 @@
     <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0 accent-avatar"
          style="width:36px;height:36px;">{{ agentInitial }}</div>
   } @else {
-    <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
-         style="width:36px;height:36px;background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);">
-      {{ userInitials() }}
-    </div>
+    @if (auth.pictureUrl(); as photo) {
+      <img [src]="photo" [alt]="auth.displayName()"
+           class="rounded-full flex-shrink-0 object-cover"
+           style="width:36px;height:36px;border:1px solid var(--border-mid);" />
+    } @else {
+      <div class="flex items-center justify-center rounded-full text-xs font-medium flex-shrink-0"
+           style="width:36px;height:36px;background:var(--bg-raised);border:1px solid var(--border-mid);color:var(--text-primary);">
+        {{ userInitials() }}
+      </div>
+    }
   }
 
   <div class="flex flex-col gap-1.5" [class.items-end]="message.role === 'user'"

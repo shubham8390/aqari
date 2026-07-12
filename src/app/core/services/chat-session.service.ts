@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API } from '../config/api.config';
 import {
-  ChatMessageRecord,
+  ChatMessagesResponse,
   ChatSessionListResponse,
   StatusResponse,
 } from '../models/chat-api.model';
@@ -18,7 +18,7 @@ export class ChatSessionService {
   }
 
   getMessages(sessionId: string) {
-    return this.http.get<ChatMessageRecord[]>(API.chatMessages(sessionId));
+    return this.http.get<ChatMessagesResponse>(API.chatMessages(sessionId));
   }
 
   clearSession(sessionId: string) {

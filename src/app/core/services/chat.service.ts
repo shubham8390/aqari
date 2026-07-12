@@ -20,6 +20,8 @@ export class ChatService {
 
   messages = signal<ChatMessage[]>(this.buildInitialMessages());
   isTyping = signal(false);
+  /** Latest session title from the API (first query, truncated). */
+  sessionTitle = signal<string | null>(null);
 
   private sessionId = '';
 
@@ -50,6 +52,9 @@ export class ChatService {
     this.http.post<ChatResponse>(API.chat, payload).subscribe({
       next: (response) => {
         this.sessionId = response.session_id;
+        if (response.title) {
+          this.sessionTitle.set(response.title);
+        }
         this.isTyping.set(false);
 
         const agentMsg: ChatMessage = {
@@ -76,8 +81,14 @@ export class ChatService {
     return true;
   }
 
-  loadSession(sessionId: string, records: { role: string; content: string }[], sourcesByIndex?: ChatSource[][]): void {
+  loadSession(
+    sessionId: string,
+    records: { role: string; content: string }[],
+    sourcesByIndex?: ChatSource[][],
+    title?: string | null,
+  ): void {
     this.sessionId = sessionId;
+    this.sessionTitle.set(title?.trim() || null);
     const msgs: ChatMessage[] = [
       {
         id: 'welcome',
@@ -102,6 +113,7 @@ export class ChatService {
 
   startNewSession(): void {
     this.sessionId = '';
+    this.sessionTitle.set(null);
     this.messages.set(this.buildInitialMessages());
   }
 

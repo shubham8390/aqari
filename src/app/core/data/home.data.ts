@@ -9,6 +9,14 @@ export interface LandingRailItem {
   route: string;
 }
 
+/** App-shell rail item — route nav or a local action (New Chat). */
+export interface AppShellRailItem {
+  icon: string;
+  label: string;
+  route?: string;
+  action?: 'new-chat';
+}
+
 export interface LandingProjectCard {
   id: number;
   name: string;
@@ -41,6 +49,13 @@ export const LANDING_FOOTER_LINKS: LandingNavLink[] = [
 
 export const LANDING_RAIL_ITEMS: LandingRailItem[] = [
   { icon: '🔍', label: 'Search', route: '/search' },
+  { icon: '💬', label: 'History', route: '/history' },
+];
+
+/** App shell rail (Search / History views) — includes New Chat. */
+export const APP_SHELL_RAIL_ITEMS: AppShellRailItem[] = [
+  { icon: '🔍', label: 'Search', route: '/search' },
+  { icon: '+', label: 'New Chat', action: 'new-chat' },
   { icon: '💬', label: 'History', route: '/history' },
 ];
 

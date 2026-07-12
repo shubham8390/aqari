@@ -33,6 +33,7 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
   private readonly router = inject(Router);
 
   @ViewChild('chatScroll') chatScroll!: ElementRef<HTMLDivElement>;
+  @ViewChild('chatInput') chatInput?: ElementRef<HTMLInputElement>;
   @ViewChild(ProjectMapComponent) projectMap?: ProjectMapComponent;
 
   inputText = '';
@@ -110,7 +111,19 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
     this.mobileMapOpen = !this.mobileMapOpen;
     if (this.mobileMapOpen) {
       this.scheduleMapResize();
+    } else {
+      this.focusChatInput();
     }
+  }
+
+  /** On mobile map view, tapping the input switches back to chat. */
+  onChatInputFocus(): void {
+    if (!this.mobileMapOpen) return;
+    if (!window.matchMedia('(max-width: 899px)').matches) return;
+
+    this.mobileMapOpen = false;
+    this.scheduleScrollToBottom(true);
+    this.focusChatInput();
   }
 
   onFocusProject(id: number): void {
@@ -119,6 +132,10 @@ export class PropertySearchComponent implements OnInit, AfterViewInit, OnDestroy
       this.mobileMapOpen = true;
       this.scheduleMapResize();
     }
+  }
+
+  private focusChatInput(): void {
+    queueMicrotask(() => this.chatInput?.nativeElement.focus());
   }
 
   private scheduleMapResize(): void {

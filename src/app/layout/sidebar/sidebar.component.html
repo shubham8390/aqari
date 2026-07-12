@@ -9,12 +9,13 @@
   </button>
 
   <nav class="app-rail-nav">
-    @for (item of visibleRailItems(); track item.route) {
+    @for (item of visibleRailItems(); track railItemKey(item)) {
       <button
         type="button"
         class="app-rail-item"
-        [class.app-rail-item--active]="isRouteActive(item.route)"
-        (click)="goTo(item.route)">
+        [class.app-rail-item--active]="isRouteActive(item)"
+        [attr.aria-label]="item.label"
+        (click)="onRailClick(item)">
         <span class="app-rail-icon">{{ item.icon }}</span>
         <span class="app-rail-label">{{ item.label }}</span>
       </button>
@@ -22,9 +23,13 @@
   </nav>
 
   <button type="button" class="app-rail-user" (click)="onUserClick()">
-    <div class="user-avatar app-rail-avatar">
-      {{ auth.isAuthenticated() ? userInitials() : '?' }}
-    </div>
+    @if (auth.pictureUrl(); as photo) {
+      <img [src]="photo" [alt]="auth.displayName()" class="user-avatar app-rail-avatar app-rail-avatar-img" />
+    } @else {
+      <div class="user-avatar app-rail-avatar">
+        {{ auth.isAuthenticated() ? userInitials() : '?' }}
+      </div>
+    }
     <span class="app-rail-label app-rail-user-name">
       {{ auth.isAuthenticated() ? auth.displayName() : 'Guest' }}
     </span>

@@ -542,6 +542,12 @@ body::before {
   font-size: 11px !important;
 }
 
+.app-rail-avatar-img {
+  object-fit: cover;
+  padding: 0;
+  overflow: hidden;
+}
+
 .app-rail-user-name {
   color: var(--text-primary);
 }
@@ -756,13 +762,25 @@ input::placeholder {
 .chat-markdown h3 { font-size: 1rem; }
 .chat-markdown h4 { font-size: 0.95rem; }
 
-.chat-markdown img {
+.chat-markdown img,
+.chat-markdown .chat-md-image {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 0.5rem 0;
   border-radius: 10px;
   border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.chat-markdown li:has(> img.chat-md-image),
+.chat-markdown li:has(> p > img.chat-md-image) {
+  list-style: none;
+  margin-left: 0;
+}
+
+.chat-markdown ul:has(img.chat-md-image) {
+  padding-left: 0;
 }
 
 .chat-markdown a {
@@ -925,6 +943,7 @@ html:has(.landing-root) {
 
 app-root:has(.landing-root) {
   display: block;
+  height: auto;
   min-height: 100dvh;
   overflow: visible;
 }
@@ -1158,23 +1177,35 @@ app-root:has(.landing-root) {
 .landing-hero {
   position: relative;
   min-height: clamp(420px, 62vh, 560px);
-  background-size: cover;
-  background-position: center;
+  background-color: #1a2330;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 48px 48px 64px;
+  overflow: hidden;
+}
+
+.landing-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .landing-hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(90deg, rgba(17, 17, 22, 0.62) 0%, rgba(17, 17, 22, 0.35) 55%, rgba(17, 17, 22, 0.15) 100%);
 }
 
 .landing-hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   max-width: 640px;
   margin: 0;
