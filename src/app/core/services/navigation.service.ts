@@ -8,7 +8,7 @@ export interface ViewMeta {
 }
 
 const VIEW_META: Record<ViewKey, ViewMeta> = {
-  search:     { title: 'Property Search',   subtitle: 'AI-powered project search across Pune real estate' },
+  search:     { title: 'Property Search',   subtitle: 'Project search across Pune real estate' },
   market:     { title: 'Market Insights',   subtitle: 'Pune property market overview · Sample data'       },
   negotiate:  { title: 'Negotiation Guide', subtitle: 'AI strategies backed by RERA transaction data'     },
   rera:       { title: 'RERA Compliance',   subtitle: 'Know your rights as a buyer'                       },

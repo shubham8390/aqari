@@ -36,7 +36,7 @@ export interface LandingServiceCard {
   emoji: string;
 }
 
-export const HERO_HEADLINE = 'Projects. Pricing. RERA. AI Search.';
+export const HERO_HEADLINE = 'Projects. Pricing. RERA. Search.';
 export const HERO_IMAGE = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80';
 export const SEARCH_PLACEHOLDER = 'Try: 2 BHK in Baner under 1 Cr';
 
@@ -111,7 +111,7 @@ export const AFFORDABLE_PROJECTS: LandingProjectCard[] = [
 
 export const SERVICE_CARDS: LandingServiceCard[] = [
   {
-    title: 'Search with AI',
+    title: 'Property Search',
     description: 'Ask Rahaa in natural language — locality, BHK, budget, builder, and RERA details in one conversation.',
     cta: 'Start searching',
     route: '/search',

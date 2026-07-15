@@ -194,14 +194,14 @@
         <div class="landing-footer-inner">
           <img [src]="logoSrc" alt="Propnut" class="landing-footer-logo brand-logo" />
           <p class="landing-footer-text">
-            Aqari helps buyers explore RERA-registered projects across Pune with AI-powered search.
+            Aqari helps buyers explore RERA-registered projects across Pune.
             Sample listings shown for illustration — chat with Rahaa for live project data.
           </p>
           <div class="landing-footer-links">
             @for (link of footerLinks; track link.route) {
               <button type="button" class="landing-footer-link" (click)="goTo(link.route)">{{ link.label }}</button>
             }
-            <button type="button" class="landing-footer-link" (click)="goTo('/search')">AI Search</button>
+            <button type="button" class="landing-footer-link" (click)="goTo('/search')">Search</button>
           </div>
           <p class="landing-footer-copy">© {{ currentYear }} Aqari · Pune Real Estate AI</p>
         </div>
